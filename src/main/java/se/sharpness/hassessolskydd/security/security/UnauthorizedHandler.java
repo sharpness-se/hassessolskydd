@@ -1,4 +1,4 @@
-package Sharpness.hassessolskydd.security.security;
+package se.sharpness.hassessolskydd.security.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

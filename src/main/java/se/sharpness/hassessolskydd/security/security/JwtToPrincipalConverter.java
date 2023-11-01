@@ -1,4 +1,4 @@
-package Sharpness.hassessolskydd.security.security;
+package se.sharpness.hassessolskydd.security.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

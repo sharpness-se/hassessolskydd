@@ -1,10 +1,10 @@
-package Sharpness.hassessolskydd.security.controller;
+package se.sharpness.hassessolskydd.security.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import Sharpness.hassessolskydd.security.security.UserPrincipal;
+import se.sharpness.hassessolskydd.security.security.UserPrincipal;
 
 @RestController
 @RequiredArgsConstructor

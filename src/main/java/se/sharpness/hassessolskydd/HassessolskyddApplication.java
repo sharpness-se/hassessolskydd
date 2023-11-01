@@ -1,4 +1,4 @@
-package Sharpness.hassessolskydd;
+package se.sharpness.hassessolskydd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

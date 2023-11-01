@@ -1,7 +1,7 @@
-package Sharpness.hassessolskydd.security.service;
+package se.sharpness.hassessolskydd.security.service;
 
 import org.springframework.stereotype.Service;
-import Sharpness.hassessolskydd.security.entity.UserEntity;
+import se.sharpness.hassessolskydd.security.entity.UserEntity;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package Sharpness.hassessolskydd.security.entity;
+package se.sharpness.hassessolskydd.security.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

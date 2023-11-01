@@ -1,4 +1,4 @@
-package Sharpness.hassessolskydd.security.security;
+package se.sharpness.hassessolskydd.security.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;

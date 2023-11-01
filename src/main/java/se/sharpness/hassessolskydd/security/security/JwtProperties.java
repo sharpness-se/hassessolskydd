@@ -1,4 +1,4 @@
-package Sharpness.hassessolskydd.security.security;
+package se.sharpness.hassessolskydd.security.security;
 
 import lombok.Getter;
 import lombok.Setter;
