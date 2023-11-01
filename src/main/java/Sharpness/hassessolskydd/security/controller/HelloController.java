@@ -15,6 +15,11 @@ public class HelloController {
         return "Hello, World!";
     }
 
+    @GetMapping("/public")
+    public String publicEndpoint() {
+        return "Everyone can see this";
+    }
+
     @GetMapping("/secured")
     public String secured(@AuthenticationPrincipal UserPrincipal principal) {
         return "Secured Hello " + principal.getEmail() + " with ID " + principal.getUserId();
