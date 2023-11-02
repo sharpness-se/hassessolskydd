@@ -1,8 +1,12 @@
 package se.sharpness.hassessolskydd.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Plissegardin extends Product {
 
     private Long id;
