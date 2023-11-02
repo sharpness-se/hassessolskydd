@@ -78,7 +78,7 @@ ALTER SEQUENCE public.installation_details_id_seq OWNED BY public.installation_d
 
 CREATE TABLE public.products (
                                 id integer NOT NULL,
-                                plissegardin integer,
+                                plissegardin integer, --bools?
                                 terassmarkis integer
 );
 

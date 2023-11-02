@@ -1,11 +1,15 @@
 package se.sharpness.hassessolskydd.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Terassmarkis extends Product {
 
-    private int id;
+    private Long id;
     private String measuringType;
     private String model;
     private String weaveNumber;

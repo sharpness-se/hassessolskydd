@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public abstract class Product {
-    private Long id;
+    private Long id; //TODO: should be ints?
 }

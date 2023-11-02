@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductsMapper {
 
-    List<Product> findProductsByOrderId(Long orderId) { //default?
+    default List<Product> findProductsByOrderId(Long orderId) {
         List<Product> products = new ArrayList<>();
         products.addAll(findPlissegardinByOrderId(orderId));
         products.addAll(findTerassmarkisByOrderId(orderId));
