@@ -10,5 +10,5 @@ public class Customer {
     private String address;
     private String phoneNumber;
     private String email;
-    private String customerId;
+    private String customerNumber;
 }

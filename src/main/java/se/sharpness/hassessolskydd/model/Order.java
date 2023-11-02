@@ -16,7 +16,7 @@ public class Order {
     private String notes;
     //Photos
     private InstallationDetails installationDetails;
-    private List<Long> productId;
-    private IndoorOutdoor productType;
+    private List<Product> products;
+    private IndoorOutdoor indoorOutdoor;
 
 }

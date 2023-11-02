@@ -39,7 +39,7 @@ CREATE TABLE public.customer (
                                    address character varying(255),
                                    phone_number character varying(255) NOT NULL,
                                    email character varying(255),
-                                   customer_id character varying(255) NOT NULL
+                                   customer_number character varying(255) NOT NULL
 );
 
 CREATE SEQUENCE public.customer_id_seq
@@ -56,6 +56,7 @@ ALTER SEQUENCE public.customer_id_seq OWNED BY public.customer.id;
 
 CREATE TABLE public.installation_details (
                                                 id integer NOT NULL,
+                                                order_id integer NOT NULL, --fk
                                                 is_normal boolean NOT NULL,
                                                 facade_details character varying(255),
                                                 floor_details character varying(255),
@@ -77,7 +78,8 @@ ALTER SEQUENCE public.installation_details_id_seq OWNED BY public.installation_d
 
 CREATE TABLE public.products (
                                 id integer NOT NULL,
-                                product_id integer NOT NULL
+                                plissegardin integer,
+                                terassmarkis integer
 );
 
 CREATE SEQUENCE public.products_id_seq
@@ -94,19 +96,14 @@ ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 
 CREATE TABLE public.order (
                                    id integer NOT NULL,
-                                   userx integer NOT NULL,
+                                   customer_number integer NOT NULL, --fk, bör väl ej vara customer_id?
                                    first_contact timestamp without time zone NOT NULL,
                                    measurement_date timestamp without time zone NOT NULL,
                                    installation_date timestamp without time zone NOT NULL,
                                    notes character varying(2000),
+                                   products integer NOT NULL, --FK
                                    --Photos
-                                   installation_details integer NOT NULL, --FK
-                                   products_id integer NOT NULL,
-                                   CONSTRAINT fk_products
-                                       FOREIGN KEY(products_id)
-                                            REFERENCES public.products(id)
-                                            ON DELETE CASCADE
-                                            ON UPDATE CASCADE
+                                   installation_details integer NOT NULL --FK
 );
 
 CREATE SEQUENCE public.order_id_seq
@@ -123,6 +120,7 @@ ALTER SEQUENCE public.order_id_seq OWNED BY public.order.id;
 
 CREATE TABLE public.plissegardin (
                                     id integer NOT NULL,
+                                    order_id integer NOT NULL, --fk
                                     measure_type character varying(255),
                                     width integer,
                                     height integer,
@@ -165,6 +163,7 @@ ALTER SEQUENCE public.plissegardin_id_seq OWNED BY public.plissegardin.id;
 --Stödben?
 CREATE TABLE public.terassmarkis (
                                     id integer NOT NULL,
+                                    order_id integer NOT NULL, --fk
                                     measuring_type character varying(255),
                                     model character varying(255),
                                     weave_number character varying(255),
@@ -174,8 +173,8 @@ CREATE TABLE public.terassmarkis (
                                     facade_details character varying(255),
                                     sun_wind_automation boolean,
                                     shake_sensor boolean,
-                                    support_legs boolean
-                                    indoor_outdoor boolean,
+                                    support_legs boolean,
+                                    indoor_outdoor boolean
                                     -- add details colours
 );
 

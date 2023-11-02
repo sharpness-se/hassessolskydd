@@ -3,7 +3,7 @@ package se.sharpness.hassessolskydd.model;
 import lombok.Data;
 
 @Data
-public class Terassmarkis {
+public class Terassmarkis extends Product {
 
     private int id;
     private String measuringType;

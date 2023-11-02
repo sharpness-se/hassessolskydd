@@ -3,7 +3,7 @@ package se.sharpness.hassessolskydd.model;
 import lombok.Data;
 
 @Data
-public class Plissegardin {
+public class Plissegardin extends Product {
 
     private Long id;
     private String measureType;
