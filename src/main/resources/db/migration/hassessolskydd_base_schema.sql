@@ -97,10 +97,10 @@ CREATE TABLE public.order (
                                    userx integer NOT NULL,
                                    first_contact timestamp without time zone NOT NULL,
                                    measurement_date timestamp without time zone NOT NULL,
-                                   installation_date timestamp without time zone NOT NULL, --mount?
+                                   installation_date timestamp without time zone NOT NULL,
                                    notes character varying(2000),
                                    --Photos
-                                   installation_details integer NOT NULL,
+                                   installation_details integer NOT NULL, --FK
                                    products_id integer NOT NULL,
                                    CONSTRAINT fk_products
                                        FOREIGN KEY(products_id)
@@ -134,6 +134,7 @@ CREATE TABLE public.plissegardin (
                                     control_side character varying(255),
                                     draw_string_colour character varying(255),
                                     cassette_colour character varying(255),
+                                    indoor_outdoor boolean,
                                     is_external_order boolean -- Skall den alltid vara true?
 );
 
@@ -174,6 +175,7 @@ CREATE TABLE public.terassmarkis (
                                     sun_wind_automation boolean,
                                     shake_sensor boolean,
                                     support_legs boolean
+                                    indoor_outdoor boolean,
                                     -- add details colours
 );
 
