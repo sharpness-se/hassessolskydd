@@ -13,7 +13,7 @@ public interface InstallationDetailsMapper {
     @Select(
             "select * from installation_details where order_id = #{id}"
     )
-    Optional<InstallationDetails> findInstallationDetailsByOrderId(Long id);
+    Optional<InstallationDetails> findInstallationDetailsByOrderId(int id);
 
 
 }

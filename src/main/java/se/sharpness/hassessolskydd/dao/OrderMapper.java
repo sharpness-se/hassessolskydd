@@ -3,20 +3,24 @@ package se.sharpness.hassessolskydd.dao;
 import org.apache.ibatis.annotations.*;
 import se.sharpness.hassessolskydd.model.Order;
 
-import java.util.List;
 import java.util.Optional;
 
 @Mapper
 public interface OrderMapper {
 
     @Select(
-            "select * from orders where customer_number = #{id}"
+            "select * from orders where id = #{orderId}"
+    )
+    Optional<Order> findOrderByOrderId(int id);
+
+    @Select(
+            "select * from orders where customer_number = #{customerNumber}"
     )
     @Results(value = {
-            @Result(property = "id", column = "customer_number"),
+            @Result(property = "customerNumber", column = "customer_number"),
             @Result(property = "products", column = "products", many = @Many (select = "se.sharpness.hassessolskydd.dao.ProductsMapper.findProductsByOrderId"))
     })
-    Optional<Order> findAllOrdersByCustomerNumber(Long id);
+    Optional<Order> findAllOrdersByCustomerNumber(String customerNumber);
 
     //Where should we do the specific order search? In the controller or in the mapper?
 

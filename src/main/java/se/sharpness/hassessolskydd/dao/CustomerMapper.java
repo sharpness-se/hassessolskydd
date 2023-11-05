@@ -13,10 +13,10 @@ public interface CustomerMapper {
     @Select(
             "select * from customers where id = #{id}"
     )
-    Optional<Customer> findById(Long id);
+    Optional<Customer> findById(int id);
 
     @Select(
-            "select * from customers where customerId = #{customerId}"
+            "select * from customers where customer_number = #{customerNumber}"
     )
     Optional<Customer> findByCustomerNumber(String customerNumber);
 
