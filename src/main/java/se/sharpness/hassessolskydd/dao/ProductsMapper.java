@@ -10,7 +10,12 @@ import java.util.List;
 
 public interface ProductsMapper {
 
-    default List<Product> findProductsByOrderId(Long orderId) {
+    @Select(
+            "select * from products"
+    )
+    List<Product> getAllProducts();
+
+    default List<Product> findProductsByOrderId(int orderId) {
         List<Product> products = new ArrayList<>();
         products.addAll(findPlissegardinByOrderId(orderId));
         products.addAll(findTerassmarkisByOrderId(orderId));
@@ -20,12 +25,12 @@ public interface ProductsMapper {
     @Select(
             "select * from products where order_id = #{id}"
     )
-    List<Plissegardin> findPlissegardinByOrderId(Long id);
+    List<Plissegardin> findPlissegardinByOrderId(int id);
 
     @Select(
             "select * from products where order_id = #{id}"
     )
-    List<Terassmarkis> findTerassmarkisByOrderId(Long id);
+    List<Terassmarkis> findTerassmarkisByOrderId(int id);
 }
 
 /*
