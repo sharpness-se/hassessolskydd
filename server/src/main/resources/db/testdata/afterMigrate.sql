@@ -3,7 +3,7 @@ INSERT INTO public.userx (id, name, password, active)
 VALUES
     (-1, 'John Doe', 'password123', true),
     (-2, 'Alice Smith', 'securepass', true),
-    (-3, 'Bob Johnson', 'pass123', false);
+    (-3, 'Bob Johnson', 'pass123', false) ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.customer" table
 INSERT INTO public.customer (id, name, address, phone_number, email, customer_number)

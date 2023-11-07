@@ -16,7 +16,18 @@ public class CustomerController extends BaseApiController {
         this.customerMapper = customerMapper;
     }
 
-    @GetMapping("/customer/{customerNumber}")
+    @GetMapping("/customerId/{id}")
+    public Customer findCustomerById(@PathVariable(value = "id") int id) throws Exception {
+
+        final var result = customerMapper.findById(id);
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            throw new Exception("Could not find user"); //TODO: crate specific exceptions
+        }
+    }
+
+    @GetMapping("/customerNumber/{customerNumber}")
     public Customer findCustomerByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
 
     final var result = customerMapper.findByCustomerNumber(customerNumber);

@@ -11,12 +11,12 @@ import java.util.Optional;
 public interface CustomerMapper {
 
     @Select(
-            "select * from customers where id = #{id}"
+            "select * from customer where id = #{id}"
     )
     Optional<Customer> findById(int id);
 
     @Select(
-            "select * from customers where customer_number = #{customerNumber}"
+            "select * from customer where customer_number = #{customerNumber}"
     )
     Optional<Customer> findByCustomerNumber(String customerNumber);
 

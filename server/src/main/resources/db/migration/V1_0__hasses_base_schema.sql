@@ -10,7 +10,8 @@ SET client_min_messages = warning;
 SET row_security = off;
 SET default_tablespace = '';
 
-
+-- TODO: Find out how to properly run ./gradlew flywayMigrate to avoid cleaning DB
+-- TODO: Set upp all FK's
 
 CREATE TABLE public.userx (
                                     id integer NOT NULL,
