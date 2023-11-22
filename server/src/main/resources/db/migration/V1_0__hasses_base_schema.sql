@@ -10,7 +10,8 @@ SET client_min_messages = warning;
 SET row_security = off;
 SET default_tablespace = '';
 
-
+-- TODO: Find out how to properly run ./gradlew flywayMigrate to avoid cleaning DB
+-- TODO: Set upp all FK's
 
 CREATE TABLE public.userx (
                                     id integer NOT NULL,
@@ -188,3 +189,37 @@ CREATE SEQUENCE public.terassmarkis_id_seq
 ALTER SEQUENCE public.terassmarkis_id_seq OWNED BY public.terassmarkis.id;
 
 -----------------------------------------------------------------
+--userx
+--customer
+--installation_details
+--products
+--order
+--plissegardin
+--terassmarkis
+
+
+
+
+
+--ALTER TABLE ONLY public.groups
+    --ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.userx
+    ADD CONSTRAINT userx_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.installation_details
+    ADD CONSTRAINT installation_details_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.plissegardin
+    ADD CONSTRAINT plissegardin_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.terassmarkis
+    ADD CONSTRAINT terassmarkis_pkey PRIMARY KEY (id);

@@ -35,10 +35,13 @@ public class WebSecurityConfig {
           .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .formLogin(AbstractHttpConfigurer::disable)
           .exceptionHandling(h -> h.authenticationEntryPoint(unauthorizedHandler))
-          .securityMatcher("/**")
+          .securityMatcher("/auth/**") // TODO: Change to /** when auth is implemented correctly
           .authorizeHttpRequests(registry -> registry
             .requestMatchers("/").permitAll()
+            //.requestMatchers("/api/customerId/**/").permitAll()
+            //.requestMatchers("/api/customerNumber/**/").permitAll()
             .requestMatchers("/public/**").permitAll()
+            .requestMatchers("/hello/**").permitAll()
             .requestMatchers("/auth/login").permitAll()
             .requestMatchers("/admin").hasRole("ADMIN")
             .anyRequest().authenticated()
