@@ -1,0 +1,20 @@
+import React from "react";
+import Link from "next/link";
+
+interface StartMenuButtonProps {
+  text: string;
+  href: string;
+}
+
+const StartMenuButton: React.FC<StartMenuButtonProps> = ({ text, href }) => {
+  return (
+    <Link
+      href={href}
+      className="flex justify-center items-center rounded-full hover:bg-blue-600 shadow-xl hover:text-white text-2xl w-[331px] h-[70px] m-5"
+    >
+      {text}
+    </Link>
+  );
+};
+
+export default StartMenuButton;

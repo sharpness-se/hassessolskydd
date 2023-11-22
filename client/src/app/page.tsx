@@ -1,9 +1,15 @@
 import Image from 'next/image'
-
+import hassessolskyddLogo from "../images/logo.png"
+import StartMenuButton from '@/components/StartMenuButton'
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-7xl font-medium bg-yellow-700  border-black border-4">Start Page</h1>
+    <main className="flex min-h-screen flex-col items-center p-24">
+      <Image src={hassessolskyddLogo} alt={"Hassessolskydd Logo"}></Image>
+      <h2 className="p-20 text-[36px]">Välkommen, Hasse!</h2>
+      <StartMenuButton text="Skapa ny kund" href="/skapakund"></StartMenuButton>
+      <StartMenuButton text="Skapa order" href=""></StartMenuButton>
+      <StartMenuButton text="Se kunder" href=""></StartMenuButton>
+      <StartMenuButton text="Se ordrar" href=""></StartMenuButton>
     </main>
   )
 }
