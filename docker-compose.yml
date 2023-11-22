@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  hassessolskyddDB:
+    image: postgres:latest
+    container_name: hassessolskyddDB
+    environment:
+      POSTGRES_USER: hassessolskydd
+      POSTGRES_PASSWORD: r4d3+
+      POSTGRES_DB: hassessolskydd
+    ports:
+      - "5432:5432"
