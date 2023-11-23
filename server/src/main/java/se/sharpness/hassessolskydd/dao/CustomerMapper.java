@@ -1,7 +1,7 @@
 package se.sharpness.hassessolskydd.dao;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Select;
 import se.sharpness.hassessolskydd.model.Customer;
 
@@ -19,6 +19,12 @@ public interface CustomerMapper {
             "select * from customer where customer_number = #{customerNumber}"
     )
     Optional<Customer> findByCustomerNumber(String customerNumber);
+
+    @Insert("""
+            insert into customer (name, address, phone_number, email, customer_number)
+            values (#{name}, #{address}, #{phoneNumber}, #{email}, #{customerNumber})
+            """)
+    void createCustomer(Customer customer); //TODO: Should return fail/success?
 
 }
 

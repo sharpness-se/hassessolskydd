@@ -1,9 +1,7 @@
 package se.sharpness.hassessolskydd.api;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.model.Customer;
 
@@ -16,7 +14,7 @@ public class CustomerController extends BaseApiController {
         this.customerMapper = customerMapper;
     }
 
-    @GetMapping("/customerId/{id}")
+    @GetMapping("/customers/customerId/{id}")
     public Customer findCustomerById(@PathVariable(value = "id") int id) throws Exception {
 
         final var result = customerMapper.findById(id);
@@ -27,7 +25,7 @@ public class CustomerController extends BaseApiController {
         }
     }
 
-    @GetMapping("/customerNumber/{customerNumber}")
+    @GetMapping("/customers/customerNumber/{customerNumber}")
     public Customer findCustomerByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
 
     final var result = customerMapper.findByCustomerNumber(customerNumber);
@@ -36,6 +34,11 @@ public class CustomerController extends BaseApiController {
         } else {
             throw new Exception("Could not find user"); //TODO: crate specific exceptions
         }
+    }
+
+    @PostMapping("/customers/create_customer")
+    public void addCustomer(@RequestBody Customer customer) {
+        customerMapper.createCustomer(customer);
     }
 
 }
