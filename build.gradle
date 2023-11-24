@@ -1,4 +1,5 @@
-allprojects {
+subprojects {
+    apply plugin:  'org.springframework.boot' 
     repositories {
         jcenter()
         // Add any other repositories you need
