@@ -1,5 +1,5 @@
-heroku buildpacks:set https://github.com/heroku/heroku-buildpack-nodejs
-heroku buildpacks:add https://github.com/heroku/heroku-buildpack-java
+heroku buildpacks:set heroku/nodejs
+heroku buildpacks:add heroku/java
 
 cd client
 npm install
