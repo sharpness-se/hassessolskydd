@@ -1,3 +1,6 @@
+heroku buildpacks:set https://github.com/heroku/heroku-buildpack-nodejs
+heroku buildpacks:add https://github.com/heroku/heroku-buildpack-java
+
 cd client
 npm install
 npm run build
