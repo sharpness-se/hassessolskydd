@@ -1,0 +1,7 @@
+allprojects {
+    repositories {
+        jcenter()
+        // Add any other repositories you need
+    }
+}
+include(':server')
