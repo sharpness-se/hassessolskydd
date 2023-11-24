@@ -1,11 +1,6 @@
-heroku buildpacks:set heroku/nodejs
-heroku buildpacks:add heroku/java
 
-cd client
-npm install
-npm run build
+npm heroku-deploy
 
-cd ..
 cd server
 ./gradlew build
 

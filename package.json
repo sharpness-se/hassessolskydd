@@ -1,0 +1,11 @@
+{
+  "name": "hassessolskydd",
+  "version": "1.0.0",
+  "private": "true",
+  "scripts": {
+    "heroku-deploy": "cd client && npm install && npm build"
+  },
+  "workspaces": [
+    "client"
+  ]
+}
