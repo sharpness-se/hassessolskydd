@@ -12,7 +12,7 @@ const StartMenuButton: React.FC<StartMenuButtonProps> = ({ text, href }) => {
             
     <Link to={href}
       
-      className="flex justify-center items-center rounded-full bg-white hover:bg-blue-600 shadow-xl hover:text-white text-2xl w-[331px] h-[70px] m-5"
+      className="flex justify-center items-center rounded-full bg-white hover:bg-cyan-600 shadow-xl hover:text-white text-2xl w-[331px] h-[70px] m-5"
       >
       {text}
     </Link>
