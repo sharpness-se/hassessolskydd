@@ -9,19 +9,20 @@ import java.util.Optional;
 public interface OrderMapper {
 
     @Select(
-            "select * from orders where id = #{orderId}"
+      "select * from \"order\" where id = #{id}"
     )
-    Optional<Order> findOrderByOrderId(int id);
+    Optional<Order> findOrderByOrderId(Long id);
 
-    @Select(
-            "select * from orders where customer_number = #{customerNumber}"
-    )
-    @Results(value = {
+    @Select("select * from \"order\" where customer_number = #{customerNumber}")
+    Optional<Order> findAllOrdersByCustomerNumber(Long customerNumber);
+
+
+
+    /*@Results(value = {
             @Result(property = "customerNumber", column = "customer_number"),
             @Result(property = "products", column = "products", many = @Many (select = "se.sharpness.hassessolskydd.dao.ProductsMapper.findProductsByOrderId"))
-    })
-    Optional<Order> findAllOrdersByCustomerNumber(String customerNumber);
-
+    }) */
+    //Optional<Order> findAllOrdersByCustomerNumber(String customerNumber);
     //Where should we do the specific order search? In the controller or in the mapper?
 
 }
