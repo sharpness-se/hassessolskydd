@@ -2,6 +2,7 @@ package se.sharpness.hassessolskydd.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import se.sharpness.hassessolskydd.model.Customer;
 
@@ -24,6 +25,7 @@ public interface CustomerMapper {
             insert into customer (name, address, phone_number, email, customer_number)
             values (#{name}, #{address}, #{phoneNumber}, #{email}, #{customerNumber})
             """)
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void createCustomer(Customer customer); //TODO: Should return fail/success?
 
 }

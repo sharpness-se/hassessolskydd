@@ -37,8 +37,14 @@ public class CustomerController extends BaseApiController {
     }
 
     @PostMapping("/customers/create_customer")
-    public void addCustomer(@RequestBody Customer customer) {
+    public Customer addCustomer(@RequestBody Customer customer) {
         customerMapper.createCustomer(customer);
+        var result = customerMapper.findByCustomerNumber(customer.getCustomerNumber());
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            throw new RuntimeException("Could not create user"); //TODO: crate specific exceptions
+        }
     }
 
 }
