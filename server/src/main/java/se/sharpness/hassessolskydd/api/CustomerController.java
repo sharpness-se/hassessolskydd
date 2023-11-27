@@ -14,6 +14,11 @@ public class CustomerController extends BaseApiController {
         this.customerMapper = customerMapper;
     }
 
+    @GetMapping("/customers")
+    public Iterable<Customer> findAll() {
+        return customerMapper.findAll();
+    }
+
     @GetMapping("/customers/customerId/{id}")
     public Customer findCustomerById(@PathVariable(value = "id") int id) throws Exception {
 

@@ -6,10 +6,16 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import se.sharpness.hassessolskydd.model.Customer;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
 public interface CustomerMapper {
+
+    @Select(
+            "select * from customer"
+    )
+    List<Customer> findAll();
 
     @Select(
             "select * from customer where id = #{id}"
