@@ -12,9 +12,9 @@ export default function CreateCustomerPageComponent() {
       </h1>
       <FormComponent>
         <DoubleFieldInputRow
-          labelOne="First Name"
+          labelOne="Förnamn"
           placeholderOne="Jane"
-          labelTwo="LastName"
+          labelTwo="Efternamn"
           placeholderTwo="Doe"
         ></DoubleFieldInputRow>
         <DoubleFieldInputRow
