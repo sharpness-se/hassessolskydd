@@ -1,3 +1,4 @@
+import React from "react";
 import hassessolskyddLogo from "../images/logo.png";
 import StartMenuButton from "../components/StartMenuButton";
 

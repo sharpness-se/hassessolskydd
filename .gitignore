@@ -13,3 +13,4 @@ out/
 # Ignore Gradle build output directory
 
 server/build/libs/server-0.0.1-SNAPSHOT.jar
+node_modules
