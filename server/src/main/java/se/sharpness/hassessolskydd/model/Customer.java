@@ -8,8 +8,11 @@ import lombok.NoArgsConstructor;
 public class Customer {
 
     private int id;
-    private String name;
+    private String firstname;
+    private String lastname;
     private String address;
+    private String postalCode;
+    private String city;
     private String phoneNumber;
     private String email;
     private String customerNumber;
