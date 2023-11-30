@@ -2,6 +2,7 @@ package se.sharpness.hassessolskydd.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import se.sharpness.hassessolskydd.dao.CustomerMapper;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +16,9 @@ public class Customer {
     private String city;
     private String phoneNumber;
     private String email;
-    private String customerNumber;
+    private String customerNumber = "CUST";
+
+    public void createCustomerNumber(Customer customer) {
+        this.customerNumber = customer.firstname+customer.lastname+customer.phoneNumber;
+    }
 }

@@ -3,10 +3,19 @@ import React from "react";
 interface SingleFieldInputRowProps {
   label: string;
   placeholder: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
+  maxLength?: number
 }
+
 const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
   label,
   placeholder,
+  value,
+  onChange,
+  error,
+  maxLength
 }) => {
   return (
     <div className="flex flex-wrap -mx-3 mb-6">
@@ -18,14 +27,15 @@ const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
           {label}
         </label>
         <input
-          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${value.length===0?"border-red-500":""} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
           id={label}
           type="text"
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          maxLength={maxLength}
         />
-        <p className="text-red-500 text-xs italic">
-          Please fill out this field.
-        </p>
+        {error && <p className="text-red-500 text-xs italic">{error} </p>}
       </div>
     </div>
   );
