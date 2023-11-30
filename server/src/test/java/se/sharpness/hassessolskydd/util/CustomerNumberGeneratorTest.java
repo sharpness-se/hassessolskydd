@@ -1,20 +1,34 @@
 package se.sharpness.hassessolskydd.util;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import se.sharpness.hassessolskydd.model.Customer;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 public class CustomerNumberGeneratorTest {
 
-    @Test
-    public void testCreateCustomerNumber() {
-        Customer customer = new Customer();
-        customer.setFirstname("John");
-        customer.setLastname("Doe");
-        customer.setPhoneNumber("0701234567");
-        String customerNumber = CustomerNumberGenerator.createCustomerNumber(customer);
-        assertEquals("JohnDoe0701234567", customerNumber);
-    }
+  @Test
+  void createCustomerNumberTest() {
+    Customer testCustomerOne = new Customer();
+    testCustomerOne.setFirstname("Hasse");
+    testCustomerOne.setLastname("Backe");
+    testCustomerOne.setPhoneNumber("+46628754974");
+
+    Customer testCustomerTwo = new Customer();
+    testCustomerTwo.setFirstname("Basse");
+    testCustomerTwo.setLastname("Hacke");
+    testCustomerTwo.setPhoneNumber("+46517643863");
+
+    Customer testCustomerThree = new Customer();
+    testCustomerThree.setFirstname("Gagge");
+    testCustomerThree.setLastname("Bagge");
+    testCustomerThree.setPhoneNumber("+46406532752");
+
+    assertEquals("HasseBacke+46628754974", CustomerNumberGenerator.createCustomerNumber(testCustomerOne));
+    assertEquals("BasseHacke+46517643863", CustomerNumberGenerator.createCustomerNumber(testCustomerTwo));
+    assertEquals("GaggeBagge+46406532752", CustomerNumberGenerator.createCustomerNumber(testCustomerThree));
+
+  }
+
+
 }
