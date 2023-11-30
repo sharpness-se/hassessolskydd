@@ -79,8 +79,8 @@ function CreateCustomerComponent() {
     <FormComponent onSubmit={handleSubmit}>
       <DoubleFieldInputRow
         labelOne="förnamn"
-        placeholderOne="Jane"
         labelTwo="efternamn"
+        placeholderOne="Jane"
         placeholderTwo="Doe"
         valueOne={formData.förnamn}
         valueTwo={formData.efternamn}
@@ -97,8 +97,8 @@ function CreateCustomerComponent() {
       ></DoubleFieldInputRow>
       <DoubleFieldInputRow
         labelOne="email"
-        placeholderOne="Jane.Doe@testing.com"
         labelTwo="telefon"
+        placeholderOne="Jane.Doe@testing.com"
         placeholderTwo="08 123 12312"
         valueOne={formData.email}
         valueTwo={formData.telefon}
@@ -125,8 +125,8 @@ function CreateCustomerComponent() {
       />
       <DoubleFieldInputRow
         labelOne="ort"
-        placeholderOne="Danderyd"
         labelTwo="postkod"
+        placeholderOne="Danderyd"
         placeholderTwo="18502"
         valueOne={formData.ort}
         valueTwo={formData.postkod}
