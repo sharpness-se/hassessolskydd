@@ -53,7 +53,7 @@ public class CustomerController extends BaseApiController {
     @ExceptionHandler(ResourceConflictException.class)
     @PostMapping("/customers/create_customer")
     public Customer addCustomer(@RequestBody @Valid Customer customer) {
-        CustomerNumberGenerator.createCustomerNumber(customer);
+        customer.setCustomerNumber(CustomerNumberGenerator.createCustomerNumber(customer));
         var result = customerMapper.findByCustomerNumber(customer.getCustomerNumber());
         if (result.isEmpty()) {
             customerMapper.createCustomer(customer);
