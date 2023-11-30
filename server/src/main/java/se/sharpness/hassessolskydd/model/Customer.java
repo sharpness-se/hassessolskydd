@@ -2,7 +2,6 @@ package se.sharpness.hassessolskydd.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import se.sharpness.hassessolskydd.dao.CustomerMapper;
 
 @Data
 @NoArgsConstructor
