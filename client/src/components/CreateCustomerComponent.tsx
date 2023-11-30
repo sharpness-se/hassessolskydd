@@ -6,43 +6,43 @@ import * as Yup from "yup";
 
 function CreateCustomerComponent() {
   interface FormData {
-    förnamn: string;
-    efternamn: string;
+    firstname: string;
+    lastname: string;
     email: string;
-    telefon: string;
-    adress: string;
-    ort: string;
-    postkod: string;
+    phoneNumber: string;
+    address: string;
+    city: string;
+    postalCode: string;
   }
 
   const schema = Yup.object().shape({
-    förnamn: Yup.string().required("Förnamn är obligatoriskt"),
-    efternamn: Yup.string().required("Efternamn är obligatoriskt"),
+    firstname: Yup.string().required("Förnamn är obligatoriskt"),
+    lastname: Yup.string().required("Efternamn är obligatoriskt"),
     email: Yup.string()
       .email("Ogiltig email")
       .required("Email är obligatoriskt"),
-    telefon: Yup.string().required("Telefon är obligatoriskt"),
-    adress: Yup.string().required("Adress är obligatoriskt"),
-    ort: Yup.string().required("Ort är obligatoriskt"),
-    postkod: Yup.string().required("Postkod är obligatoriskt"),
+    phoneNumber: Yup.string().required("Telefon är obligatoriskt"),
+    address: Yup.string().required("Adress är obligatoriskt"),
+    city: Yup.string().required("Ort är obligatoriskt"),
+    postalCode: Yup.string().required("Postkod är obligatoriskt"),
   });
   const [formData, setFormData] = useState<FormData>({
-    förnamn: "",
-    efternamn: "",
+    firstname: "",
+    lastname: "",
     email: "",
-    telefon: "",
-    adress: "",
-    ort: "",
-    postkod: "",
+    phoneNumber: "",
+    address: "",
+    city: "",
+    postalCode: "",
   });
   const defaultValues = {
-    förnamn: "",
-    efternamn: "",
+    firstname: "",
+    lastname: "",
     email: "",
-    telefon: "",
-    adress: "",
-    ort: "",
-    postkod: "",
+    phoneNumber: "",
+    address: "",
+    city: "",
+    postalCode: "",
   };
   const [errors, setErrors] = useState<{ [key: string]: string }>(
     defaultValues
@@ -82,16 +82,16 @@ function CreateCustomerComponent() {
         labelTwo="efternamn"
         placeholderOne="Jane"
         placeholderTwo="Doe"
-        valueOne={formData.förnamn}
-        valueTwo={formData.efternamn}
+        valueOne={formData.firstname}
+        valueTwo={formData.lastname}
         onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("förnamn", e.target.value)
+          handleChange("firstname", e.target.value)
         }
         onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("efternamn", e.target.value)
+          handleChange("lastname", e.target.value)
         }
-        errorOne={errors.förnamn}
-        errorTwo={errors.efternamn}
+        errorOne={errors.firstname}
+        errorTwo={errors.lastname}
         maxLengthOne={20}
         maxLengthTwo={20}
       ></DoubleFieldInputRow>
@@ -101,26 +101,26 @@ function CreateCustomerComponent() {
         placeholderOne="Jane.Doe@testing.com"
         placeholderTwo="08 123 12312"
         valueOne={formData.email}
-        valueTwo={formData.telefon}
+        valueTwo={formData.phoneNumber}
         onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("email", e.target.value)
         }
         onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("telefon", e.target.value)
+          handleChange("phoneNumber", e.target.value)
         }
         errorOne={errors.email}
-        errorTwo={errors.telefon}
+        errorTwo={errors.phoneNumber}
         maxLengthOne={20}
         maxLengthTwo={15}
       />
       <SingleFieldInputRow
         label="adress"
         placeholder=" 12 something something"
-        value={formData.adress}
+        value={formData.address}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("adress", e.target.value)
+          handleChange("address", e.target.value)
         }
-        error={errors?.adress}
+        error={errors?.address}
         maxLength={25}
       />
       <DoubleFieldInputRow
@@ -128,16 +128,16 @@ function CreateCustomerComponent() {
         labelTwo="postkod"
         placeholderOne="Danderyd"
         placeholderTwo="18502"
-        valueOne={formData.ort}
-        valueTwo={formData.postkod}
+        valueOne={formData.city}
+        valueTwo={formData.postalCode}
         onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("ort", e.target.value)
+          handleChange("city", e.target.value)
         }
         onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("postkod", e.target.value)
+          handleChange("postalCode", e.target.value)
         }
-        errorOne={errors.ort}
-        errorTwo={errors.postkod}
+        errorOne={errors.city}
+        errorTwo={errors.postalCode}
         maxLengthOne={10}
         maxLengthTwo={5}
       />
