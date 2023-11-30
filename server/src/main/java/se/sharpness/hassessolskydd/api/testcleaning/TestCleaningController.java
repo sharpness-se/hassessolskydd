@@ -7,6 +7,8 @@ import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.dao.testcleaning.TestCleaningMapper;
 import se.sharpness.hassessolskydd.model.Customer;
 
+//TODO: remove before production
+
 @RestController
 public class TestCleaningController {
 
@@ -25,9 +27,8 @@ public class TestCleaningController {
         if (result.isPresent()) {
             return result.get();
         } else {
-            throw new Exception("Could not find user"); //TODO: crate specific exceptions
+            throw new Exception("Could not find user, deletion successful");
         }
     }
-
 }
 
