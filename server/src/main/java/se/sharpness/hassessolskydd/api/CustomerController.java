@@ -1,5 +1,6 @@
 package se.sharpness.hassessolskydd.api;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.*;
 import se.sharpness.hassessolskydd.dao.CustomerMapper;
@@ -21,7 +22,6 @@ public class CustomerController extends BaseApiController {
     public CustomerController(CustomerMapper customerMapper) {
         this.customerMapper = customerMapper;
     }
-
 
     @GetMapping("/customers")
     public List<Customer> findAll() {
@@ -52,7 +52,7 @@ public class CustomerController extends BaseApiController {
 
     @ExceptionHandler(ResourceConflictException.class)
     @PostMapping("/customers/create_customer")
-    public Customer addCustomer(@RequestBody Customer customer) {
+    public Customer addCustomer(@RequestBody @Valid Customer customer) {
         CustomerNumberGenerator.createCustomerNumber(customer);
         var result = customerMapper.findByCustomerNumber(customer.getCustomerNumber());
         if (result.isEmpty()) {

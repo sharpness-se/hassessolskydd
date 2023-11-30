@@ -7,8 +7,6 @@ import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.dao.testcleaning.TestCleaningMapper;
 import se.sharpness.hassessolskydd.model.Customer;
 
-//TODO: remove before production
-
 @RestController
 public class TestCleaningController {
 
@@ -21,14 +19,9 @@ public class TestCleaningController {
     }
 
     @PostMapping("/api/deleteCustomerByCustomerNumber/{customerNumber}")
-    public Customer deleteCustomerById(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
-        testCleaningMapper.deleteCustomerByCustomerNumber(customerNumber);
-        final var result = customerMapper.findByCustomerNumber(customerNumber);
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new Exception("Could not find user, deletion successful");
-        }
+    public int deleteCustomerById(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
+        return testCleaningMapper.deleteCustomerByCustomerNumber(customerNumber);
     }
+
 }
 
