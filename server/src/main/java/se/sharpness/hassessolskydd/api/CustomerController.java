@@ -55,7 +55,7 @@ public class CustomerController extends BaseApiController {
         var result = customerMapper.findByCustomerNumber(customer.getCustomerNumber());
         if (result.isEmpty()) {
             customerMapper.createCustomer(customer);
-            return customerMapper.findByCustomerNumber(customer.getCustomerNumber()).OrElseThrow(VeryStrangeException::new);
+            return customerMapper.findByCustomerNumber(customer.getCustomerNumber()).orElseThrow(VeryStrangeException::new);
         } else {
             throw new ResourceConflictException(customer.getCustomerNumber());
         }
