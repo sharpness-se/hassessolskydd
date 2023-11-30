@@ -62,6 +62,20 @@ function CreateCustomerComponent() {
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
+      const response = await fetch('http://localhost:8080/api/customers/create_customer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        // Handle errors here if needed
+        console.error('Failed to submit form.');
+        return;
+      }
+
       console.log("Form submitted:", formData);
     } catch (validationErrors) {
       // Form validation failed, update the errors state
