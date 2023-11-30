@@ -66,17 +66,13 @@ function CreateCustomerComponent() {
     } catch (validationErrors) {
       // Form validation failed, update the errors state
       if (validationErrors instanceof Yup.ValidationError) {
-        setErrors((newErrors) => ({
-          ...newErrors,
-          ...((validationErrors as Yup.ValidationError).inner ?? []).reduce(
-            (acc, err) => {
-              acc[err.path ?? ""] = err.message;
-              return acc;
-            },
-            {} as { [key: string]: string }
-          ),
-        }));
+        setErrors((newErrors) => Object.assign({}, newErrors, 
+          ...((validationErrors as Yup.ValidationError).inner ?? []).map(err => ({
+            [err.path ?? ""]: err.message
+          }))
+        ));
       }
+      
     }
   };
   return (
@@ -114,7 +110,7 @@ function CreateCustomerComponent() {
         }
         errorOne={errors.email}
         errorTwo={errors.telefon}
-        maxLengthOne={320}
+        maxLengthOne={20}
         maxLengthTwo={15}
       />
       <SingleFieldInputRow
@@ -125,6 +121,7 @@ function CreateCustomerComponent() {
           handleChange("adress", e.target.value)
         }
         error={errors?.adress}
+        maxLength={25}
       />
       <DoubleFieldInputRow
         labelOne="ort"
