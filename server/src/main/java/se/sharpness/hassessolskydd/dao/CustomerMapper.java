@@ -28,8 +28,8 @@ public interface CustomerMapper {
     Optional<Customer> findByCustomerNumber(String customerNumber);
 
     @Insert("""
-            insert into customer (name, address, phone_number, email, customer_number)
-            values (#{name}, #{address}, #{phoneNumber}, #{email}, #{customerNumber})
+            insert into customer (firstname, lastname, address, postal_code, city, phone_number, email, customer_number)
+            values (#{firstname}, #{lastname}, #{address}, #{postalCode}, #{city}, #{phoneNumber}, #{email}, #{customerNumber})
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void createCustomer(Customer customer); //TODO: Should return fail/success?

@@ -6,10 +6,10 @@ VALUES
     (-3, 'Bob Johnson', 'pass123', false) ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.customer" table
-INSERT INTO public.customer (id, name, address, phone_number, email, customer_number)
+INSERT INTO public.customer (id, firstname, lastname, address, postal_code, city, phone_number, email, customer_number)
 VALUES
-    (-1, 'Customer 1', '123 Main St', '555-123-4567', 'customer1@example.com', 'CUST001'),
-    (-2, 'Customer 2', '456 Elm St', '555-987-6543', 'customer2@example.com', 'CUST002') ON CONFLICT DO NOTHING;
+    (-1, 'Customer 1', 'Lastname 1', '123 Main St', '111 11', 'Stockholm', '555-123-4567', 'customer1@example.com', 'CUST001'),
+    (-2, 'Customer 2', 'Lastname 2', '456 Elm St', '222 22', 'Skåne', '555-987-6543', 'customer2@example.com', 'CUST002') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.installation_details" table
 INSERT INTO public.installation_details (id, order_id, is_normal, facade_details, floor_details, cable_length, remote_control, lift_needed)

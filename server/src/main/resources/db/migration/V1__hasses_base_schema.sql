@@ -36,8 +36,11 @@ ALTER SEQUENCE public.userx_id_seq OWNED BY public.userx.id;
 
 CREATE TABLE public.customer (
                                  id integer NOT NULL,
-                                 name character varying(255) NOT NULL,
+                                 firstname character varying(255) NOT NULL,
+                                 lastname character varying(255) NOT NULL,
                                  address character varying(255),
+                                 postal_code character varying(255),
+                                 city character varying(255),
                                  phone_number character varying(255) NOT NULL,
                                  email character varying(255),
                                  customer_number character varying(255) NOT NULL

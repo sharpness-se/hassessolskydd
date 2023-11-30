@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.model.Customer;
 
+import java.util.List;
+
 @RestController
 public class CustomerController extends BaseApiController {
 
@@ -15,7 +17,7 @@ public class CustomerController extends BaseApiController {
     }
 
     @GetMapping("/customers")
-    public Iterable<Customer> findAll() {
+    public List<Customer> findAll() {
         return customerMapper.findAll();
     }
 
