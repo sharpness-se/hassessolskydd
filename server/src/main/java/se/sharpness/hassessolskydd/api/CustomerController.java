@@ -8,6 +8,7 @@ import se.sharpness.hassessolskydd.status_messages.StatusMessage;
 import se.sharpness.hassessolskydd.status_messages.errors.CustomerNotFoundException;
 import se.sharpness.hassessolskydd.status_messages.errors.ResourceConflictException;
 import se.sharpness.hassessolskydd.status_messages.errors.VeryStrangeException;
+import se.sharpness.hassessolskydd.util.CustomerNumberGenerator;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class CustomerController extends BaseApiController {
     public CustomerController(CustomerMapper customerMapper) {
         this.customerMapper = customerMapper;
     }
+
 
     @GetMapping("/customers")
     public List<Customer> findAll() {
@@ -51,7 +53,7 @@ public class CustomerController extends BaseApiController {
     @ExceptionHandler(ResourceConflictException.class)
     @PostMapping("/customers/create_customer")
     public Customer addCustomer(@RequestBody Customer customer) {
-        customer.createCustomerNumber(customer);
+        CustomerNumberGenerator.createCustomerNumber(customer);
         var result = customerMapper.findByCustomerNumber(customer.getCustomerNumber());
         if (result.isEmpty()) {
             customerMapper.createCustomer(customer);

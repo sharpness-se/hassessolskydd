@@ -16,9 +16,5 @@ public class Customer {
     private String city;
     private String phoneNumber;
     private String email;
-    private String customerNumber = "CUST";
-
-    public void createCustomerNumber(Customer customer) {
-        this.customerNumber = customer.firstname+customer.lastname+customer.phoneNumber;
-    }
+    private String customerNumber;
 }
