@@ -9,5 +9,5 @@ public interface TestCleaningMapper {
     @Delete(
             "delete from customer where customer_number = #{customerNumber}"
     )
-    void deleteCustomerByCustomerNumber(String customerNumber);
+    int deleteCustomerByCustomerNumber(String customerNumber);
 }
