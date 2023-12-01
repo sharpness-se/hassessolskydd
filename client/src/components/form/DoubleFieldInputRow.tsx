@@ -14,10 +14,14 @@ interface DoubleFieldInputRowProps {
   valueTwo: string;
   maxLengthOne: number;
   maxLengthTwo: number;
+  idOne: string;
+  idTwo: string;
 }
 const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
   labelOne,
   labelTwo,
+  idOne,
+  idTwo,
   placeholderOne,
   placeholderTwo,
   valueOne,
@@ -35,14 +39,14 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label
           className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          htmlFor={labelOne}
+          htmlFor={idOne}
         >
           {labelOne}
         </label>
         <input
           className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${valueOne.length===0?"border-red-500":""} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-          id={labelOne}
-          autoComplete={labelOne}
+          id={idOne}
+          autoComplete="off"
           type="text"
           placeholder={placeholderOne}
           value={valueOne}
@@ -54,18 +58,19 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
       <div className="w-full md:w-1/2 px-3">
         <label
           className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          htmlFor={labelTwo}
+          htmlFor={idTwo}
         >
           {labelTwo}
         </label>
         <input
           className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${valueTwo.length===0?"border-red-500":""} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-          id={labelTwo}
+          id={idTwo}
           type="text"
           placeholder={placeholderTwo}
           value={valueTwo}
           onChange={onChangeTwo}
           maxLength={maxLengthTwo}
+          autoComplete="off"
         />
         {errorTwo && <p className="text-red-500 text-xs italic">{errorTwo} </p>}
       </div>
