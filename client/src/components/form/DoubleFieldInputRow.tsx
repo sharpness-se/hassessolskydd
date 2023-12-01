@@ -46,7 +46,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
         <input
           className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${valueOne.length===0?"border-red-500":""} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
           id={idOne}
-          autoComplete={labelOne}
+          autoComplete="off"
           type="text"
           placeholder={placeholderOne}
           value={valueOne}
@@ -70,6 +70,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
           value={valueTwo}
           onChange={onChangeTwo}
           maxLength={maxLengthTwo}
+          autoComplete="off"
         />
         {errorTwo && <p className="text-red-500 text-xs italic">{errorTwo} </p>}
       </div>
