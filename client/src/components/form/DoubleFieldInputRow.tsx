@@ -39,7 +39,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label
           className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          htmlFor={labelOne}
+          htmlFor={idOne}
         >
           {labelOne}
         </label>
@@ -58,7 +58,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
       <div className="w-full md:w-1/2 px-3">
         <label
           className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          htmlFor={labelTwo}
+          htmlFor={idTwo}
         >
           {labelTwo}
         </label>
