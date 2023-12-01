@@ -23,8 +23,11 @@ function CreateCustomerComponent() {
       .required("Efternamn är obligatoriskt")
       .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
     email: Yup.string()
-      .email("Ogiltig email")
-      .required("Email är obligatoriskt"),
+    .required("Email är obligatoriskt")
+    .matches(
+      /^(|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-åäöÅÄÖ]+\.[a-zA-ZåäöÅÄÖ]{2,})$/,
+      "Ogiltig emailadress"
+    ),
     phoneNumber: Yup.string()
       .required("Telefon är obligatoriskt")
       .matches(/^[0-9()+\- ]*$/, "Ogiltigt telefonnummerformat")
@@ -64,21 +67,24 @@ function CreateCustomerComponent() {
     try {
       // Validate the form data using Yup
       setErrors(generateInitialState());
-      
+
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
-      const response = await fetch('http://localhost:8080/api/customers/create_customer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/customers/create_customer",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
         // Handle errors here if needed
-        console.error('Failed to submit form.');
+        console.error("Failed to submit form.");
         return;
       }
 
@@ -140,7 +146,7 @@ function CreateCustomerComponent() {
         errorOne={errors.email}
         errorTwo={errors.phoneNumber}
         maxLengthOne={225}
-        maxLengthTwo={15}
+        maxLengthTwo={12}
       />
       <SingleFieldInputRow
         label="adress"
@@ -151,7 +157,7 @@ function CreateCustomerComponent() {
           handleChange("address", e.target.value)
         }
         error={errors.address}
-        maxLength={25}
+        maxLength={40}
       />
       <DoubleFieldInputRow
         labelOne="ort"
@@ -170,7 +176,7 @@ function CreateCustomerComponent() {
         }
         errorOne={errors.city}
         errorTwo={errors.postalCode}
-        maxLengthOne={10}
+        maxLengthOne={20}
         maxLengthTwo={5}
       />
     </FormComponent>
