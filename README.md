@@ -5,12 +5,10 @@
             - If not, type "heroku git:remote -a hasse-be"
     
     #Deploy
-        To deploy to a new build to heroku run the command: 
+        To deploy a new build to heroku run these commands in a bash terminal or on Windows choose to open the file as a git-bash file if prompted: 
           - *heroku login (login to heroku)
-          - ./deploy-heroku.sh 
+          - ./deploy-heroku.sh (If Denied Permissions: "chmod +x deploy-heroku.sh" then retry)
   
-        ...in a bash terminal or on Windows choose to open the file as a git-bash file if prompted.
-
         This script will:
           - Run npm build and move the contents of the build folder to the static folder inside the backend.
           - Git commit the changes to the static folder to github.
