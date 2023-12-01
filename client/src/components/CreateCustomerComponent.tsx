@@ -16,17 +16,32 @@ function CreateCustomerComponent() {
   }
 
   const schema = Yup.object().shape({
-    förnamn: Yup.string().required("Förnamn är obligatoriskt"),
-    efternamn: Yup.string().required("Efternamn är obligatoriskt"),
+    förnamn: Yup.string()
+      .required("Förnamn är obligatoriskt")
+      .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
+    efternamn: Yup.string()
+      .required("Efternamn är obligatoriskt")
+      .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
     email: Yup.string()
       .email("Ogiltig email")
       .required("Email är obligatoriskt"),
-    telefon: Yup.string().required("Telefon är obligatoriskt"),
-    adress: Yup.string().required("Adress är obligatoriskt"),
-    ort: Yup.string().required("Ort är obligatoriskt"),
-    postkod: Yup.string().required("Postkod är obligatoriskt"),
+    telefon: Yup.string()
+      .required("Telefon är obligatoriskt")
+      .matches(/^[0-9()+\- ]*$/, "Ogiltigt telefonnummerformat")
+      .min(9, "Telefonnummer måste vara minst 9 siffror"),
+    adress: Yup.string()
+      .required("Adress är obligatoriskt")
+      .matches(/^[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/, "Ange en giltig adress"),
+    ort: Yup.string()
+      .required("Ort är obligatoriskt")
+      .matches(/^[a-zA-ZåäöÅÄÖ]*$/, "Ange endast bokstäver"),
+    postkod: Yup.string()
+      .required("Postkod är obligatoriskt")
+      .matches(/^[0-9]*$/, "Ange endast siffror.")
+      .min(5, "Telefonnummer måste vara minst 5 siffror"),
   });
-  const [formData, setFormData] = useState<FormData>({
+
+  const generateInitialState = (): FormData => ({
     förnamn: "",
     efternamn: "",
     email: "",
@@ -35,18 +50,8 @@ function CreateCustomerComponent() {
     ort: "",
     postkod: "",
   });
-  const defaultValues = {
-    förnamn: "",
-    efternamn: "",
-    email: "",
-    telefon: "",
-    adress: "",
-    ort: "",
-    postkod: "",
-  };
-  const [errors, setErrors] = useState<{ [key: string]: string }>(
-    defaultValues
-  );
+  const [formData, setFormData] = useState<FormData>(generateInitialState());
+  const [errors, setErrors] = useState<FormData>(generateInitialState());
 
   const handleChange = (name: keyof FormData, value: string) => {
     setFormData({
@@ -58,7 +63,7 @@ function CreateCustomerComponent() {
     e.preventDefault();
     try {
       // Validate the form data using Yup
-      setErrors(defaultValues);
+      setErrors(generateInitialState());
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
@@ -66,13 +71,18 @@ function CreateCustomerComponent() {
     } catch (validationErrors) {
       // Form validation failed, update the errors state
       if (validationErrors instanceof Yup.ValidationError) {
-        setErrors((newErrors) => Object.assign({}, newErrors, 
-          ...((validationErrors as Yup.ValidationError).inner ?? []).map(err => ({
-            [err.path ?? ""]: err.message
-          }))
-        ));
+        setErrors((newErrors) =>
+          Object.assign(
+            {},
+            newErrors,
+            ...((validationErrors as Yup.ValidationError).inner ?? []).map(
+              (err) => ({
+                [err.path ?? ""]: err.message,
+              })
+            )
+          )
+        );
       }
-      
     }
   };
   return (
@@ -110,7 +120,7 @@ function CreateCustomerComponent() {
         }
         errorOne={errors.email}
         errorTwo={errors.telefon}
-        maxLengthOne={20}
+        maxLengthOne={225}
         maxLengthTwo={15}
       />
       <SingleFieldInputRow
