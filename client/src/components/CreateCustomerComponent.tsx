@@ -72,7 +72,7 @@ function CreateCustomerComponent() {
 
       // Form is valid, handle submission logic here
       const response = await fetch(
-        "http://localhost:8080/api/customers/create_customer",
+        "https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/create_customer",
         {
           method: "POST",
           headers: {

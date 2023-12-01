@@ -2,7 +2,7 @@
     #Prepare your local environment
         - Login to heroku by typing "heroku login"
         - Check that you have a heroku remote by typing "git remote -v"
-            - If not, type "heroku git:remote -a hasse-be"
+            - If not, type "heroku git:remote -a hasses-be"
     
     #Deploy
         To deploy a new build to heroku run these commands in a bash terminal or on Windows choose to open the file as a git-bash file if prompted: 
