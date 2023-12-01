@@ -38,7 +38,7 @@ function CreateCustomerComponent() {
     postalCode: Yup.string()
       .required("Postkod är obligatoriskt")
       .matches(/^[0-9]*$/, "Ange endast siffror.")
-      .min(5, "Telefonnummer måste vara minst 5 siffror"),
+      .min(5, "Postkod måste vara minst 5 siffror"),
   });
 
   const generateInitialState = (): FormData => ({
