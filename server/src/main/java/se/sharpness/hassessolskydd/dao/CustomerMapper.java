@@ -34,6 +34,10 @@ public interface CustomerMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void createCustomer(Customer customer); //TODO: Should return fail/success?
 
+    @Select(
+            "select max(id) from customer"
+    )
+    int getMaxId();
 }
 
 /*

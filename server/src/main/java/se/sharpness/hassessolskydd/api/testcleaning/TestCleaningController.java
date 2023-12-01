@@ -19,14 +19,8 @@ public class TestCleaningController {
     }
 
     @PostMapping("/api/deleteCustomerByCustomerNumber/{customerNumber}")
-    public Customer deleteCustomerById(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
-        testCleaningMapper.deleteCustomerByCustomerNumber(customerNumber);
-        final var result = customerMapper.findByCustomerNumber(customerNumber);
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new Exception("Could not find user"); //TODO: crate specific exceptions
-        }
+    public int deleteCustomerById(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
+        return testCleaningMapper.deleteCustomerByCustomerNumber(customerNumber);
     }
 
 }

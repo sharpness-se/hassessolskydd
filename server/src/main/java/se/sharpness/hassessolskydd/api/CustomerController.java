@@ -1,13 +1,20 @@
 package se.sharpness.hassessolskydd.api;
 
-
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.*;
 import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.model.Customer;
+import se.sharpness.hassessolskydd.status_messages.StatusMessage;
+import se.sharpness.hassessolskydd.status_messages.errors.CustomerNotFoundException;
+import se.sharpness.hassessolskydd.status_messages.errors.ResourceConflictException;
+import se.sharpness.hassessolskydd.status_messages.errors.VeryStrangeException;
+import se.sharpness.hassessolskydd.util.CustomerNumberGenerator;
 
 import java.util.List;
 
 @RestController
+@ControllerAdvice
 public class CustomerController extends BaseApiController {
 
     private final CustomerMapper customerMapper;
@@ -22,36 +29,37 @@ public class CustomerController extends BaseApiController {
     }
 
     @GetMapping("/customers/customerId/{id}")
-    public Customer findCustomerById(@PathVariable(value = "id") int id) throws Exception {
+    public Customer findCustomerById(@PathVariable(value = "id") int id) throws StatusMessage {
 
         final var result = customerMapper.findById(id);
         if (result.isPresent()) {
             return result.get();
         } else {
-            throw new Exception("Could not find user"); //TODO: crate specific exceptions
+            throw new CustomerNotFoundException(String.valueOf(id));
         }
     }
 
     @GetMapping("/customers/customerNumber/{customerNumber}")
-    public Customer findCustomerByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
+    public Customer findCustomerByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws StatusMessage {
 
     final var result = customerMapper.findByCustomerNumber(customerNumber);
         if (result.isPresent()) {
             return result.get();
         } else {
-            throw new Exception("Could not find user"); //TODO: crate specific exceptions
+            throw new CustomerNotFoundException(customerNumber);
         }
     }
 
+    @ExceptionHandler(ResourceConflictException.class)
     @PostMapping("/customers/create_customer")
-    public Customer addCustomer(@RequestBody Customer customer) {
-        customerMapper.createCustomer(customer);
+    public Customer addCustomer(@RequestBody @Valid Customer customer) {
+        customer.setCustomerNumber(CustomerNumberGenerator.createCustomerNumber(customer));
         var result = customerMapper.findByCustomerNumber(customer.getCustomerNumber());
-        if (result.isPresent()) {
-            return result.get();
+        if (result.isEmpty()) {
+            customerMapper.createCustomer(customer);
+            return customerMapper.findByCustomerNumber(customer.getCustomerNumber()).orElseThrow(VeryStrangeException::new);
         } else {
-            throw new RuntimeException("Could not create user"); //TODO: crate specific exceptions
+            throw new ResourceConflictException(customer.getCustomerNumber());
         }
     }
-
 }

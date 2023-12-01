@@ -95,11 +95,10 @@ public class CustomerControllerTest extends HassesDbTest {
     customer.setCity("Uppsala");
     customer.setPhoneNumber("+987654321");
     customer.setEmail("mail@email.com");
-    customer.setCustomerNumber("CUST888");
 
     customerController.addCustomer(customer);
 
-    Optional<Customer> dbResponse = customerMapper.findByCustomerNumber("CUST888");
+    Optional<Customer> dbResponse = customerMapper.findByCustomerNumber("TestLastname+987654321");
     assertTrue(dbResponse.isPresent());
     Customer createdCustomer = dbResponse.get();
     assertEquals("Test", createdCustomer.getFirstname());
@@ -109,7 +108,7 @@ public class CustomerControllerTest extends HassesDbTest {
     assertEquals("Uppsala", createdCustomer.getCity());
     assertEquals("+987654321", createdCustomer.getPhoneNumber());
     assertEquals("mail@email.com", createdCustomer.getEmail());
-    assertEquals("CUST888", createdCustomer.getCustomerNumber());
+    assertEquals("TestLastname+987654321", createdCustomer.getCustomerNumber());
   }
 
 

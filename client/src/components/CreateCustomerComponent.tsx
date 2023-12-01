@@ -6,49 +6,49 @@ import * as Yup from "yup";
 
 function CreateCustomerComponent() {
   interface FormData {
-    förnamn: string;
-    efternamn: string;
+    firstname: string;
+    lastname: string;
     email: string;
-    telefon: string;
-    adress: string;
-    ort: string;
-    postkod: string;
+    phoneNumber: string;
+    address: string;
+    city: string;
+    postalCode: string;
   }
 
   const schema = Yup.object().shape({
-    förnamn: Yup.string()
+    firstname: Yup.string()
       .required("Förnamn är obligatoriskt")
       .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
-    efternamn: Yup.string()
+    lastname: Yup.string()
       .required("Efternamn är obligatoriskt")
       .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
     email: Yup.string()
       .email("Ogiltig email")
       .required("Email är obligatoriskt"),
-    telefon: Yup.string()
+    phoneNumber: Yup.string()
       .required("Telefon är obligatoriskt")
       .matches(/^[0-9()+\- ]*$/, "Ogiltigt telefonnummerformat")
       .min(9, "Telefonnummer måste vara minst 9 siffror"),
     adress: Yup.string()
       .required("Adress är obligatoriskt")
       .matches(/^[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/, "Ange en giltig adress"),
-    ort: Yup.string()
+    city: Yup.string()
       .required("Ort är obligatoriskt")
       .matches(/^[a-zA-ZåäöÅÄÖ]*$/, "Ange endast bokstäver"),
-    postkod: Yup.string()
+    postalCode: Yup.string()
       .required("Postkod är obligatoriskt")
       .matches(/^[0-9]*$/, "Ange endast siffror.")
       .min(5, "Telefonnummer måste vara minst 5 siffror"),
   });
 
   const generateInitialState = (): FormData => ({
-    förnamn: "",
-    efternamn: "",
+    firstname: "",
+    lastname: "",
     email: "",
-    telefon: "",
-    adress: "",
-    ort: "",
-    postkod: "",
+    phoneNumber: "",
+    address: "",
+    city: "",
+    postalCode: "",
   });
   const [formData, setFormData] = useState<FormData>(generateInitialState());
   const [errors, setErrors] = useState<FormData>(generateInitialState());
@@ -67,6 +67,20 @@ function CreateCustomerComponent() {
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
+      const response = await fetch('http://localhost:8080/api/customers/create_customer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        // Handle errors here if needed
+        console.error('Failed to submit form.');
+        return;
+      }
+
       console.log("Form submitted:", formData);
     } catch (validationErrors) {
       // Form validation failed, update the errors state
@@ -92,16 +106,16 @@ function CreateCustomerComponent() {
         labelTwo="efternamn"
         placeholderOne="Jane"
         placeholderTwo="Doe"
-        valueOne={formData.förnamn}
-        valueTwo={formData.efternamn}
+        valueOne={formData.firstname}
+        valueTwo={formData.lastname}
         onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("förnamn", e.target.value)
+          handleChange("firstname", e.target.value)
         }
         onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("efternamn", e.target.value)
+          handleChange("lastname", e.target.value)
         }
-        errorOne={errors.förnamn}
-        errorTwo={errors.efternamn}
+        errorOne={errors.firstname}
+        errorTwo={errors.lastname}
         maxLengthOne={20}
         maxLengthTwo={20}
       ></DoubleFieldInputRow>
@@ -111,26 +125,26 @@ function CreateCustomerComponent() {
         placeholderOne="Jane.Doe@testing.com"
         placeholderTwo="08 123 12312"
         valueOne={formData.email}
-        valueTwo={formData.telefon}
+        valueTwo={formData.phoneNumber}
         onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("email", e.target.value)
         }
         onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("telefon", e.target.value)
+          handleChange("phoneNumber", e.target.value)
         }
         errorOne={errors.email}
-        errorTwo={errors.telefon}
+        errorTwo={errors.phoneNumber}
         maxLengthOne={225}
         maxLengthTwo={15}
       />
       <SingleFieldInputRow
         label="adress"
         placeholder=" 12 something something"
-        value={formData.adress}
+        value={formData.address}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("adress", e.target.value)
+          handleChange("address", e.target.value)
         }
-        error={errors?.adress}
+        error={errors?.address}
         maxLength={25}
       />
       <DoubleFieldInputRow
@@ -138,16 +152,16 @@ function CreateCustomerComponent() {
         labelTwo="postkod"
         placeholderOne="Danderyd"
         placeholderTwo="18502"
-        valueOne={formData.ort}
-        valueTwo={formData.postkod}
+        valueOne={formData.city}
+        valueTwo={formData.postalCode}
         onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("ort", e.target.value)
+          handleChange("city", e.target.value)
         }
         onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("postkod", e.target.value)
+          handleChange("postalCode", e.target.value)
         }
-        errorOne={errors.ort}
-        errorTwo={errors.postkod}
+        errorOne={errors.city}
+        errorTwo={errors.postalCode}
         maxLengthOne={10}
         maxLengthTwo={5}
       />
