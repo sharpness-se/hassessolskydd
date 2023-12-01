@@ -9,6 +9,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.integrationstest.HassesDbTest;
 import se.sharpness.hassessolskydd.model.Customer;
+import se.sharpness.hassessolskydd.util.CustomerNumberGenerator;
 
 import java.util.List;
 import java.util.Optional;
@@ -98,11 +99,11 @@ public class CustomerMapperTest extends HassesDbTest {
     customer.setCity("Uppsala");
     customer.setPhoneNumber("+123321123");
     customer.setEmail("email@mail.com");
-    customer.setCustomerNumber("CUST55555");
+    customer.setCustomerNumber(CustomerNumberGenerator.createCustomerNumber(customer));
 
     customerMapper.createCustomer(customer);
 
-    Optional<Customer> dbResponse = customerMapper.findByCustomerNumber("CUST55555");
+    Optional<Customer> dbResponse = customerMapper.findByCustomerNumber("TestTestname+123321123");
     assertTrue(dbResponse.isPresent());
     Customer createdCustomer = dbResponse.get();
     assertEquals("Test", createdCustomer.getFirstname());
@@ -112,7 +113,7 @@ public class CustomerMapperTest extends HassesDbTest {
     assertEquals("Uppsala", createdCustomer.getCity());
     assertEquals("+123321123", createdCustomer.getPhoneNumber());
     assertEquals("email@mail.com", createdCustomer.getEmail());
-    assertEquals("CUST55555", createdCustomer.getCustomerNumber());
+    assertEquals("TestTestname+123321123", createdCustomer.getCustomerNumber());
 
   }
 
