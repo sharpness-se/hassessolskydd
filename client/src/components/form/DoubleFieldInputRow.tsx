@@ -14,10 +14,14 @@ interface DoubleFieldInputRowProps {
   valueTwo: string;
   maxLengthOne: number;
   maxLengthTwo: number;
+  idOne: string;
+  idTwo: string;
 }
 const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
   labelOne,
   labelTwo,
+  idOne,
+  idTwo,
   placeholderOne,
   placeholderTwo,
   valueOne,
@@ -41,7 +45,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
         </label>
         <input
           className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${valueOne.length===0?"border-red-500":""} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-          id={labelOne}
+          id={idOne}
           autoComplete={labelOne}
           type="text"
           placeholder={placeholderOne}
@@ -60,7 +64,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
         </label>
         <input
           className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${valueTwo.length===0?"border-red-500":""} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-          id={labelTwo}
+          id={idTwo}
           type="text"
           placeholder={placeholderTwo}
           value={valueTwo}

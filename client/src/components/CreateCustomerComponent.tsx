@@ -29,7 +29,7 @@ function CreateCustomerComponent() {
       .required("Telefon är obligatoriskt")
       .matches(/^[0-9()+\- ]*$/, "Ogiltigt telefonnummerformat")
       .min(9, "Telefonnummer måste vara minst 9 siffror"),
-    adress: Yup.string()
+    address: Yup.string()
       .required("Adress är obligatoriskt")
       .matches(/^[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/, "Ange en giltig adress"),
     city: Yup.string()
@@ -64,6 +64,7 @@ function CreateCustomerComponent() {
     try {
       // Validate the form data using Yup
       setErrors(generateInitialState());
+      
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
@@ -104,6 +105,8 @@ function CreateCustomerComponent() {
       <DoubleFieldInputRow
         labelOne="förnamn"
         labelTwo="efternamn"
+        idOne="firstname"
+        idTwo="lastname"
         placeholderOne="Jane"
         placeholderTwo="Doe"
         valueOne={formData.firstname}
@@ -122,6 +125,8 @@ function CreateCustomerComponent() {
       <DoubleFieldInputRow
         labelOne="email"
         labelTwo="telefon"
+        idOne="email"
+        idTwo="phoneNumber"
         placeholderOne="Jane.Doe@testing.com"
         placeholderTwo="08 123 12312"
         valueOne={formData.email}
@@ -139,17 +144,20 @@ function CreateCustomerComponent() {
       />
       <SingleFieldInputRow
         label="adress"
+        id="address"
         placeholder=" 12 something something"
         value={formData.address}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleChange("address", e.target.value)
         }
-        error={errors?.address}
+        error={errors.address}
         maxLength={25}
       />
       <DoubleFieldInputRow
         labelOne="ort"
         labelTwo="postkod"
+        idOne="city"
+        idTwo="postalCode"
         placeholderOne="Danderyd"
         placeholderTwo="18502"
         valueOne={formData.city}

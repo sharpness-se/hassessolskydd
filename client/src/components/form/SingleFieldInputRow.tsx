@@ -7,6 +7,7 @@ interface SingleFieldInputRowProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   maxLength?: number
+  id: string;
 }
 
 const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
@@ -15,7 +16,8 @@ const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
   value,
   onChange,
   error,
-  maxLength
+  maxLength,
+  id
 }) => {
   return (
     <div className="flex flex-wrap -mx-3 mb-6">
@@ -28,7 +30,7 @@ const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
         </label>
         <input
           className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${value.length===0?"border-red-500":""} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-          id={label}
+          id={id}
           type="text"
           placeholder={placeholder}
           value={value}
