@@ -29,7 +29,7 @@ const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
           {label}
         </label>
         <input
-          className={`appearance-none block w-full text-gray-700 border border-gray-200 shadow-md rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+          className={`appearance-none block w-full text-gray-700 border ${error?"border-red-500" : "border-gray-200"} shadow-md rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
           id={id}
           type="text"
           placeholder={placeholder}
