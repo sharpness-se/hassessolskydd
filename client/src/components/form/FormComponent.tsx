@@ -12,7 +12,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ children, onSubmit }) => 
   return (
     
       <form onSubmit={onSubmit}
-        className="w-full max-w-lg border-2 border-black rounded-xl p-10"
+        className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md"
         
       >
         {children}
