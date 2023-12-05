@@ -16,7 +16,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ children, onSubmit }) => 
         
       >
         {children}
-        <SubmitButton label="Skapa Kund" />
+        <SubmitButton label="Spara" />
       </form>
 
   );
