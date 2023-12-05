@@ -11,10 +11,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ children, onSubmit }) => 
 
   return (
     
-      <form onSubmit={onSubmit}
-        className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md"
-        
-      >
+      <form onSubmit={onSubmit}>
         {children}
         <SubmitButton label="Spara" />
       </form>
