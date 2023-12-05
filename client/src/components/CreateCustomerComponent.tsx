@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import DoubleFieldInputRow from "../components/form/DoubleFieldInputRow";
 import SingleFieldInputRow from "../components/form/SingleFieldInputRow";
 import FormComponent from "../components/form/FormComponent";
@@ -182,6 +183,7 @@ function CreateCustomerComponent() {
         maxLengthTwo={5}
       />
     </FormComponent>
+    <Link to={'/'}>Tillbaka</Link>
     </div>
   );
 }
