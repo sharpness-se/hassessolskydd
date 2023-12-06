@@ -22,7 +22,7 @@ public class Customer {
 
     @Pattern(regexp = "^[a-öA-Ö0-9 ]*$")
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 40)
     private String address;
 
     @Pattern(regexp = "^[0-9 ]*$")
