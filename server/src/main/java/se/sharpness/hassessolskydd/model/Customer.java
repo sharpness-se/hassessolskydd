@@ -25,6 +25,7 @@ public class Customer {
     @Size(max = 20)
     private String address;
 
+    @Pattern(regexp = "^[0-9 ]*$")
     @NotBlank
     @Size(min = 5, max = 6)
     private String postalCode;
