@@ -1,4 +1,7 @@
 ## Deployment
+    *Currently A bug exists which will cause tests to fail if the database on heroku is not in its initial state.
+    *To push a new build the database on heroku must be reset.
+
     #Prepare your local environment
         - Login to heroku by typing "heroku login"
         - Check that you have a heroku remote by typing "git remote -v"
