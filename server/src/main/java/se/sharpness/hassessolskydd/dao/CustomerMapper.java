@@ -38,6 +38,16 @@ public interface CustomerMapper {
             "select max(id) from customer"
     )
     int getMaxId();
+
+    @Select(
+      "SELECT * FROM customer WHERE city = #{searchTerm} OR " +
+        "firstname = #{searchTerm} OR " +
+        "lastname = #{searchTerm} OR " +
+        "phone_number = #{searchTerm}"
+    )
+    Optional<Customer> findByTerm(String searchTerm);
+
+
 }
 
 /*
