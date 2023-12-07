@@ -183,7 +183,6 @@ function CreateCustomerComponent() {
         maxLengthTwo={5}
       />
     </FormComponent>
-    <Link to={'/'}>Tillbaka</Link>
     </div>
   );
 }
