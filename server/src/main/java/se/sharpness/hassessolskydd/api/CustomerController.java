@@ -62,4 +62,14 @@ public class CustomerController extends BaseApiController {
             throw new ResourceConflictException(customer.getCustomerNumber());
         }
     }
+
+    @GetMapping("/customers/search/{searchTerm}")
+    public Customer findCustomerByTerm(@PathVariable(value = "searchTerm") String searchTerm) throws StatusMessage {
+        final var result = customerMapper.findByTerm(searchTerm);
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            throw new CustomerNotFoundException(searchTerm);
+        }
+    }
 }
