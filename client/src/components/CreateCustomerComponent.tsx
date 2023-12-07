@@ -114,7 +114,7 @@ function CreateCustomerComponent() {
 
       // Form is valid, handle submission logic here
       const response = await fetch(
-        "https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/create_customer",
+        "http://localhost:8080/api/customers/create_customer",
         {
           method: "POST",
           headers: {
@@ -211,7 +211,6 @@ function CreateCustomerComponent() {
           maxLengthTwo={5}
         />
       </FormComponent>
-      <Link to={"/"}>Tillbaka</Link>
     </div>
   );
 }
