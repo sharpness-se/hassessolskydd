@@ -16,13 +16,15 @@
 
 ## Local Environment
     #Frontend
-
-        To test changes before git commit:
-          - Save files
-          - "npm start" (This will open http://localhost:3000)
+        * Currently localhost:3000 is not whitelisted in the java backend so any contact with the backend will be denied by CORS
+        * Locally only #2 works at the moment
   
-        To test frontend changes served from the backend:
-          - Check docker desktop is running and that the database container is up ("docker-compose up" in the project root if its not)
-          - Save files
-          - "npm run build" in the client folder (This will build and run copy-files.js which will populate the static folder in the backend)
-          - Start the backend and navigate to http://localhost:8080
+        1. To test changes before git commit:
+             - Save files
+             - "npm start" (This will open http://localhost:3000)
+  
+        2. To test frontend changes served from the backend:
+             - Check docker desktop is running and that the database container is up ("docker-compose up" in the project root if its not)
+             - Save files
+             - "npm run build" in the client folder (This will build and run copy-files.js which will populate the static folder in the backend)
+             - Start the backend and navigate to http://localhost:8080
