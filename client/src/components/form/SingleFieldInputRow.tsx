@@ -26,7 +26,7 @@ const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
           className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
           htmlFor={id}
         >
-          {label}
+          {label}*
         </label>
         <input
           className={`appearance-none block w-full text-gray-700 border ${error?"border-red-500" : "border-gray-200"} shadow-md rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}

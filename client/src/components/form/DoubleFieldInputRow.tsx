@@ -41,7 +41,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
           className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
           htmlFor={idOne}
         >
-          {labelOne}
+          {labelOne}*
         </label>
         <input
           className={`appearance-none block w-full text-gray-700 border ${errorOne?"border-red-500" : "border-gray-200"} shadow-md rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
@@ -60,7 +60,7 @@ const DoubleFieldInputRow: React.FC<DoubleFieldInputRowProps> = ({
           className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
           htmlFor={idTwo}
         >
-          {labelTwo}
+          {labelTwo}*
         </label>
         <input
           className={`appearance-none block w-full text-gray-700 border ${errorTwo?"border-red-500" : "border-gray-200"} shadow-md rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}

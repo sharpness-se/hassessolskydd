@@ -15,7 +15,15 @@ function CreateCustomerComponent() {
     city: string;
     postalCode: string;
   }
-
+  interface FormDataValidation {
+    firstname: { error: string; touched: boolean };
+    lastname: { error: string; touched: boolean };
+    email: { error: string; touched: boolean };
+    phoneNumber: { error: string; touched: boolean };
+    address: { error: string; touched: boolean };
+    city: { error: string; touched: boolean };
+    postalCode: { error: string; touched: boolean };
+  }
   const schema = Yup.object().shape({
     firstname: Yup.string()
       .required("Förnamn är obligatoriskt")
@@ -24,11 +32,11 @@ function CreateCustomerComponent() {
       .required("Efternamn är obligatoriskt")
       .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
     email: Yup.string()
-    .required("Email är obligatoriskt")
-    .matches(
-      /^(|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-åäöÅÄÖ]+\.[a-zA-ZåäöÅÄÖ]{2,})$/,
-      "Ogiltig emailadress"
-    ),
+      .required("Email är obligatoriskt")
+      .matches(
+        /^(|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-åäöÅÄÖ]+\.[a-zA-ZåäöÅÄÖ]{2,})$/,
+        "Ogiltig emailadress"
+      ),
     phoneNumber: Yup.string()
       .required("Telefon är obligatoriskt")
       .matches(/^[0-9()+\- ]*$/, "Ogiltigt telefonnummerformat")
@@ -54,21 +62,54 @@ function CreateCustomerComponent() {
     city: "",
     postalCode: "",
   });
+  const generateInitialValidationState = (): FormDataValidation => ({
+    firstname: { error: "", touched: false },
+    lastname: { error: "", touched: false },
+    email: { error: "", touched: false },
+    phoneNumber: { error: "", touched: false },
+    address: { error: "", touched: false },
+    city: { error: "", touched: false },
+    postalCode: { error: "", touched: false },
+  });
   const [formData, setFormData] = useState<FormData>(generateInitialState());
-  const [errors, setErrors] = useState<FormData>(generateInitialState());
 
-  const handleChange = (name: keyof FormData, value: string) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const [errors, setErrors] = useState<FormDataValidation>(
+    generateInitialValidationState()
+  );
+
+  const handleChange = async (name: keyof FormData, value: string) => {
+    const updatedFormData = { ...formData, [name]: value };
+    const updatedFormDataValidation = {
+      ...errors,
+      [name]: { error: "", touched: true },
+    };
+
+    setFormData(updatedFormData);
+    try {
+      if (updatedFormDataValidation[name].touched) {
+        await schema.validateAt(name, updatedFormData, { abortEarly: false });
+
+        setErrors((newErrors) => ({
+          ...newErrors,
+          [name]: { error: "", touched: true },
+        }));
+      }
+    } catch (validationErrors: any) {
+      // Form validation failed, update the errors state
+      if (validationErrors instanceof Yup.ValidationError) {
+        setErrors((newErrors) => ({
+          ...newErrors,
+          [name]: { error: validationErrors.errors[0], touched: true },
+        }));
+      }
+    }
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      // Validate the form data using Yup
-      setErrors(generateInitialState());
 
+    try {
+      // Validate the entire form using Yup
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
@@ -90,100 +131,87 @@ function CreateCustomerComponent() {
       }
 
       console.log("Form submitted:", formData);
-    } catch (validationErrors) {
-      // Form validation failed, update the errors state
-      if (validationErrors instanceof Yup.ValidationError) {
-        setErrors((newErrors) =>
-          Object.assign(
-            {},
-            newErrors,
-            ...((validationErrors as Yup.ValidationError).inner ?? []).map(
-              (err) => ({
-                [err.path ?? ""]: err.message,
-              })
-            )
-          )
-        );
-      }
+    } catch (error) {
+      console.error(error);
     }
   };
   return (
     <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
       <h2 className="text-xl font-bold text-gray-800 mb-3">Personuppgifter</h2>
-    <FormComponent onSubmit={handleSubmit}>
-      <DoubleFieldInputRow
-        labelOne="förnamn"
-        labelTwo="efternamn"
-        idOne="firstname"
-        idTwo="lastname"
-        placeholderOne="Jane"
-        placeholderTwo="Doe"
-        valueOne={formData.firstname}
-        valueTwo={formData.lastname}
-        onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("firstname", e.target.value)
-        }
-        onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("lastname", e.target.value)
-        }
-        errorOne={errors.firstname}
-        errorTwo={errors.lastname}
-        maxLengthOne={20}
-        maxLengthTwo={20}
-      ></DoubleFieldInputRow>
-      <DoubleFieldInputRow
-        labelOne="email"
-        labelTwo="telefon"
-        idOne="email"
-        idTwo="phoneNumber"
-        placeholderOne="Jane.Doe@testing.com"
-        placeholderTwo="08 123 12312"
-        valueOne={formData.email}
-        valueTwo={formData.phoneNumber}
-        onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("email", e.target.value)
-        }
-        onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("phoneNumber", e.target.value)
-        }
-        errorOne={errors.email}
-        errorTwo={errors.phoneNumber}
-        maxLengthOne={225}
-        maxLengthTwo={12}
-      />
-      <SingleFieldInputRow
-        label="adress"
-        id="address"
-        placeholder=" 12 something something"
-        value={formData.address}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("address", e.target.value)
-        }
-        error={errors.address}
-        maxLength={40}
-      />
-      <DoubleFieldInputRow
-        labelOne="ort"
-        labelTwo="postkod"
-        idOne="city"
-        idTwo="postalCode"
-        placeholderOne="Danderyd"
-        placeholderTwo="18502"
-        valueOne={formData.city}
-        valueTwo={formData.postalCode}
-        onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("city", e.target.value)
-        }
-        onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange("postalCode", e.target.value)
-        }
-        errorOne={errors.city}
-        errorTwo={errors.postalCode}
-        maxLengthOne={20}
-        maxLengthTwo={5}
-      />
-    </FormComponent>
-    <Link to={'/'}>Tillbaka</Link>
+      <FormComponent onSubmit={handleSubmit}>
+        <DoubleFieldInputRow
+          labelOne="förnamn"
+          labelTwo="efternamn"
+          idOne="firstname"
+          idTwo="lastname"
+          placeholderOne="Jane"
+          placeholderTwo="Doe"
+          valueOne={formData.firstname}
+          valueTwo={formData.lastname}
+          onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChange("firstname", e.target.value)
+          }
+          onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChange("lastname", e.target.value)
+          }
+          errorOne={errors.firstname.error}
+          errorTwo={errors.lastname.error}
+          maxLengthOne={20}
+          maxLengthTwo={20}
+        ></DoubleFieldInputRow>
+        <DoubleFieldInputRow
+          labelOne="email"
+          labelTwo="telefon"
+          idOne="email"
+          idTwo="phoneNumber"
+          placeholderOne="Jane.Doe@testing.com"
+          placeholderTwo="08 123 12312"
+          valueOne={formData.email}
+          valueTwo={formData.phoneNumber}
+          onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChange("email", e.target.value)
+          }
+          onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChange("phoneNumber", e.target.value)
+          }
+          errorOne={errors.email.error}
+          errorTwo={errors.phoneNumber.error}
+          maxLengthOne={225}
+          maxLengthTwo={12}
+        />
+        <SingleFieldInputRow
+          label="adress"
+          id="address"
+          placeholder=" 12 something something"
+          value={formData.address}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChange("address", e.target.value)
+          }
+          error={errors.address.error}
+          maxLength={40}
+        />
+        <DoubleFieldInputRow
+          labelOne="ort"
+          labelTwo="postkod"
+          idOne="city"
+          idTwo="postalCode"
+          placeholderOne="Danderyd"
+          placeholderTwo="18502"
+          valueOne={formData.city}
+          valueTwo={formData.postalCode}
+          onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChange("city", e.target.value)
+          }
+          onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleChange("postalCode", e.target.value)
+          }
+          errorOne={errors.city.error}
+          errorTwo={errors.postalCode.error}
+          maxLengthOne={20}
+          maxLengthTwo={5}
+        />
+      </FormComponent>
+      <Link to={"/"}>Tillbaka</Link>
     </div>
   );
 }
