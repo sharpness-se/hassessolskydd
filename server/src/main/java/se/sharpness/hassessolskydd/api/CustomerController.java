@@ -64,10 +64,10 @@ public class CustomerController extends BaseApiController {
     }
 
     @GetMapping("/customers/search/{searchTerm}")
-    public Customer findCustomerByTerm(@PathVariable(value = "searchTerm") String searchTerm) throws StatusMessage {
-        final var result = customerMapper.findByTerm(searchTerm);
-        if (result.isPresent()) {
-            return result.get();
+    public List<Customer> findCustomersByTerm(@PathVariable(value = "searchTerm") String searchTerm) throws StatusMessage {
+        List<Customer> result = customerMapper.findByTerm(searchTerm);
+        if (!result.isEmpty()) {
+            return result;
         } else {
             throw new CustomerNotFoundException(searchTerm);
         }
