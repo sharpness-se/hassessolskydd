@@ -114,7 +114,7 @@ function CreateCustomerComponent() {
 
       // Form is valid, handle submission logic here
       const response = await fetch(
-        "http://localhost:8080/api/customers/create_customer",
+        "https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/create_customer",
         {
           method: "POST",
           headers: {
@@ -129,8 +129,10 @@ function CreateCustomerComponent() {
         console.error("Failed to submit form.");
         return;
       }
-
       console.log("Form submitted:", formData);
+      
+      //clear formData after submission success
+      setFormData(generateInitialState());
     } catch (validationError) {
       if (validationError instanceof Yup.ValidationError) {
         // Yup validation errors occurred
