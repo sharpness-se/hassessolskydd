@@ -36,7 +36,7 @@ const SingleFieldInputRow: React.FC<SingleFieldInputRowProps> = ({
           value={value}
           onChange={onChange}
           maxLength={maxLength}
-          autoComplete="off"
+          autoComplete="nope"
         />
         {error && <p className="text-red-500 text-xs italic">{error} </p>}
       </div>

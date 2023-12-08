@@ -131,9 +131,27 @@ function CreateCustomerComponent() {
       }
 
       console.log("Form submitted:", formData);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (validationError) {
+      if (validationError instanceof Yup.ValidationError) {
+        // Yup validation errors occurred
+        const newErrors = { ...generateInitialValidationState() };
+  
+        validationError.inner.forEach((error) => {
+          // Update errors state with error messages
+          const path = error.path as keyof FormDataValidation;
+          if (path) {
+            newErrors[path].error = error.message;
+            newErrors[path].touched = true;
+          }
+        });
+  
+        // Set the new errors state
+        setErrors(newErrors);
+      } else {
+        // Handle other errors
+        console.error(validationError);
+      }
+};
   };
   return (
     <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
