@@ -1,6 +1,6 @@
 describe('Link Tests', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:8080');
   });
 
   it('Clicks "Create New Customer" link', () => {
