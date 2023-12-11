@@ -12,40 +12,41 @@ import java.util.Optional;
 @Mapper
 public interface CustomerMapper {
 
-    @Select(
-            "select * from customer"
-    )
-    List<Customer> findAll();
+  @Select(
+    "select * from customer"
+  )
+  List<Customer> findAll();
 
-    @Select(
-            "select * from customer where id = #{id}"
-    )
-    Optional<Customer> findById(int id);
+  @Select(
+    "select * from customer where id = #{id}"
+  )
+  Optional<Customer> findById(int id);
 
-    @Select(
-            "select * from customer where customer_number = #{customerNumber}"
-    )
-    Optional<Customer> findByCustomerNumber(String customerNumber);
+  @Select(
+    "select * from customer where customer_number = #{customerNumber}"
+  )
+  Optional<Customer> findByCustomerNumber(String customerNumber);
 
-    @Insert("""
-            insert into customer (firstname, lastname, address, postal_code, city, phone_number, email, customer_number)
-            values (#{firstname}, #{lastname}, #{address}, #{postalCode}, #{city}, #{phoneNumber}, #{email}, #{customerNumber})
-            """)
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    void createCustomer(Customer customer); //TODO: Should return fail/success?
+  @Insert("""
+    insert into customer (firstname, lastname, address, postal_code, city, phone_number, email, customer_number)
+    values (#{firstname}, #{lastname}, #{address}, #{postalCode}, #{city}, #{phoneNumber}, #{email}, #{customerNumber})
+    """)
+  @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+  void createCustomer(Customer customer); //TODO: Should return fail/success?
 
-    @Select(
-            "select max(id) from customer"
-    )
-    int getMaxId();
+  @Select(
+    "select max(id) from customer"
+  )
+  int getMaxId();
 
-    @Select(
-      "SELECT * FROM customer WHERE city = #{searchTerm} OR " +
-        "firstname = #{searchTerm} OR " +
-        "lastname = #{searchTerm} OR " +
-        "phone_number = #{searchTerm}"
-    )
-    Optional<Customer> findByTerm(String searchTerm);
+  @Select(
+    "SELECT * FROM customer " +
+      "WHERE firstname ILIKE '%' || #{searchTerm} || '%' " +
+      "   OR lastname ILIKE '%' || #{searchTerm} || '%' " +
+      "   OR city ILIKE '%' || #{searchTerm} || '%' " +
+      "   OR phone_number ILIKE '%' || #{searchTerm} || '%'"
+  )
+  List<Customer> findByTerm(String searchTerm);
 
 
 }
