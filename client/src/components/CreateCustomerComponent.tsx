@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import DoubleFieldInputRow from "../components/form/DoubleFieldInputRow";
 import SingleFieldInputRow from "../components/form/SingleFieldInputRow";
 import FormComponent from "../components/form/FormComponent";
 import * as Yup from "yup";
+import toast, { Toaster } from "react-hot-toast";
 
 function CreateCustomerComponent() {
   interface FormData {
@@ -124,20 +124,28 @@ function CreateCustomerComponent() {
         }
       );
 
+      if (response.status === 409) {
+        toast.error("Customer exists!");
+        return;
+      }
+
       if (!response.ok) {
         // Handle errors here if needed
         console.error("Failed to submit form.");
         return;
       }
       console.log("Form submitted:", formData);
-      
+      toast.success(
+        `${formData.firstname + " " + formData.lastname} saved to database!`,
+        { duration: 6000 }
+      );
       //clear formData after submission success
       setFormData(generateInitialState());
     } catch (validationError) {
       if (validationError instanceof Yup.ValidationError) {
         // Yup validation errors occurred
         const newErrors = { ...generateInitialValidationState() };
-  
+
         validationError.inner.forEach((error) => {
           // Update errors state with error messages
           const path = error.path as keyof FormDataValidation;
@@ -146,14 +154,17 @@ function CreateCustomerComponent() {
             newErrors[path].touched = true;
           }
         });
-  
+
         // Set the new errors state
         setErrors(newErrors);
       } else {
         // Handle other errors
         console.error(validationError);
+        toast.error(`${validationError}`);
+        return;
       }
-};
+      toast.error("Data submission failed: Validation error!");
+    }
   };
   return (
     <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
@@ -231,6 +242,7 @@ function CreateCustomerComponent() {
           maxLengthTwo={5}
         />
       </FormComponent>
+      <Toaster position="bottom-center" reverseOrder={false} />
     </div>
   );
 }
