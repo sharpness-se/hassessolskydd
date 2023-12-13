@@ -175,8 +175,8 @@ function CreateCustomerComponent() {
           labelTwo="efternamn"
           idOne="firstname"
           idTwo="lastname"
-          placeholderOne="Jane"
-          placeholderTwo="Doe"
+          placeholderOne="Herbert"
+          placeholderTwo="Bertelius"
           valueOne={formData.firstname}
           valueTwo={formData.lastname}
           onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -195,8 +195,8 @@ function CreateCustomerComponent() {
           labelTwo="telefon"
           idOne="email"
           idTwo="phoneNumber"
-          placeholderOne="Jane.Doe@testing.com"
-          placeholderTwo="08 123 12312"
+          placeholderOne="herbert@hotmail.com"
+          placeholderTwo="076554400"
           valueOne={formData.email}
           valueTwo={formData.phoneNumber}
           onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -213,7 +213,7 @@ function CreateCustomerComponent() {
         <SingleFieldInputRow
           label="adress"
           id="address"
-          placeholder=" 12 something something"
+          placeholder=" Västerlånggatan 48"
           value={formData.address}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChange("address", e.target.value)
@@ -226,8 +226,8 @@ function CreateCustomerComponent() {
           labelTwo="postkod"
           idOne="city"
           idTwo="postalCode"
-          placeholderOne="Danderyd"
-          placeholderTwo="18502"
+          placeholderOne="Stockholm"
+          placeholderTwo="11129"
           valueOne={formData.city}
           valueTwo={formData.postalCode}
           onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>
