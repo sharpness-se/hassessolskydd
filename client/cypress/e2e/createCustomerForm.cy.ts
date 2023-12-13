@@ -1,5 +1,19 @@
 describe('Create Customer Form Test', () => {
 
+  interface FormData {
+    [key: string]: string;
+  }
+  
+  const validFormData: FormData = {
+    firstname: 'Test',
+    lastname: 'Testson',
+    email: 'test@test.com',
+    phoneNumber: '0731112235',
+    address: 'Testgatan 35',
+    city: 'Teststaden',
+    postalCode: '12344',
+  };
+
   beforeEach(() => {
     cy.visit('http://localhost:8080');
     cy.contains('Skapa ny kund').click();
@@ -9,16 +23,105 @@ describe('Create Customer Form Test', () => {
 
     cy.intercept('POST', 'http://localhost:8080/api/customers/create_customer').as('handleSubmit');
 
-    cy.get('input[id="firstname"]').type('Test');
-    cy.get('input[id="lastname"]').type('Testson');
-    cy.get('input[id="email"]').type('test@test.com');
-    cy.get('input[id="phoneNumber"]').type('0731112233');
-    cy.get('input[id="address"]').type('Testgatan 35');
-    cy.get('input[id="city"]').type('Teststaden');
-    cy.get('input[id="postalCode"]').type('12344');
-
+    Object.entries(validFormData).forEach(([key, value]) => {
+      cy.get(`input[id="${key}"]`).type(value);
+    });
     cy.get('button[type="submit"]').click();
 
     cy.wait('@handleSubmit').its('response.statusCode').should('eq', 200);
-  })
-})
+  });
+
+  it('should submit a customer that already exists', () => {
+    cy.intercept('POST', 'http://localhost:8080/api/customers/create_customer').as('handleSubmit');
+
+    Object.entries(validFormData).forEach(([key, value]) => {
+      cy.get(`input[id="${key}"]`).type(value);
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.wait('@handleSubmit').its('response.statusCode').should('eq', 409);
+
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8080/api/deleteCustomerByCustomerNumber/TestTestson0731112235',
+    });
+    
+  });
+
+  it('should get a validation error if first name is not filled in', () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      if (key !== 'firstname') {
+        cy.get(`input[id="${key}"]`).type(value);
+      }
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.get(`input[id="firstname"]`).next('p').first().should('include.text', 'obligatoriskt');
+  });
+
+  it('should get a validation error if last name is not filled in', () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      if (key !== 'lastname') {
+        cy.get(`input[id="${key}"]`).type(value);
+      }
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.get(`input[id="lastname"]`).next('p').first().should('include.text', 'obligatoriskt');
+  });
+
+  it('should get a validation error if email is not filled in', () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      if (key !== 'email') {
+        cy.get(`input[id="${key}"]`).type(value);
+      }
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.get(`input[id="email"]`).next('p').first().should('include.text', 'obligatoriskt');
+  });
+
+  it('should get a validation error if phone number is not filled in', () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      if (key !== 'phoneNumber') {
+        cy.get(`input[id="${key}"]`).type(value);
+      }
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.get(`input[id="phoneNumber"]`).next('p').first().should('include.text', 'obligatoriskt');
+  });
+
+  it('should get a validation error if address is not filled in', () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      if (key !== 'address') {
+        cy.get(`input[id="${key}"]`).type(value);
+      }
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.get(`input[id="address"]`).next('p').first().should('include.text', 'obligatoriskt');
+  });
+
+  it('should get a validation error if city is not filled in', () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      if (key !== 'city') {
+        cy.get(`input[id="${key}"]`).type(value);
+      }
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.get(`input[id="city"]`).next('p').first().should('include.text', 'obligatoriskt');
+  });
+
+  it('should get a validation error if postal code is not filled in', () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      if (key !== 'postalCode') {
+        cy.get(`input[id="${key}"]`).type(value);
+      }
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.get(`input[id="postalCode"]`).next('p').first().should('include.text', 'obligatoriskt');
+  });
+});

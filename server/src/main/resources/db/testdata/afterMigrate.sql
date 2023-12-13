@@ -24,10 +24,10 @@ VALUES
     (-2, 0, 1) ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.order" table
-INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, products, installation_details)
+INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, products, installation_details, indooroutdoor)
 VALUES
-    (-1, 1, '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 1, 1),
-    (-2, 2, '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 2, 2) ON CONFLICT DO NOTHING;
+    (-1, 1, '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 1, 1, 'INDOOR'),
+    (-2, 2, '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 2, 2, 'OUTDOOR') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.plissegardin" table
 INSERT INTO public.plissegardin (id, order_id, measure_type, width, height, weave_number, model, mounting, allmogebeslag, controls, control_side, draw_string_colour, cassette_colour, indoor_outdoor, is_external_order)
