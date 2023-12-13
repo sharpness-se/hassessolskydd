@@ -28,5 +28,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Change to server directory
+      run: cd server
+
     - name: Build with Gradle
       run: ./gradlew build
