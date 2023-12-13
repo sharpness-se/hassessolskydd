@@ -10,17 +10,17 @@ public class Customer {
 
     private int id;
 
-    @Pattern(regexp = "^[a-öA-Ö]*$")
+    @Pattern(regexp = "^\\p{L}*$")
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 40)
     private String firstname;
 
-    @Pattern(regexp = "^[a-öA-Ö]*$")
+    @Pattern(regexp = "^\\p{L}*$")
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 40)
     private String lastname;
 
-    @Pattern(regexp = "^[a-öA-Ö0-9 ]*$")
+    @Pattern(regexp = "^[\\p{L}0-9- ]*$")
     @NotBlank
     @Size(max = 40)
     private String address;
@@ -30,7 +30,7 @@ public class Customer {
     @Size(min = 5, max = 6)
     private String postalCode;
 
-    @Pattern(regexp = "^[a-öA-Ö0-9 ]*$")
+    @Pattern(regexp = "^[\\p{L}0-9-]*$")
     @NotBlank
     @Size(max = 20)
     private String city;
