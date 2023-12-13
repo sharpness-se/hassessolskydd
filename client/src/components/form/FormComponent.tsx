@@ -12,7 +12,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ children, onSubmit }) => 
 
   return (
     
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} autoComplete="off">
         {children}
         <div className="flex items-center justify-center">
           <BackButton />
