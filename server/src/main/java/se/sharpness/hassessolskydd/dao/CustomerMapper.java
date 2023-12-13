@@ -41,10 +41,10 @@ public interface CustomerMapper {
 
   @Select(
     "SELECT * FROM customer " +
-      "WHERE firstname ILIKE '%' || #{searchTerm} || '%' " +
-      "   OR lastname ILIKE '%' || #{searchTerm} || '%' " +
-      "   OR city ILIKE '%' || #{searchTerm} || '%' " +
-      "   OR phone_number ILIKE '%' || #{searchTerm} || '%'"
+      "WHERE firstname ILIKE #{searchTerm} || '%' " +
+      "   OR lastname ILIKE #{searchTerm} || '%' " +
+      "   OR city ILIKE #{searchTerm} || '%' " +
+      "   OR phone_number ILIKE #{searchTerm} || '%' "
   )
   List<Customer> findByTerm(String searchTerm);
 
