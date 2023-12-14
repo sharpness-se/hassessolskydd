@@ -31,7 +31,7 @@ public class CustomerControllerTest extends HassesDbTest {
   void findAllCustomers() {
     List<Customer> customerList = customerController.findAll();
 
-    assertEquals(2, customerList.size());
+    assertEquals(20, customerList.size());
 
     assertEquals(-1, customerList.get(0).getId());
     assertEquals("Customer 1", customerList.get(0).getFirstname());
