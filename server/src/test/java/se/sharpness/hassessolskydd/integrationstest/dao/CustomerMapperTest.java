@@ -31,7 +31,7 @@ public class CustomerMapperTest extends HassesDbTest {
   @Test
   void findAllCustomers() {
     List<Customer> customerList = customerMapper.findAll();
-    assertEquals(2, customerList.size());
+    assertEquals(20, customerList.size());
 
     assertEquals(-1, customerList.get(0).getId());
     assertEquals("Customer 1", customerList.get(0).getFirstname());
