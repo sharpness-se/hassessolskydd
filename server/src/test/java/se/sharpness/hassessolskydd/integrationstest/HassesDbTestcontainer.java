@@ -17,7 +17,7 @@ public class HassesDbTestcontainer extends PostgreSQLContainer<HassesDbTestconta
       container = new HassesDbTestcontainer()
         .withDatabaseName("hassessolskydd")
         .withUsername("hassessolskydd")
-        .withPassword("r4d3+");
+        .withPassword("password");
     }
     return container;
   }
