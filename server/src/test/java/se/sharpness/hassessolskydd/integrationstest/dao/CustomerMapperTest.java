@@ -122,47 +122,16 @@ public class CustomerMapperTest extends HassesDbTest {
 
   @Test
   void findByTerm() {
-    Customer customerOne = new Customer();
-    customerOne.setFirstname("Customer 1");
-    customerOne.setLastname("Lastname 1");
-    customerOne.setAddress("123 Main St");
-    customerOne.setPostalCode("111 11");
-    customerOne.setCity("Stockholm");
-    customerOne.setPhoneNumber("555-123-4567");
-    customerOne.setEmail("customer1@example.com");
-    customerOne.setCustomerNumber("CUST001");
+    String searchTerm = "Eri";
+    List<Customer> dbResponse = customerMapper.findByTerm(searchTerm);
+    assertFalse(dbResponse.isEmpty());
+    assertEquals(2, dbResponse.size());
 
-    Customer customerTwo = new Customer();
-    customerTwo.setFirstname("Customer 2");
-    customerTwo.setLastname("Lastname 2");
-    customerTwo.setAddress("456 Elm St");
-    customerTwo.setPostalCode("222 22");
-    customerTwo.setCity("Skåne");
-    customerTwo.setPhoneNumber("555-987-6543");
-    customerTwo.setEmail("customer2@example.com");
-    customerTwo.setCustomerNumber("CUST002");
-
-    String searchTerm = "Stockholm";
-
-    /*
-
-    Optional<Customer> dbResponse = customerMapper.findByTerm(searchTerm);
-    assertTrue(dbResponse.isPresent());
-    Customer customer = dbResponse.get();
-
-    assertEquals(customer.getCity(), customerOne.getCity());
-
-    searchTerm = "555-987-6543";
-
+    searchTerm = "a";
     dbResponse = customerMapper.findByTerm(searchTerm);
-    assertTrue(dbResponse.isPresent());
-    customer = dbResponse.get();
-
-    assertEquals(customer.getPhoneNumber(), customerTwo.getPhoneNumber());
-
-
-     */
-
+    log.info("dbResponse: {}", dbResponse.toString());
+    assertFalse(dbResponse.isEmpty());
+    assertEquals(19, dbResponse.size());
   }
 
 }
