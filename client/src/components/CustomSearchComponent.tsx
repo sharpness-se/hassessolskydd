@@ -49,7 +49,7 @@ export default function SearchBar() {
   };
 
   useEffect(() => {
-    if (isClickedOutside) {
+    if (isClickedOutside && isExpanded) {
       collapseContainer();
     }
     if (searchResults.length > 0) {
@@ -88,18 +88,18 @@ export default function SearchBar() {
         },
       });
 
-      if (response.status === 404) {
+      if (response.status === 204) {
         // Handle 404 error
         setSearchResults([{ error: "No Customer Found!" }]);
       } else {
-        const data = await response.json();
-        setSearchResults(data);
-
-        console.log(searchResults);
-      }
+          const data = await response.json();
+          setSearchResults(data);
+          console.log(searchResults);
+        }
     } catch (error) {
       console.error(error);
     }
+    
     setIsLoading(false);
   };
   useDebounceHook(searchQuery, 500, handleSearch);

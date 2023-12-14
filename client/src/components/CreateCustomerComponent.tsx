@@ -213,7 +213,7 @@ function CreateCustomerComponent() {
         <SingleFieldInputRow
           label="adress"
           id="address"
-          placeholder=" Västerlånggatan 48"
+          placeholder="Västerlånggatan 48"
           value={formData.address}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChange("address", e.target.value)
