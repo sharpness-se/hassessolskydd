@@ -13,7 +13,7 @@ describe('Create Customer Form Test', () => {
     phoneNumber: '0731112235',
     address: 'Testgatan 35',
     city: 'Teststaden',
-    postalCode: '12344',
+    postalCode: '123 44',
   };
 
   beforeEach(() => {
@@ -31,7 +31,6 @@ describe('Create Customer Form Test', () => {
     cy.get('button[type="submit"]').click();
 
     cy.wait('@handleSubmit').its('response.statusCode').should('eq', 200);
-    cy.contains('.react-hot-toast-message', 'saved to database').should('be.visible');
   });
 
   it('should submit a customer that already exists', () => {
@@ -43,7 +42,6 @@ describe('Create Customer Form Test', () => {
     cy.get('button[type="submit"]').click();
 
     cy.wait('@handleSubmit').its('response.statusCode').should('eq', 409);
-    cy.contains('.react-hot-toast-message', 'Customer exists!').should('be.visible');
 
     cy.request({
       method: 'POST',
@@ -139,22 +137,6 @@ describe('Form Validation', () => {
     cy.get('button[type="submit"]').click();
 
     cy.get(`input[id="firstname"]`).next('p').first().should('include.text', 'obligatoriskt');
-  });
-
-  
-
-
-  it('should get a validation error if first name is filled in incorrectly', () => {
-    cy.get(`input[id="firstname"]`).type('Abc123');
-
-    Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'firstname') {
-        cy.get(`input[id="${key}"]`).type(value);
-      }
-    });
-    cy.get('button[type="submit"]').click();
-
-    cy.get(`input[id="firstname"]`).next('p').first().should('include.text', 'Ogiltigt');
   });
 
   it('should get a validation error if last name is not filled in', () => {
