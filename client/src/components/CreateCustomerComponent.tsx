@@ -49,7 +49,7 @@ function CreateCustomerComponent() {
       .matches(/^[a-zA-ZåäöÅÄÖ]*$/, "Ange endast bokstäver"),
     postalCode: Yup.string()
       .required("Postkod är obligatoriskt")
-      .matches(/^[0-9]*$/, "Ange endast siffror.")
+      .matches(/^[0-9\s]+$/, "Ange endast siffror.")
       .min(5, "Postkod måste vara minst 5 siffror"),
   });
 
@@ -114,7 +114,7 @@ function CreateCustomerComponent() {
 
       // Form is valid, handle submission logic here
       const response = await fetch(
-        "https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/create_customer",
+        "http://localhost:8080/api/customers/create_customer",
         {
           method: "POST",
           headers: {
@@ -132,6 +132,7 @@ function CreateCustomerComponent() {
       if (!response.ok) {
         // Handle errors here if needed
         console.error("Failed to submit form.");
+        toast.error("Formuläret gick inte att skicka.");
         return;
       }
       console.log("Form submitted:", formData);
@@ -239,7 +240,7 @@ function CreateCustomerComponent() {
           errorOne={errors.city.error}
           errorTwo={errors.postalCode.error}
           maxLengthOne={20}
-          maxLengthTwo={5}
+          maxLengthTwo={6}
         />
       </FormComponent>
       <Toaster position="bottom-center" reverseOrder={false} />
