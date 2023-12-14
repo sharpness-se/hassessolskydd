@@ -78,10 +78,7 @@ describe('Form Validation', () => {
 
   invalidInput.forEach((invalidInput: string) => {
     it(`Tests invalid input for first name: ${invalidInput}`, () => {
-      if(!invalidInput[0]) {
-        cy.get('input[id="firstname"]').type(invalidInput);
-      }
-      
+      cy.get('input[id="firstname"]').type(invalidInput);
       cy.get('button[type="submit"]').click();
 
       cy.get(`input[id="firstname"]`).next('p').first().should('include.text', 'Ogiltigt');
