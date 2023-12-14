@@ -31,6 +31,7 @@ describe('Create Customer Form Test', () => {
     cy.get('button[type="submit"]').click();
 
     cy.wait('@handleSubmit').its('response.statusCode').should('eq', 200);
+    cy.contains('.react-hot-toast-message', 'saved to database').should('be.visible');
   });
 
   it('should submit a customer that already exists', () => {
@@ -42,6 +43,7 @@ describe('Create Customer Form Test', () => {
     cy.get('button[type="submit"]').click();
 
     cy.wait('@handleSubmit').its('response.statusCode').should('eq', 409);
+    cy.contains('.react-hot-toast-message', 'Customer exists!').should('be.visible');
 
     cy.request({
       method: 'POST',
