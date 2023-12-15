@@ -108,4 +108,37 @@ public class CustomerControllerTest extends HassesDbTest {
     assertEquals("mail@email.com", createdCustomer.getEmail());
     assertEquals("TestLastname+987654321", createdCustomer.getCustomerNumber());
   }
+
+  @Test
+  void findByTerm() {
+    List<Customer> customerList = customerController.findCustomersByTerm("Eri");
+    log.info("Response: {}", customerList.toString());
+    assertFalse(customerList.isEmpty());
+    assertEquals(2, customerList.size());
+
+    customerList = customerController.findCustomersByTerm("a");
+    log.info("Response: {}", customerList.toString());
+    assertFalse(customerList.isEmpty());
+    assertEquals(19, customerList.size());
+
+    customerList = customerController.findCustomersByTerm("up");
+    log.info("Response: {}", customerList.toString());
+    assertFalse(customerList.isEmpty());
+    assertEquals(1, customerList.size());
+
+    customerList = customerController.findCustomersByTerm("Joh");
+    log.info("Response: {}", customerList.toString());
+    assertFalse(customerList.isEmpty());
+    assertEquals(2, customerList.size());
+
+    customerList = customerController.findCustomersByTerm("helsing");
+    log.info("Response: {}", customerList.toString());
+    assertFalse(customerList.isEmpty());
+    assertEquals(1, customerList.size());
+
+    customerList = customerController.findCustomersByTerm("555");
+    log.info("Response: {}", customerList.toString());
+    assertFalse(customerList.isEmpty());
+    assertEquals(4, customerList.size());
+  }
 }
