@@ -132,6 +132,40 @@ public class CustomerMapperTest extends HassesDbTest {
     log.info("dbResponse: {}", dbResponse.toString());
     assertFalse(dbResponse.isEmpty());
     assertEquals(19, dbResponse.size());
+
+    searchTerm = "up";
+    dbResponse = customerMapper.findByTerm(searchTerm);
+    log.info("dbResponse: {}", dbResponse.toString());
+    assertFalse(dbResponse.isEmpty());
+    assertEquals(1, dbResponse.size());
+
+    searchTerm = "pu";
+    dbResponse = customerMapper.findByTerm(searchTerm);
+    log.info("dbResponse: {}", dbResponse.toString());
+    assertTrue(dbResponse.isEmpty());
+
+    searchTerm = "Joh";
+    dbResponse = customerMapper.findByTerm(searchTerm);
+    log.info("dbResponse: {}", dbResponse.toString());
+    assertFalse(dbResponse.isEmpty());
+    assertEquals(2, dbResponse.size());
+
+    searchTerm = null;
+    dbResponse = customerMapper.findByTerm(searchTerm);
+    log.info("dbResponse: {}", dbResponse.toString());
+    assertTrue(dbResponse.isEmpty());
+
+    searchTerm = "helsing";
+    dbResponse = customerMapper.findByTerm(searchTerm);
+    log.info("dbResponse: {}", dbResponse.toString());
+    assertFalse(dbResponse.isEmpty());
+    assertEquals(1, dbResponse.size());
+
+    searchTerm = "555";
+    dbResponse = customerMapper.findByTerm(searchTerm);
+    log.info("dbResponse: {}", dbResponse.toString());
+    assertFalse(dbResponse.isEmpty());
+    assertEquals(4, dbResponse.size());
   }
 
 }
