@@ -7,6 +7,7 @@ import useDebounceHook from "../hooks/useDebounceHook";
 import SearchResultComponent from "./searchBar/SearchResultComponent";
 
 export interface Customer {
+  id: string;
   firstname?: string;
   lastname?: string;
   email?: string;
@@ -63,7 +64,7 @@ export default function SearchBar() {
     setSearchQuery(e.target.value);
   };
   const prepareSearchQuery = (query: string) => {
-    const url = `https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/search/${query}`;
+    const url = `http://localhost:8080/api/customers/search/${query}`;
     return encodeURI(url);
   };
   const handleSelect = (select: Customer) => {
@@ -90,7 +91,7 @@ export default function SearchBar() {
 
       if (response.status === 204) {
         // Handle 404 error
-        setSearchResults([{ error: "No Customer Found!" }]);
+        setSearchResults([{ id: "error", error: "No Customer Found!" }]);
       } else {
           const data = await response.json();
           setSearchResults(data);
@@ -157,11 +158,14 @@ export default function SearchBar() {
               {searchResults.length > 0 &&
                 searchResults.map((item) => {
                   return (
+                    <>
                     <SearchResultComponent
                       onSelect={handleSelect}
                       error={item.error}
                       item={item}
-                    />
+                      />
+                      {console.log(item)}
+                      </>
                   );
                 })}
             </div>
