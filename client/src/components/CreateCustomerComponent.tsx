@@ -4,6 +4,7 @@ import SingleFieldInputRow from "../components/form/SingleFieldInputRow";
 import FormComponent from "../components/form/FormComponent";
 import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
+import { baseUrl } from "../settings/baseUrl";
 
 function CreateCustomerComponent() {
   interface FormData {
@@ -114,7 +115,7 @@ function CreateCustomerComponent() {
 
       // Form is valid, handle submission logic here
       const response = await fetch(
-        "https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/create_customer",
+        `${baseUrl}/api/customers/create_customer`,
         {
           method: "POST",
           headers: {
