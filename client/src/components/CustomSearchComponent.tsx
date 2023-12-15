@@ -64,7 +64,7 @@ export default function SearchBar() {
     setSearchQuery(e.target.value);
   };
   const prepareSearchQuery = (query: string) => {
-    const url = `http://localhost:8080/api/customers/search/${query}`;
+    const url = `https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/search/${query}`;
     return encodeURI(url);
   };
   const handleSelect = (select: Customer) => {
