@@ -71,6 +71,13 @@ export default function SearchBar() {
     const selectedCustomer = {
       firstname: select.firstname || "",
       lastname: select.lastname || "",
+      id: select.id,
+      email: select.email,
+      phoneNumber: select.phoneNumber,
+      address: select.address,
+      postalCode: select.postalCode,
+      city: select.city,
+      error: select.error,
     };
     setSelected(selectedCustomer);
     collapseContainer();
@@ -93,14 +100,14 @@ export default function SearchBar() {
         // Handle 404 error
         setSearchResults([{ id: "error", error: "No Customer Found!" }]);
       } else {
-          const data = await response.json();
-          setSearchResults(data);
-          console.log(searchResults);
-        }
+        const data = await response.json();
+        setSearchResults(data);
+        console.log(searchResults);
+      }
     } catch (error) {
       console.error(error);
     }
-    
+
     setIsLoading(false);
   };
   useDebounceHook(searchQuery, 500, handleSearch);
@@ -159,20 +166,20 @@ export default function SearchBar() {
                 searchResults.map((item) => {
                   return (
                     <>
-                    <SearchResultComponent
-                      onSelect={handleSelect}
-                      error={item.error}
-                      item={item}
+                      <SearchResultComponent
+                        onSelect={handleSelect}
+                        error={item.error}
+                        item={item}
                       />
                       {console.log(item)}
-                      </>
+                    </>
                   );
                 })}
             </div>
           }
         </div>
       </motion.div>
-      <p>{selected.firstname + " " + selected?.lastname}</p>
+      <p>{JSON.stringify(selected)}</p>
     </>
   );
 }
