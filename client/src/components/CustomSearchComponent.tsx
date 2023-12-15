@@ -5,6 +5,7 @@ import { useClickOutside } from "react-click-outside-hook";
 import { MoonLoader } from "react-spinners";
 import useDebounceHook from "../hooks/useDebounceHook";
 import SearchResultComponent from "./searchBar/SearchResultComponent";
+import { baseUrl } from "../settings/baseUrl";
 
 export interface Customer {
   id: string;
@@ -64,7 +65,7 @@ export default function SearchBar() {
     setSearchQuery(e.target.value);
   };
   const prepareSearchQuery = (query: string) => {
-    const url = `https://hasses-be-c8520bea6cc2.herokuapp.com/api/customers/search/${query}`;
+    const url = `${baseUrl}/api/customers/search/${query}`;
     return encodeURI(url);
   };
   const handleSelect = (select: Customer) => {

@@ -1,0 +1,1 @@
+export const baseUrl = process.env.NODE_ENV === "production"? "https://hasses-be-c8520bea6cc2.herokuapp.com/" : "http://localhost:8080"
