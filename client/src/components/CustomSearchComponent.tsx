@@ -19,7 +19,11 @@ export interface Customer {
   error?: string;
 }
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onCustomerSelect: (selectedCustomer: Customer) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,6 +85,7 @@ export default function SearchBar() {
       error: select.error,
     };
     setSelected(selectedCustomer);
+    onCustomerSelect(selectedCustomer);
     collapseContainer();
   };
   const handleSearch = async () => {
@@ -181,7 +186,9 @@ export default function SearchBar() {
           }
         </div>
       </motion.div>
-      <p>{JSON.stringify(selected)}</p>
+      <p className="max-w-[34em] ">{JSON.stringify(selected)}</p>
     </>
   );
-}
+};
+
+export default SearchBar;
