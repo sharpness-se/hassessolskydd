@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { IoClose, IoSearch } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
 import { useClickOutside } from "react-click-outside-hook";
@@ -35,12 +35,12 @@ export default function SearchBar() {
     collapse: { height: "3.8em" },
   };
   const containerTransition = { type: "spring", damping: 22, stiffness: 150 };
-  const expandContainer = () => {
+  const expandContainer = useCallback(() => {
     if (searchResults.length > 0) {
       setIsExpanded(true);
     }
-  };
-  const collapseContainer = () => {
+  },[searchResults]);
+  const collapseContainer = useCallback(() => {
     setIsExpanded(false);
     setSearchQuery("");
     setSearchResults([]);
@@ -48,7 +48,7 @@ export default function SearchBar() {
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-  };
+  },[]);
 
   useEffect(() => {
     if (isClickedOutside && isExpanded) {
@@ -57,8 +57,8 @@ export default function SearchBar() {
     if (searchResults.length > 0) {
       expandContainer();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isClickedOutside, searchResults]);
+    
+  }, [isClickedOutside, searchResults, collapseContainer, expandContainer, isExpanded]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
