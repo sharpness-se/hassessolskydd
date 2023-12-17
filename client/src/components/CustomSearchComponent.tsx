@@ -114,19 +114,20 @@ export default function SearchBar() {
   useDebounceHook(searchQuery, 500, handleSearch);
   return (
     <>
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">Kund</label>
       <motion.div
         animate={isExpanded ? "expanded" : "collapse"}
         variants={containerVariants}
         transition={containerTransition}
         ref={parentRef}
-        className="flex flex-col w-[34em] h-[3.8em] bg-white rounded-md shadow-lg overflow-hidden"
+        className="flex flex-col w-[34em] h-[3.8em] bg-white rounded shadow-md overflow-hidden border-gray-200"
       >
         <div className="h-[3.8em] flex relative py-[2px] px-[15px] items-center">
-          <span className=" text-gray-400 text-[27px] mt-1.5 mr-2.5  transition-all duration-200 ease-in-out cursor-pointer hover:text-gray-300 ">
+          <span className=" text-gray-400 text-[27px] mt-1.5 mr-2.5 transition-all duration-200 ease-in-out cursor-pointer hover:text-gray-300">
             <IoSearch />
           </span>
           <input
-            className="w-full h-full min-h-[3.8em] outline-none border-none text-2xl text-indigo-900 font-semibold rounded-md bg-transparent focus:outline-none focus:placeholder-opacity-0 placeholder:transition-all placeholder:duration-500 placeholder:ease-in-out placeholder-gray-400"
+            className="w-full h-full min-h-[3.8em] outline-none text-gray-700 text-2xl font-semibold rounded-md bg-transparent focus:outline-none focus:placeholder-opacity-0 placeholder:transition-all placeholder:duration-500 placeholder:ease-in-out placeholder-gray-400"
             placeholder="Search for Customer..."
             onFocus={expandContainer}
             ref={inputRef}
@@ -137,7 +138,7 @@ export default function SearchBar() {
             {isExpanded && (
               <motion.span
                 onClick={collapseContainer}
-                className=" text-gray-400 text-[27px] mt-1.5 mr-2.5 items-center transition-all duration-200 ease-in-out cursor-pointer hover:text-gray-300 "
+                className=" text-gray-400 text-[27px] mt-1.5 mr-2.5 items-center transition-all duration-200 ease-in-out cursor-pointer hover:text-gray-300"
                 key="close-icon"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
