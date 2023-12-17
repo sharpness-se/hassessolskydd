@@ -1,16 +1,27 @@
-import { useState, useEffect } from "react";
+import { useEffect, useCallback, useRef } from 'react';
 
 export default function useDebounceHook(value, timeout, callback) {
-  const [timer, setTimer] = useState(null);
-  const clearTimer = () => {
-    if (timer) clearTimeout(timer);
-  };
+  const timerRef = useRef(null);
+  const callbackRef = useRef(callback);
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Update the callback ref whenever callback changes
+    callbackRef.current = callback;
+  }, [callback]);
+
   useEffect(() => {
     clearTimer();
-    if (value && callback) {
-      const newTimer = setTimeout(callback, timeout);
-      setTimer(newTimer);
+
+    if (value && callbackRef.current) {
+      const newTimer = setTimeout(callbackRef.current, timeout);
+      timerRef.current = newTimer;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+
+    return () => clearTimer();
+  }, [value, timeout, clearTimer]);
 }
