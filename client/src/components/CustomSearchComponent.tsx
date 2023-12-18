@@ -99,7 +99,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
       });
 
       if (response.status === 204) {
-        // Handle 404 error
+        // Handle no customers found
         setSearchResults([{ id: "error", error: "No Customer Found!" }]);
       } else {
         const data = await response.json();
