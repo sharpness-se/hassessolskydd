@@ -29,10 +29,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selected, setSelected] = useState({
-    firstname: "No",
-    lastname: "Data",
-  });
+
   const inputRef = useRef<HTMLInputElement>(null);
   const containerVariants = {
     expanded: { height: "auto" },
@@ -84,7 +81,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
       city: select.city,
       error: select.error,
     };
-    setSelected(selectedCustomer);
     onCustomerSelect(selectedCustomer);
     collapseContainer();
   };
@@ -108,7 +104,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
       } else {
         const data = await response.json();
         setSearchResults(data);
-        console.log(searchResults);
       }
     } catch (error) {
       console.error(error);
@@ -172,21 +167,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
               {searchResults.length > 0 &&
                 searchResults.map((item) => {
                   return (
-                    <>
+                    <React.Fragment key={item.id+"frag"}>
                       <SearchResultComponent
                         onSelect={handleSelect}
                         error={item.error}
                         item={item}
                       />
-                      {console.log(item)}
-                    </>
+            
+                    </React.Fragment>
                   );
                 })}
             </div>
           }
         </div>
       </motion.div>
-      <p className="max-w-[34em] ">{JSON.stringify(selected)}</p>
     </>
   );
 };

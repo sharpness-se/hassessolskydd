@@ -18,7 +18,7 @@ export default function CreateOrderPageComponent() {
 
   const handleCustomerSelect = (selectedCustomer: Customer) => {
     setCustomer(selectedCustomer);
-    console.log(customer);
+    
   };
 
   return (
@@ -26,30 +26,46 @@ export default function CreateOrderPageComponent() {
       <h1 className="text-5xl mb-11">Skapa Order</h1>
       <div className="flex">
         <div className="flex flex-col flex-grow">
-          <div className="bg-white p-5 rounded w-full mb-5">
-            <SearchBar onCustomerSelect={handleCustomerSelect}/>
+          <div className="bg-white p-5 rounded w-full mb-5 max-h-[7em] z-50">
+            <SearchBar onCustomerSelect={handleCustomerSelect} />
           </div>
           <div className="bg-white rounded p-5 w-full">
-            <h2 className="uppercase tracking-wide text-gray-700 text-xs font-bold">Typ av ärende</h2>
+            <h2 className="uppercase tracking-wide text-gray-700 text-xs font-bold">
+              Typ av ärende
+            </h2>
           </div>
         </div>
         <div className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64">
-          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold">Telefonnummer</p>
-          <p>{customer ? customer?.phoneNumber : '-'}</p>
-          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">Adress</p>
+        <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
+            Namn
+          </p>
+          <p>{customer ? `${customer?.firstname} ${customer.lastname}` : "-"}</p>
+          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
+            Kundnummer
+          </p>
+          <p>{customer ? customer.id : "-"}</p>
+          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
+            E-post
+          </p>
+          <p>{customer ? customer?.email : "-"}</p>
+          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
+            Telefonnummer
+          </p>
+          <p>{customer ? customer?.phoneNumber : "-"}</p>
+          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
+            Adress
+          </p>
           <p>
-          {customer ? (
+            {customer ? (
               <span>
                 {customer?.address},
                 <br />
                 {`${customer?.postalCode} ${customer?.city}`}
               </span>
             ) : (
-              '-'
+              "-"
             )}
           </p>
-          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">E-post</p>
-          <p>{customer ? customer?.email : '-'}</p>
         </div>
       </div>
     </div>
