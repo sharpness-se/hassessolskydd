@@ -37,7 +37,7 @@ public class Customer {
 
     @Pattern(regexp = "^[0-9()+\\- ]*$") //"^[+]?[0-9]+([-\\s][0-9]+)*$"
     @NotBlank
-    @Size(min = 9, max = 20) //@Size(min = 10, max = 20)
+    @Size(min = 8, max = 20) //@Size(min = 10, max = 20)
     private String phoneNumber;
 
     @NotBlank
