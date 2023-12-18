@@ -1,24 +1,11 @@
 import React, { useState } from "react";
 import SearchBar from "../components/CustomSearchComponent";
-
+import { Customer } from "../components/CustomSearchComponent";
 export default function CreateOrderPageComponent() {
-  interface Customer {
-    id: string;
-    firstname?: string;
-    lastname?: string;
-    email?: string;
-    phoneNumber?: string;
-    address?: string;
-    postalCode?: string;
-    city?: string;
-    error?: string;
-  }
-
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
 
   const handleCustomerSelect = (selectedCustomer: Customer) => {
     setCustomer(selectedCustomer);
-    
   };
 
   return (
@@ -36,14 +23,16 @@ export default function CreateOrderPageComponent() {
           </div>
         </div>
         <div className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64">
-        <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
+          <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
             Namn
           </p>
-          <p>{customer ? `${customer?.firstname} ${customer.lastname}` : "-"}</p>
+          <p>
+            {customer ? `${customer?.firstname} ${customer.lastname}` : "-"}
+          </p>
           <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
             Kundnummer
           </p>
-          <p>{customer ? customer.id : "-"}</p>
+          <p>{customer ? customer.customerNumber : "-"}</p>
           <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
             E-post
           </p>

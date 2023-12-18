@@ -8,7 +8,7 @@ import SearchResultComponent from "./searchBar/SearchResultComponent";
 import { baseUrl } from "../settings/baseUrl";
 
 export interface Customer {
-  id: string;
+  id?: string;
   firstname?: string;
   lastname?: string;
   email?: string;
@@ -17,6 +17,7 @@ export interface Customer {
   postalCode?: string;
   city?: string;
   error?: string;
+  customerNumber?: string;
 }
 
 interface SearchBarProps {
@@ -80,6 +81,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
       postalCode: select.postalCode,
       city: select.city,
       error: select.error,
+      customerNumber: select.customerNumber,
     };
     onCustomerSelect(selectedCustomer);
     collapseContainer();
@@ -104,6 +106,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
       } else {
         const data = await response.json();
         setSearchResults(data);
+        console.log(data)
       }
     } catch (error) {
       console.error(error);
