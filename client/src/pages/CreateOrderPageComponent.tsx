@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SearchBar from "../components/CustomSearchComponent";
 import { Customer } from "../components/CustomSearchComponent";
 import CustomerDetailsComponent from "../components/CustomerDetailsComponent";
+import ContactDateComponent from "../components/ContactDateComponent";
 export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
 
@@ -14,16 +15,10 @@ export default function CreateOrderPageComponent() {
       <h1 className="text-5xl mb-11">Skapa Order</h1>
       <div className="flex">
         <div className="flex flex-col flex-grow">
-          <div className="bg-white p-5 rounded w-full mb-5 max-h-[7em] z-50">
-            <SearchBar onCustomerSelect={handleCustomerSelect} />
-          </div>
-          <div className="bg-white rounded p-5 w-full">
-            <h2 className="uppercase tracking-wide text-gray-700 text-xs font-bold">
-              Typ av ärende
-            </h2>
-          </div>
+          <SearchBar onCustomerSelect={handleCustomerSelect} />
+          <ContactDateComponent heading={"Typ av ärende"} />
         </div>
-       <CustomerDetailsComponent customer={customer}/>
+        <CustomerDetailsComponent customer={customer} />
       </div>
     </div>
   );

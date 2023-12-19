@@ -116,7 +116,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
   };
   useDebounceHook(searchQuery, 500, handleSearch);
   return (
-    <>
+    <div className="bg-white p-5 rounded w-full mb-5 max-h-[7em] z-50">
       <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">Kund</label>
       <motion.div
         animate={isExpanded ? "expanded" : "collapse"}
@@ -184,7 +184,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
           }
         </div>
       </motion.div>
-    </>
+    </div>
   );
 };
 
