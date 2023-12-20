@@ -18,7 +18,11 @@ export interface Customer {
   customerNumber: string;
 }
 
-const MuiSearchBarComponent = () => {
+interface SearchBarProps {
+  onCustomerSelect: (selectedCustomer: Customer) => void;
+}
+
+const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
   function Asynchronous() {
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState<Customer[]>([]);
@@ -142,7 +146,10 @@ const MuiSearchBarComponent = () => {
     );
   }
   return (
-    <div className="bg-white p-5 rounded w-full mb-5 max-h-[7em] z-50">
+    <div className="bg-white p-5 rounded w-full mb-5 z-50">
+      <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold mb-3">
+        Välj kund
+      </h2>
       <Asynchronous />
     </div>
   );
