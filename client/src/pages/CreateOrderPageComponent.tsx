@@ -4,6 +4,7 @@ import { Customer } from "../components/searchBar/CustomSearch";
 import CustomerDetailsComponent from "../components/CustomerDetailsComponent";
 import ContactDateComponent from "../components/ContactDateComponent";
 import SearchBarComponent from "../components/searchBar/MuiSearchBarComponent";
+
 export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
 
@@ -16,7 +17,7 @@ export default function CreateOrderPageComponent() {
       <h1 className="text-5xl mb-11">Skapa Order</h1>
       <div className="flex">
         <div className="flex flex-col flex-grow">
-          <SearchBarComponent />
+          <SearchBarComponent onCustomerSelect={handleCustomerSelect}/>
           <ContactDateComponent heading={"Typ av ärende"} />
         </div>
         <CustomerDetailsComponent customer={customer} />
