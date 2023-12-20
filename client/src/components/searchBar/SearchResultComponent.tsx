@@ -1,11 +1,10 @@
 import React from "react";
-import { Customer } from "../CustomSearchComponent";
+import { Customer } from "./CustomSearch";
 
 interface SearchResultProps {
   item: Customer;
   error?: string | undefined;
   onSelect: (item: Customer) => void;
- 
 }
 
 const SearchResultComponent: React.FC<SearchResultProps> = ({
@@ -16,8 +15,8 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
   return error ? (
     <p key={item.id}>No Customer Found!</p>
   ) : (
-      <p
-        key={item.id+"para"}
+    <p
+      key={item.id + "para"}
       onClick={(e) => onSelect(item)}
       className="block my-2 hover:bg-blue-600 hover:text-white py-1 px-6 shadow-sm"
     >
