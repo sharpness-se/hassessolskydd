@@ -14,3 +14,6 @@ out/
 
 server/build/libs/server-0.0.1-SNAPSHOT.jar
 node_modules
+
+# Ignore vscode settings
+.vscode
