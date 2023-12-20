@@ -122,7 +122,7 @@ const MuiSearchBarComponent = () => {
           <TextField
             multiline
             {...params}
-            label="Asynchronous"
+            label="Kund"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             InputProps={{
