@@ -11,12 +11,6 @@ const CustomerDetailsComponent: React.FC<CustomerDetailsProps> = ({
   return (
     <div className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64">
       <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
-        Namn
-      </p>
-      <p id="name">
-        {customer ? `${customer?.firstname} ${customer.lastname}` : "-"}
-      </p>
-      <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
         Kundnummer
       </p>
       <p id="kundnummer">{customer ? customer.customerNumber : "-"}</p>
