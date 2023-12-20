@@ -7,7 +7,7 @@ interface ContactDateProps{
 const ContactDateComponent: React.FC<ContactDateProps> =({heading})=> {
   return (
     <div className="bg-white rounded p-5 w-full">
-            <h2 className="uppercase tracking-wide text-gray-700 text-xs font-bold">
+            <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold">
               {heading}
             </h2>
           </div>
