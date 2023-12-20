@@ -10,42 +10,37 @@ const CustomerDetailsComponent: React.FC<CustomerDetailsProps> = ({
 }) => {
   return (
     <div className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64">
-      <label
-        htmlFor="name"
-        className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5"
+      <p
+        className="uppercase tracking-wide text-gray-700 text-xs font-bold"
       >
         Namn
-      </label>
+      </p>
       <p id="name">
         {customer ? `${customer?.firstname} ${customer.lastname}` : "-"}
       </p>
-      <label
-        htmlFor="kundnummer"
+      <p
         className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5"
       >
         Kundnummer
-      </label>
+      </p>
       <p id="kundnummer">{customer ? customer.customerNumber : "-"}</p>
-      <label
-        id="email"
+      <p
         className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5"
       >
         E-post
-      </label>
+      </p>
       <p id="email">{customer ? customer?.email : "-"}</p>
-      <label
-        htmlFor="telefon"
+      <p
         className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5"
       >
         Telefonnummer
-      </label>
+      </p>
       <p id="telefon">{customer ? customer?.phoneNumber : "-"}</p>
-      <label
-        htmlFor="adress"
+      <p
         className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5"
       >
         Adress
-      </label>
+      </p>
       <p id="adress">
         {customer ? (
           <span>
