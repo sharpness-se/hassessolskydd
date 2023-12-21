@@ -1,13 +1,9 @@
 import React, { useState} from "react";
 
-import { Customer } from "../components/searchBar/MuiSearchBarComponent";
+import MuiSearchBarComponent, { Customer } from "../components/searchBar/MuiSearchBarComponent";
 import CustomerDetailsComponent from "../components/CustomerDetailsComponent";
 import ContactDateComponent from "../components/ContactDateComponent";
-
-//import PrimeReactSearchComponent from "../components/searchBar/PrimeReactSearchComponent";
-import MuiSearchBarComponent from "../components/searchBar/MuiSearchBarComponent";
-
-import { list } from "../components/searchBar/fakedata";
+import SearchBarComponent from "../components/searchBar/MuiSearchBarComponent";
 
 export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
@@ -25,7 +21,7 @@ export default function CreateOrderPageComponent() {
   //   }
   // }, [customer]);
   return (
-    <div className="flex min-h-screen flex-col items-center p-24 ">
+    <div className="flex min-h-screen flex-col items-center p-24 xl:px-60">
       <h1 className="text-5xl mb-11">Skapa Order</h1>
       <div className="flex">
         <div className="flex flex-col flex-grow">
@@ -41,8 +37,20 @@ export default function CreateOrderPageComponent() {
           />
           <ContactDateComponent heading={"Typ av ärende"} />
         </div>
-        <CustomerDetailsComponent customer={customer} />
+        <div className="flex-2">
+          <CustomerDetailsComponent customer={customer} />
+        </div>
       </div>
+      <Accordion title={"Typ av ärende"}>
+        <div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat,
+            omnis quo. Perferendis, quos temporibus asperiores, fugit veritatis
+            sed repellendus voluptate laudantium illum aspernatur vero?
+            Quibusdam doloribus dolor voluptates natus est.
+          </p>
+        </div>
+      </Accordion>
     </div>
   );
 }

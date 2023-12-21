@@ -1,7 +1,7 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import CircularProgress from "@mui/material/CircularProgress";
+//import CircularProgress from "@mui/material/CircularProgress";
 // import { baseUrl } from "../../settings/baseUrl";
 
 // import useDebounceHook from "../../hooks/useDebounceHook";
@@ -109,7 +109,6 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
         
         //disabled={selectedCustomer ? true : false}
         id="asynchronous-demo"
-        sx={{ width: 400 }}
         open={open}
         value={selectedCustomer}
         onChange={(event, value) => {
@@ -132,7 +131,11 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
             firstname: string;
             lastname: string;
           },
-          value: { firstname: string; lastname: string; customerNumber: string }
+          value: {
+            firstname: string;
+            lastname: string;
+            customerNumber: string;
+          },
         ) =>
           `${option.firstname} ${option.lastname}, ${option.customerNumber}` ===
           `${value.firstname} ${value.lastname}, ${value.customerNumber}`
