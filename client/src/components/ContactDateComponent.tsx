@@ -13,7 +13,7 @@ const ContactDateComponent: React.FC<ContactDateProps> =({heading})=> {
         {heading}
       </h2>
       <p className="uppercase tracking-wide text-gray-700 text-xs font-bold">
-        Kontaktdatum
+        Kontakt
       </p>
       <p>
         {currentDate.toLocaleDateString()}  
