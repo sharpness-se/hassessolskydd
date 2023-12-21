@@ -18,7 +18,7 @@ export default function CreateOrderPageComponent() {
       <div className="flex">
         <div className="flex flex-col flex-grow">
           <SearchBarComponent onCustomerSelect={handleCustomerSelect}/>
-          <ContactDateComponent heading={"Typ av ärende"} />
+          <ContactDateComponent heading={"Datum"} />
         </div>
         <CustomerDetailsComponent customer={customer} />
       </div>
