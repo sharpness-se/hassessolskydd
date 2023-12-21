@@ -1,5 +1,5 @@
 import React from "react";
-import { Customer } from "./searchBar/CustomSearch";
+import { Customer } from "./searchBar/MuiSearchBarComponent";
 
 interface CustomerDetailsProps {
   customer: Customer | undefined;

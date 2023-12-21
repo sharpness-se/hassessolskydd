@@ -2,15 +2,15 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
-import { baseUrl } from "../../settings/baseUrl";
+// import { baseUrl } from "../../settings/baseUrl";
 
-import useDebounceHook from "../../hooks/useDebounceHook";
+// import useDebounceHook from "../../hooks/useDebounceHook";
 export interface Customer {
-  id?: string;
+  id?: number;
   firstname: string;
   lastname: string;
   email?: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   address?: string;
   postalCode?: string;
   city?: string;
@@ -19,22 +19,31 @@ export interface Customer {
 }
 
 interface SearchBarProps {
-  onCustomerSelect: (selectedCustomer: Customer) => void;
+  setSelectedCustomer: (selectedCustomer: Customer | undefined) => void;
+  selectedCustomer: Customer | undefined;
+  //inputValue: string;
+  //onInputChange: (newInputValue: string) => void;
+  options: Customer[] | [];
+  setOptions: (newInputValue: Customer[]) => void;
+  //selectedReturn: Customer | undefined;
+  //setSelectedReturn: React.Dispatch<React.SetStateAction<Customer | undefined>>;
 }
 
-const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
+const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
+  selectedCustomer,
+  setSelectedCustomer,
+  //inputValue,
+  //onInputChange,
+  options,
+  setOptions,
+  //selectedReturn,
+  //setSelectedReturn,
+}) => {
   function Asynchronous() {
     const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState<Customer[]>([]);
-    const [loading, setLoading] = React.useState(false);
+    //const [options, setOptions] = React.useState<Customer[]>([]);
     const [searchQuery, setSearchQuery] = React.useState("");
-    const [selectedValue, setSelectedValue] = React.useState<
-      Customer | undefined
-    >(undefined);
-    const prepareSearchQuery = (query: string) => {
-      const url = `${baseUrl}/api/customers/search/${query}`;
-      return encodeURI(url);
-    };
+    
     const CustomOption: React.FC<{ customer: Customer }> = ({
       customer,
       ...props
@@ -49,52 +58,68 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) =
         </span>
       </div>
     );
-    const handleSearch = async () => {
-      if (!searchQuery.trim()) return;
+    //const [loading, setLoading] = React.useState(false);
+    // const prepareSearchQuery = (query: string) => {
+    //   const url = `${baseUrl}/api/customers/search/${query}`;
+    //   return encodeURI(url);
+    // };
+    // const handleSearch = async () => {
+    //   //if (!searchQuery.trim()) return;
+    //   console.log("searchQuery" + searchQuery);
+    //   const URL = prepareSearchQuery(searchQuery);
+    //   setLoading(true);
+    //   setSelectedReturn(undefined);
+    //   try {
+    //     const response = await fetch(URL, {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     });
 
-      const URL = prepareSearchQuery(searchQuery);
-      setOpen(true);
-      setLoading(true);
-      try {
-        const response = await fetch(URL, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+    //     if (response.status === 204) {
+    //       // Handle no customers found
+    //       // setOptions([{ id: "error", error: "No Customer Found!" }]);
+    //       console.log("No Customers Found!");
+    //     } else {
+    //       const data = await response.json();
+    //       setOptions(data);
+    //       console.log(data);
+    //       setOpen(true);
+    //       const inputElement = document.getElementById("mui-search-bar-input");
+    //       if (inputElement) {
+    //         inputElement.focus();
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    //   setLoading(false);
+    //   // setOpen(true)
+    // };
 
-        if (response.status === 204) {
-          // Handle no customers found
-          // setOptions([{ id: "error", error: "No Customer Found!" }]);
-          console.log("No Customers Found!");
-        } else {
-          const data = await response.json();
-          setOptions(data);
-          console.log(data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      setLoading(false);
-    };
+    // useDebounceHook(searchQuery, 500, handleSearch);
 
-    useDebounceHook(searchQuery, 500, handleSearch);
     React.useEffect(() => {
-      if (!open) {
-        setOptions([]);
-      }
+     
     }, [open]);
 
     return (
       <Autocomplete
-        multiple
-        disabled={selectedValue ? true : false}
+        
+        //disabled={selectedCustomer ? true : false}
         id="asynchronous-demo"
         sx={{ width: 400 }}
         open={open}
-        // onChange={(event, value) => {
-        //     setSelectedValue(value);
-        //   }}
+        value={selectedCustomer}
+        onChange={(event, value) => {
+          if (value) {
+            setSelectedCustomer(value);
+          } else {
+            setSelectedCustomer(undefined);
+          }
+        }}
+        
         onOpen={() => {
           setOpen(true);
         }}
@@ -118,13 +143,18 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) =
           customerNumber: string;
         }) => `${option.firstname} ${option.lastname}`}
         options={options}
-        loading={loading}
+       // loading={loading}
         renderOption={(props, option) => (
           <CustomOption {...props} customer={option} />
         )}
+        //inputValue={searchQuery} // Use inputValue instead of value
+        // onInputChange={(event, newInputValue) => {
+        //   console.log("new search:")
+        //   setSearchQuery(newInputValue);
+        // }}
         renderInput={(params) => (
           <TextField
-            multiline
+            
             {...params}
             label="Kund"
             value={searchQuery}
@@ -133,9 +163,9 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) =
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {loading ? (
+                  {/* {loading ? (
                     <CircularProgress color="inherit" size={20} />
-                  ) : null}
+                  ) : null} */}
                   {params.InputProps.endAdornment}
                 </React.Fragment>
               ),
