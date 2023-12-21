@@ -22,7 +22,9 @@ interface SearchBarProps {
   onCustomerSelect: (selectedCustomer: Customer) => void;
 }
 
-const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
+const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
+  onCustomerSelect,
+}) => {
   function Asynchronous() {
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState<Customer[]>([]);
@@ -90,7 +92,6 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) =
         multiple
         disabled={selectedValue ? true : false}
         id="asynchronous-demo"
-        sx={{ width: 400 }}
         open={open}
         // onChange={(event, value) => {
         //     setSelectedValue(value);
@@ -107,7 +108,11 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({ onCustomerSelect }) =
             firstname: string;
             lastname: string;
           },
-          value: { firstname: string; lastname: string; customerNumber: string }
+          value: {
+            firstname: string;
+            lastname: string;
+            customerNumber: string;
+          },
         ) =>
           `${option.firstname} ${option.lastname}, ${option.customerNumber}` ===
           `${value.firstname} ${value.lastname}, ${value.customerNumber}`
