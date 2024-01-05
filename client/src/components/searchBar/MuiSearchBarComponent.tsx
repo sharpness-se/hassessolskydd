@@ -42,22 +42,24 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
   function Asynchronous() {
     const [open, setOpen] = React.useState(false);
     //const [options, setOptions] = React.useState<Customer[]>([]);
-    const [searchQuery, setSearchQuery] = React.useState("");
-    
-    const CustomOption: React.FC<{ customer: Customer }> = ({
-      customer,
-      ...props
-    }) => (
-      <div className="hover:bg-blue-500 hover:text-white">
-        <span {...props}>
-          {customer.firstname + " " + customer.lastname}
-          <br />
-          {customer.email}
-          <br />
-          {customer.phoneNumber}
-        </span>
-      </div>
-    );
+    const [searchQuery, setSearchQuery] = React.useState<{
+      firstname: string;
+      lastname: string;
+    } | null>(null);
+    // const CustomOption: React.FC<{ customer: Customer }> = ({
+    //   customer,
+    //   ...props
+    // }) => (
+    //   <div className="hover:bg-blue-500 hover:text-white" {...props}>
+    //     <span>
+    //       {customer.firstname + " " + customer.lastname}
+    //       <br />
+    //       {customer.email}
+    //       <br />
+    //       {customer.phoneNumber}
+    //     </span>
+    //   </div>
+    // );
     //const [loading, setLoading] = React.useState(false);
     // const prepareSearchQuery = (query: string) => {
     //   const url = `${baseUrl}/api/customers/search/${query}`;
@@ -99,14 +101,9 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
     // };
 
     // useDebounceHook(searchQuery, 500, handleSearch);
-
-    React.useEffect(() => {
-     
-    }, [open]);
-
     return (
       <Autocomplete
-        
+        sx={{ width: "10em", minWidth: 400 }}
         //disabled={selectedCustomer ? true : false}
         id="asynchronous-demo"
         open={open}
@@ -114,11 +111,14 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
         onChange={(event, value) => {
           if (value) {
             setSelectedCustomer(value);
+            setSearchQuery({
+              firstname: value.firstname,
+              lastname: value.lastname,
+            });
           } else {
             setSelectedCustomer(undefined);
           }
         }}
-        
         onOpen={() => {
           setOpen(true);
         }}
@@ -130,49 +130,101 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
             customerNumber: string;
             firstname: string;
             lastname: string;
+            phoneNumber?: string;
+            email?: string;
           },
           value: {
             firstname: string;
             lastname: string;
             customerNumber: string;
-          },
+            phoneNumber?: string;
+            email?: string;
+          }
         ) =>
-          `${option.firstname} ${option.lastname}, ${option.customerNumber}` ===
-          `${value.firstname} ${value.lastname}, ${value.customerNumber}`
+          `${option.firstname} ${option.lastname}, ${option.customerNumber} ${option.phoneNumber} ${option.email}` ===
+          `${value.firstname} ${value.lastname}, ${value.customerNumber} ${value.phoneNumber} ${value.email}`
         }
         getOptionLabel={(option: {
           firstname: string;
           lastname: string;
-          customerNumber: string;
-        }) => `${option.firstname} ${option.lastname}`}
+          email?: string;
+          phoneNumber?: string;
+          customerNumber?: string;
+        }) =>
+          `${option.firstname} ${option.lastname}, ${option.phoneNumber} ${option.email}`
+        }
+
         options={options}
-       // loading={loading}
-        renderOption={(props, option) => (
-          <CustomOption {...props} customer={option} />
-        )}
+        // loading={loading}
+        renderOption={(props, option, { inputValue }) => {
+          function highlightText(
+            inputString: string,
+            inputValue: string
+          ): JSX.Element[] {
+            const escapedInputValue = inputValue.replace(
+              /[.*+?^${}()|[\]\\]/g,
+              "\\$&"
+            );
+            const regex = new RegExp(`(${escapedInputValue})`, "gi");
+            const parts: string[] = inputString.split(regex);
+
+            return parts.map((part, index) => (
+              <span
+                key={index}
+                style={index % 2 === 1 ? { fontWeight: 700 } : undefined}
+              >
+                {part}
+              </span>
+            ));
+          }
+          return (
+            <li
+              {...props}
+              className="hover:bg-blue-600 hover:text-white pb-2 pl-8"
+            >
+              <div>
+                <span>
+                  {highlightText(
+                    `${option.firstname + " " + option.lastname}`,
+                    inputValue
+                  )}
+                  <br />
+                  {highlightText(`${option.email}`, inputValue)}
+                  <br />
+                  {highlightText(`${option.phoneNumber}`, inputValue)}
+                </span>
+              </div>
+            </li>
+          );
+         
+        }}
         //inputValue={searchQuery} // Use inputValue instead of value
         // onInputChange={(event, newInputValue) => {
         //   console.log("new search:")
         //   setSearchQuery(newInputValue);
         // }}
+        classes={{}}
         renderInput={(params) => (
           <TextField
-            
             {...params}
             label="Kund"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <React.Fragment>
-                  {/* {loading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : null} */}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
-              ),
-            }}
+            // value={searchQuery}
+            // onChange={(e) =>
+            //   setSearchQuery(
+            //     `${selectedCustomer?.firstname} ${selectedCustomer?.lastname}`
+            //   )
+            // }
+            // InputProps={{
+            //   ...params.InputProps,
+            //   endAdornment: (
+            //     <React.Fragment>
+            //        {loading ? (
+            //         <CircularProgress color="inherit" size={20} />
+            //       ) : null} 
+            //       {params.InputProps.endAdornment}
+            //     </React.Fragment>
+            //   ),
+            // }}
           />
         )}
       />

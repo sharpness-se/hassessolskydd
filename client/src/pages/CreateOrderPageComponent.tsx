@@ -3,7 +3,9 @@ import React, { useState} from "react";
 import MuiSearchBarComponent, { Customer } from "../components/searchBar/MuiSearchBarComponent";
 import CustomerDetailsComponent from "../components/CustomerDetailsComponent";
 import ContactDateComponent from "../components/ContactDateComponent";
-import SearchBarComponent from "../components/searchBar/MuiSearchBarComponent";
+import { list } from "../components/searchBar/fakedata";
+import Accordion from "../components/Accordion";
+
 
 export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
