@@ -41,11 +41,12 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
 }) => {
   function Asynchronous() {
     const [open, setOpen] = React.useState(false);
-    //const [options, setOptions] = React.useState<Customer[]>([]);
     const [searchQuery, setSearchQuery] = React.useState<{
       firstname: string;
       lastname: string;
     } | null>(null);
+
+    //const [options, setOptions] = React.useState<Customer[]>([]);
     // const CustomOption: React.FC<{ customer: Customer }> = ({
     //   customer,
     //   ...props
@@ -111,10 +112,10 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
         onChange={(event, value) => {
           if (value) {
             setSelectedCustomer(value);
-            setSearchQuery({
-              firstname: value.firstname,
-              lastname: value.lastname,
-            });
+            // setSearchQuery({
+            //   firstname: value.firstname,
+            //   lastname: value.lastname,
+            // });
           } else {
             setSelectedCustomer(undefined);
           }
