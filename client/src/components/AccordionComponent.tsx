@@ -10,7 +10,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white rounded p-5 w-full">
+    <div className="bg-white rounded p-5 mx-5 max-w-3xl w-[715px]">
       <div
         className="flex justify-between items-center cursor-pointer"
         onClick={() => setIsExpanded((prevIsExpanded) => !prevIsExpanded)}
