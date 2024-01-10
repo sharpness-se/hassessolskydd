@@ -8,23 +8,33 @@ interface CustomerDetailsProps {
 const CustomerDetailsComponent: React.FC<CustomerDetailsProps> = ({
   customer,
 }) => {
+  const renderDetail = (
+    id: string,
+    label: string,
+    customer: Customer | undefined,
+    property: keyof Customer
+  ) => {
+    const detail = customer ? customer[property] : undefined;
+    return (
+      <>
+        <p className="uppercase tracking-wide text-gray-700 text-xs font-bold">
+          {label}
+        </p>
+        <p className="pb-5" id={id}>
+          {detail !== undefined ? detail : "-"}
+        </p>
+      </>
+    );
+  };
   return (
-    <div className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64" id="selectedResults">
+    <div
+      className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64 pt-5"
+      id="selectedResults"
+    >
+      {renderDetail("kundnummer", "Kundnummer", customer, "customerNumber")}
+      {renderDetail("email", "E-post", customer, "email")}
+      {renderDetail("telefon", "Telefonnummer", customer, "phoneNumber")}
       <p className="uppercase tracking-wide text-gray-700 text-xs font-bold">
-        Kundnummer
-      </p>
-      <p id="kundnummer">{customer ? customer.customerNumber : "-"}</p>
-      <p
-        className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5"
-      >
-        E-post
-      </p>
-      <p id="email">{customer ? customer?.email : "-"}</p>
-      <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
-        Telefonnummer
-      </p>
-      <p id="telefon">{customer ? customer?.phoneNumber : "-"}</p>
-      <p className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5">
         Adress
       </p>
       <p id="adress">
