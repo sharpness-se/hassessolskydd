@@ -106,7 +106,8 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
       <Autocomplete
         sx={{ width: "10em", minWidth: 400 }}
         //disabled={selectedCustomer ? true : false}
-        id="asynchronous-demo"
+        id="muiAutocomplete"
+        data-test="autocomplete"
         open={open}
         value={selectedCustomer}
         onChange={(event, value) => {

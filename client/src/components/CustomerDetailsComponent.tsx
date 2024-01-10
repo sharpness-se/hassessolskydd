@@ -9,13 +9,12 @@ const CustomerDetailsComponent: React.FC<CustomerDetailsProps> = ({
   customer,
 }) => {
   return (
-    <div className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64">
+    <div className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64" id="selectedResults">
       <p className="uppercase tracking-wide text-gray-700 text-xs font-bold">
         Kundnummer
       </p>
       <p id="kundnummer">{customer ? customer.customerNumber : "-"}</p>
       <p
-        id="email"
         className="uppercase tracking-wide text-gray-700 text-xs font-bold mt-5"
       >
         E-post

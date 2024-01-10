@@ -9,7 +9,7 @@ const ContactDateComponent: React.FC<ContactDateProps> = ({ heading }) => {
 
   return (
     <div className="bg-white rounded p-5 w-full">
-      <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold mb-3">
+      <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold mb-1">
         {heading}
       </h2>
       <p className="uppercase tracking-wide text-gray-700 text-xs font-bold">
