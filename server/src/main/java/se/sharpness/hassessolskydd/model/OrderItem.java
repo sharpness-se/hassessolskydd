@@ -3,6 +3,8 @@ package se.sharpness.hassessolskydd.model;
 import lombok.Data;
 
 @Data
-public abstract class Product {
+public class OrderItem {
     private int id;
+    private int orderId;
+    private int itemId;
 }

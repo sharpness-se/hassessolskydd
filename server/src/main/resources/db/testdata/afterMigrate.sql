@@ -32,8 +32,8 @@ VALUES
 -- Insert sample data into the "public.installation_details" table
 INSERT INTO public.installation_details (id, order_id, is_normal, facade_details, floor_details, cable_length, remote_control, lift_needed)
 VALUES
-    (-1, 1, true, 'Brick facade', '1st floor', 30, true, false),
-    (-2, 2, false, 'Wooden facade', '2nd floor', 40, false, true) ON CONFLICT DO NOTHING;
+    (-1, -1, true, 'Brick facade', '1st floor', 30, true, false),
+    (-2, -2, false, 'Wooden facade', '2nd floor', 40, false, true) ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.products" table
 INSERT INTO public.products (id, plissegardin, terassmarkis)
@@ -42,19 +42,46 @@ VALUES
     (-2, 0, 1) ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.order" table
-INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, products, installation_details, indooroutdoor)
+INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, indooroutdoor)
 VALUES
-    (-1, 1, '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 1, 1, 'INDOOR'),
-    (-2, 2, '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 2, 2, 'OUTDOOR') ON CONFLICT DO NOTHING;
+    (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 'INDOOR'),
+    (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 'OUTDOOR'),
+    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 2', 'OUTDOOR') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.plissegardin" table
 INSERT INTO public.plissegardin (id, order_id, measure_type, width, height, weave_number, model, mounting, allmogebeslag, controls, control_side, draw_string_colour, cassette_colour, indoor_outdoor, is_external_order)
 VALUES
-    (-1, 1, 'Inside Mount', 120, 150, 'Weave 1', 'Model A', 'Ceiling', false, 'Manual', 'Left', 'White', 'Silver', true, false),
-    (-2, 2, 'Outside Mount', 200, 180, 'Weave 2', 'Model B', 'Wall', true, 'Motorized', 'Right', 'Black', 'Black', false, true) ON CONFLICT DO NOTHING;
+    (-1, -1, 'Inside Mount', 120, 150, 'Weave 1', 'Model A', 'Ceiling', false, 'Manual', 'Left', 'White', 'Silver', true, false),
+    (-2, -2, 'Outside Mount', 200, 180, 'Weave 2', 'Model B', 'Wall', true, 'Motorized', 'Right', 'Black', 'Black', false, true) ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.terassmarkis" table
 INSERT INTO public.terassmarkis (id, order_id, measuring_type, model, weave_number, controls, length, width, facade_details, sun_wind_automation, shake_sensor, support_legs, indoor_outdoor)
 VALUES
-    (-1, 1, 'Outside Mount', 'Model X', 'Weave 3', 'Motorized', 300, 250, 'Brick facade', true, false, true, false),
-    (-2, 2, 'Inside Mount', 'Model Y', 'Weave 4', 'Manual', 400, 300, 'Wooden facade', false, true, false, true) ON CONFLICT DO NOTHING;
+    (-1, -1, 'Outside Mount', 'Model X', 'Weave 3', 'Motorized', 300, 250, 'Brick facade', true, false, true, false),
+    (-2, -2, 'Inside Mount', 'Model Y', 'Weave 4', 'Manual', 400, 300, 'Wooden facade', false, true, false, true) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.articles (id, name)
+VALUES
+    (-1, 'persienn'),
+    (-2, 'fönstermarkis') ON CONFLICT DO NOTHING;
+
+INSERT INTO public.order_items (id, order_id, item_id)
+VALUES
+    (-1, -1, -1),
+    (-2, -2, -2),
+    (-3, -1, -1),
+    (-4, -1, -2) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.item_attributes (id, order_items_id, attribute, value)
+VALUES
+    (-1, -1, 'width', '1200'),
+    (-2, -1, 'height', '1500'),
+    (-3, -1, 'colour', 'white'),
+    (-4, -2, 'width', '2000'),
+    (-5, -2, 'height', '1800'),
+    (-6, -3, 'width', '1200'),
+    (-7, -3, 'height', '1500'),
+    (-8, -3, 'colour', 'pink'),
+    (-9, -4, 'markisfärg', 'rosa'),
+    (-10, -4, 'bredd', '2000'),
+    (-11, -4, 'höjd', '1800') ON CONFLICT DO NOTHING;

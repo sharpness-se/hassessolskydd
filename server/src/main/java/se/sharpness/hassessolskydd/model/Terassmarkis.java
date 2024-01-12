@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Terassmarkis extends Product {
 
-    private Long id;
+    private int id;
     private String measuringType;
     private String model;
     private String weaveNumber;

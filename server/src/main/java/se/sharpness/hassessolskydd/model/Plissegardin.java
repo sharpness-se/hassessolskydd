@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Plissegardin extends Product {
 
-    private Long id;
+    private int id;
     private String measureType;
     private int width;
     private int height;

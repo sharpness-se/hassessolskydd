@@ -9,14 +9,22 @@ import java.util.List;
 public class Order {
 
     private Long id;
-    private Long customerId;
+    private String customerNumber;
     private LocalDateTime firstContact;
     private LocalDateTime measurementDate;
     private LocalDateTime installationDate;
     private String notes;
     //Photos
     private InstallationDetails installationDetails;
-    private List<Product> products;
     private IndoorOutdoor indoorOutdoor;
+    private List<Article> orderItems;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 }
