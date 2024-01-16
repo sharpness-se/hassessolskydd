@@ -7,11 +7,17 @@ import CustomerDetailsComponent from "../components/CustomerDetailsComponent";
 import ContactDateComponent from "../components/ContactDateComponent";
 import Accordion from "../components/AccordionComponent";
 import { baseUrl } from "../settings/baseUrl";
+import CustomerCartComponent from "../components/cart/CustomerCartComponent";
+import CartItemComponent from "../components/cart/CartItemComponent";
+import FormComponent from "../components/form/FormComponent";
+import DoubleFieldInputRow from "../components/form/DoubleFieldInputRow";
+import CreateOrderFormComponent from "../components/createOrderForm/CreateOrderFormComponent";
 
 export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
   const [options, setOptions] = React.useState<Customer[]>([]);
-
+  const [hidden, setHidden] = useState(true);
+  const [productOptions, setProductOptions]= useState("")
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -59,17 +65,22 @@ export default function CreateOrderPageComponent() {
           <CustomerDetailsComponent customer={customer} />
         </div>
       </div>
-      
-        <Accordion title={"Typ av ärende"}>
-          <div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat,
-              omnis quo. Perferendis, quos temporibus asperiores, fugit
-              veritatis sed repellendus voluptate laudantium illum aspernatur
-              vero? Quibusdam doloribus dolor voluptates natus est.
-            </p>
-          </div>
-        </Accordion>
+      <Accordion title={"Typ av ärende"} applyHeight>
+        {hidden&&<div className={"flex justify-center items-center w-full h-full"}>
+          <label htmlFor="mySelect" className="tracking-wide uppercase font-bold text-s text-gray-700 mr-5">Välj en produkt:</label>
+          <select id="myselect" onChange={(e) => { setProductOptions(e.target.value); setHidden(false)}} value={productOptions} className="p-2 px-3 border font-bold text-s text-gray-700">
+            <option className="text-xs font-bold text-gray-700" value="" disabled hidden>Produkt...</option>
+            <option value="Pilsegardin">Pilsegardin</option>
+          </select>
+        </div>}
+        {!hidden&&productOptions==="Pilsegardin"&&<CreateOrderFormComponent />}
+      </Accordion>
+
+      <CustomerCartComponent>
+        <CartItemComponent />
+        <CartItemComponent />
+        <CartItemComponent />
+      </CustomerCartComponent>
     </div>
   );
 }
