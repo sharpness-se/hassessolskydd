@@ -8,7 +8,7 @@ const ContactDateComponent: React.FC<ContactDateProps> = ({ heading }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   return (
-    <div className="bg-white rounded p-5 w-full">
+    <div className="bg-white rounded p-5 w-full pb-11">
       <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold mb-1">
         {heading}
       </h2>
