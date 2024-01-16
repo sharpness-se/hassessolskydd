@@ -171,7 +171,7 @@ function CreateCustomerComponent() {
   return (
     <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
       <h2 className="text-xl font-bold text-gray-800 mb-3">Personuppgifter</h2>
-      <FormComponent onSubmit={handleSubmit}>
+      <FormComponent submitButtonText={"Skapa Kund"} backButtonText="Tillbaka" onSubmit={handleSubmit}>
         <DoubleFieldInputRow
           labelOne="förnamn"
           labelTwo="efternamn"

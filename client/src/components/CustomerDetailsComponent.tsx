@@ -28,7 +28,7 @@ const CustomerDetailsComponent: React.FC<CustomerDetailsProps> = ({
   };
   return (
     <div
-      className="bg-white rounded p-5 flex-grow h-auto ml-5 w-64 pt-5"
+      className="bg-white rounded p-5 flex-grow h-[284px] ml-5 w-64 pt-5 mb-5"
       id="selectedResults"
     >
       {renderDetail("kundnummer", "Kundnummer", customer, "customerNumber")}
