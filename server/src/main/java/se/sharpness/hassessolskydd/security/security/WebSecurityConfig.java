@@ -43,6 +43,7 @@ public class WebSecurityConfig {
             .requestMatchers("/public/**").permitAll()
             .requestMatchers("/hello/**").permitAll()
             .requestMatchers("/auth/login").permitAll()
+            .requestMatchers("/api/order-items").permitAll()
             .requestMatchers("/admin").hasRole("ADMIN")
             .anyRequest().authenticated()
           );

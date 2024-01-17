@@ -119,6 +119,8 @@ CREATE SEQUENCE public.order_id_seq
 
 ALTER SEQUENCE public.order_id_seq OWNED BY public.order.id;
 
+--ALTER TABLE ONLY public.order ALTER COLUMN id SET DEFAULT nextval('public.order_id_seq'::regclass);
+
 -----------------------------------------------------------------
 
 

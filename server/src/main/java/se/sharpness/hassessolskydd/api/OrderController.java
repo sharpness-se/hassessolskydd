@@ -42,9 +42,13 @@ private final OrderMapper orderMapper;
 
         final var result = orderMapper.findAllOrdersByCustomerNumber(customerNumber);
         if (result != null && !result.isEmpty()) {
+            for (Order order : result) {
+                int orderId = order.getId();
+                order.setOrderItems(defineArticles(orderId));
+            }
             return result;
         } else {
-            throw new Exception("Could not find orders for this Customer"); //TODO: crate specific exceptions
+            throw new Exception("Could not find orders for this Customer");
         }
     }
 
