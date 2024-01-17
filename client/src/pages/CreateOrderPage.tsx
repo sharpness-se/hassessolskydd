@@ -8,7 +8,7 @@ import ContactDateComponent from "../components/ContactDateComponent";
 import Accordion from "../components/AccordionComponent";
 import { baseUrl } from "../settings/baseUrl";
 import CustomerCartComponent from "../components/cart/CustomerCartComponent";
-import CreateOrderFormComponent from "../components/createOrderForm/CreateOrderFormComponent";
+import CreateOrderFormComponent from "../components/createOrderForm/Pilsegardin";
 
 export interface Product {
   name: string;

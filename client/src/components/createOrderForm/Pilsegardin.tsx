@@ -3,13 +3,13 @@ import FormComponent from "../form/FormComponent";
 import SingleFieldInputRow from "../form/SingleFieldInputRow";
 import { Product } from "../../pages/CreateOrderPage";
 
-interface CreateOrderFormProps {
+interface PilsegardinProps {
   clearOnClick: () => void;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   product: string;
 }
 
-const CreateOrderFormComponent: React.FC<CreateOrderFormProps> = ({
+const Pilsegardin: React.FC<PilsegardinProps> = ({
   clearOnClick,
   cartCallback,
   product,
@@ -153,4 +153,4 @@ const CreateOrderFormComponent: React.FC<CreateOrderFormProps> = ({
   );
 };
 
-export default CreateOrderFormComponent;
+export default Pilsegardin;
