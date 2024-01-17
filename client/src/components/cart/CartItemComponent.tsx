@@ -1,50 +1,57 @@
-import React from 'react'
-import Accordion from '../AccordionComponent'
-
-function CartItemComponent() {
-  return (
-    <div className="bg-white rounded-lg mb-5">
-              <Accordion title="Pilsegardin" addDelete>
-                <div className="flex flex-col bg-white rounded-lg">
-                  <div className="grid grid-cols-4 text-xs">
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span className="">Bred och höjd:</span>
-                      <span>200m x 200m</span>
-                    </div>
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span>Måttyp:</span> <span>something</span>
-                    </div>
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span>Vävnummer:</span> <span>something</span>
-                    </div>
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span>Modell:</span> <span>something</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-4 text-xs pt-5">
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span>Beslag</span> <span>200m x 200m</span>
-                    </div>
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span>Allmogebeslag:</span> <span>something</span>
-                    </div>
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span>Reglage:</span> <span>something</span>
-                    </div>
-                    <div className="pr-5 flex flex-col mx-auto">
-                      <span>Detaljfärg:</span> <span>something</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-5 flex justify-center">
-                    <button className="bg-white h-min p-2 mr-2 hover:bg-blue-500 hover:text-white rounded-full px-5 text-s">
-                      Visa eller Ändra
-                    </button>
-                  </div>
-                </div>
-              </Accordion>
-            </div>
-  )
+import React, { Dispatch, SetStateAction } from "react";
+import Accordion from "../AccordionComponent";
+import { Product } from "../../pages/CreateOrderPage";
+import { nanoid } from 'nanoid'
+interface CartItemProps {
+  product?: Product;
+  itemIndex?: number;
+  cartCallback: Dispatch<SetStateAction<Product[]>>;
+  cart: Product[];
+  key: string;
 }
 
-export default CartItemComponent
+const CartItemComponent: React.FC<CartItemProps> = ({ product, itemIndex, cartCallback, cart, key }) => {
+
+  const deleteCartItem = () => {
+    
+    const updatedProducts = cart?.filter((_, index) => index !== itemIndex)
+    cartCallback(updatedProducts);
+  }
+  return (
+    <div className="bg-white rounded-lg mb-5" key={key}>
+      <Accordion title="Pilsegardin" addDelete deleteCallback={deleteCartItem}>
+        <div className="flex justify-end flex-col bg-white rounded-lg">
+          <div className="grid text-xs gap-y-5 gap-x-10 px-5">
+            {product &&
+              product.attributes.map((item, index) => {
+                if (index === 0) {
+                  return (
+                    <div className="grid grid-cols-4 col-span-4 " key={nanoid()}>
+                      <div className="grid grid-cols-1 ">
+                        <span className="">{item}</span>
+                        <span>{product.values[index]}</span>
+                      </div>
+                    </div>
+                  );
+                }
+                return (
+                  <div className="flex flex-col" key={nanoid()}>
+                    <span className="">{item}</span>
+                    <span>{product.values[index]}</span>
+                  </div>
+                );
+              })}
+          </div>
+
+          <div className="pt-5 flex justify-center">
+            <button className="bg-white h-min p-2 mr-2 hover:bg-blue-500 hover:text-white rounded-full px-5 text-s">
+              Visa eller Ändra
+            </button>
+          </div>
+        </div>
+      </Accordion>
+    </div>
+  );
+};
+
+export default CartItemComponent;

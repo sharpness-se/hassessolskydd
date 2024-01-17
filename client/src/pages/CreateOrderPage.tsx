@@ -8,16 +8,21 @@ import ContactDateComponent from "../components/ContactDateComponent";
 import Accordion from "../components/AccordionComponent";
 import { baseUrl } from "../settings/baseUrl";
 import CustomerCartComponent from "../components/cart/CustomerCartComponent";
-import CartItemComponent from "../components/cart/CartItemComponent";
-import FormComponent from "../components/form/FormComponent";
-import DoubleFieldInputRow from "../components/form/DoubleFieldInputRow";
 import CreateOrderFormComponent from "../components/createOrderForm/CreateOrderFormComponent";
+
+export interface Product {
+  name: string;
+  attributes: string[];
+  values: string[];
+}
 
 export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
   const [options, setOptions] = React.useState<Customer[]>([]);
   const [hidden, setHidden] = useState(true);
-  const [productOptions, setProductOptions]= useState("")
+  const [product, setProduct] = useState("");
+  const [customerCart, setCustomerCart] = useState<Product[]>([]);
+
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -46,6 +51,9 @@ export default function CreateOrderPageComponent() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    console.log(customerCart);
+  }, [customerCart]);
   return (
     <div className="flex min-h-screen flex-col items-center p-20 xl:px-60">
       <h1 data-test="hero-heading" className="text-5xl mb-11 min-w-max">
@@ -65,22 +73,51 @@ export default function CreateOrderPageComponent() {
           <CustomerDetailsComponent customer={customer} />
         </div>
       </div>
-      <Accordion title={"Typ av ärende"} applyHeight>
-        {hidden&&<div className={"flex justify-center items-center w-full h-full"}>
-          <label htmlFor="mySelect" className="tracking-wide uppercase font-bold text-s text-gray-700 mr-5">Välj en produkt:</label>
-          <select id="myselect" onChange={(e) => { setProductOptions(e.target.value); setHidden(false)}} value={productOptions} className="p-2 px-3 border font-bold text-s text-gray-700">
-            <option className="text-xs font-bold text-gray-700" value="" disabled hidden>Produkt...</option>
-            <option value="Pilsegardin">Pilsegardin</option>
-          </select>
-        </div>}
-        {!hidden&&productOptions==="Pilsegardin"&&<CreateOrderFormComponent />}
+      <Accordion title={"Typ av ärende"} applyHeight customOnClick>
+        {hidden && (
+          <div className={"flex justify-center items-center w-full h-full"}>
+            <label
+              htmlFor="mySelect"
+              className="tracking-wide uppercase font-bold text-s text-gray-700 mr-5"
+            >
+              Välj en produkt:
+            </label>
+            <select
+              id="myselect"
+              onChange={(e) => {
+                setProduct(e.target.value);
+                setHidden(false);
+              }}
+              value={product}
+              className="p-2 px-3 border font-bold text-s text-gray-700"
+            >
+              <option
+                className="text-xs font-bold text-gray-700"
+                value=""
+                disabled
+                hidden
+              >
+                Produkt...
+              </option>
+              <option value="Pilsegardin">Pilsegardin</option>
+            </select>
+          </div>
+        )}
+        {!hidden && product === "Pilsegardin" && (
+          <CreateOrderFormComponent
+            product={product}
+            clearOnClick={() => {
+              setHidden(true);
+              setProduct("");
+            }}
+            cartCallback={setCustomerCart}
+          />
+        )}
       </Accordion>
-
-      <CustomerCartComponent>
-        <CartItemComponent />
-        <CartItemComponent />
-        <CartItemComponent />
-      </CustomerCartComponent>
+      <CustomerCartComponent
+        cart={customerCart}
+        cartCallBack={setCustomerCart}
+      ></CustomerCartComponent>
     </div>
   );
 }
