@@ -46,7 +46,8 @@ INSERT INTO public.order (id, customer_number, first_contact, measurement_date, 
 VALUES
     (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 'INDOOR'),
     (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 'OUTDOOR'),
-    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 2', 'OUTDOOR') ON CONFLICT DO NOTHING;
+    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 3', 'OUTDOOR'),
+    (-4, 'pallekuling0812345678', '2024-01-01', '2024-01-18', '2024-02-01', 'Notes for Palles first order', 'INDOOR') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.plissegardin" table
 INSERT INTO public.plissegardin (id, order_id, measure_type, width, height, weave_number, model, mounting, allmogebeslag, controls, control_side, draw_string_colour, cassette_colour, indoor_outdoor, is_external_order)

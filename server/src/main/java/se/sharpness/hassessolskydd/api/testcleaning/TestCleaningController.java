@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.dao.testcleaning.TestCleaningMapper;
-import se.sharpness.hassessolskydd.model.Customer;
 
 @RestController
 public class TestCleaningController {
@@ -23,5 +22,9 @@ public class TestCleaningController {
         return testCleaningMapper.deleteCustomerByCustomerNumber(customerNumber);
     }
 
+    @PostMapping("/api/deleteOrderByOrderId/{orderId}")
+    public int deleteOrderByOrderId(@PathVariable(value = "orderId") int orderId) throws Exception {
+        return testCleaningMapper.deleteOrderByOrderId(orderId);
+    }
 }
 

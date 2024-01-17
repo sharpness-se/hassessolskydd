@@ -11,4 +11,10 @@ public interface TestCleaningMapper {
             "delete from customer where customer_number = #{customerNumber}"
     )
     int deleteCustomerByCustomerNumber(String customerNumber);
+
+    @Delete(
+            "delete from \"order\" where id = #{orderId}"
+            //TODO: delete orderItems, orderItemsDetails, itemAttributes
+    )
+    int deleteOrderByOrderId(int orderId);
 }

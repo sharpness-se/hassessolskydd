@@ -1,7 +1,6 @@
 package se.sharpness.hassessolskydd.dao;
 
 import org.apache.ibatis.annotations.*;
-import se.sharpness.hassessolskydd.model.Article;
 import se.sharpness.hassessolskydd.model.Order;
 import se.sharpness.hassessolskydd.model.OrderItem;
 import se.sharpness.hassessolskydd.model.OrderItemsDetails;
@@ -24,7 +23,6 @@ public interface OrderMapper {
     @Select(
             "SELECT o.id as orderId, " +
             "oi.id as orderItemId, " +
-            "oi.quantity, " +
             "a.name, " +
             "ia.attribute, " +
             "ia.value " +
@@ -39,29 +37,22 @@ public interface OrderMapper {
     @Select("select id from public.articles where name = #{name}")
     int findArticleIdByName(String name);
 
-    @Insert(
+
+    @Select( //This insert has to be @Select because we need to return the id of the inserted row
             "INSERT INTO \"order\"" +
             "(customer_number, first_contact, measurement_date, installation_date, notes, indoorOutdoor) " +
             "VALUES" +
-            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{indoorOutdoor})"
+            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{indoorOutdoor})" +
+            "RETURNING id"
     )
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    void insertOrder(Order order);
-
-    @Select("SELECT MAX(id) FROM public.order")
-    int findMaxOrderId();
+    int insertOrder(Order order);
 
 
-
-    @Insert(
-            "INSERT INTO \"order_items\" (order_id, item_id) VALUES (#{orderId}, #{itemId})"
+    @Select( //This insert has to be @Select because we need to return the id of the inserted row
+            "INSERT INTO \"order_items\" (order_id, item_id) VALUES (#{orderId}, #{itemId})" +
+            "RETURNING id"
     )
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    void insertOrderItem(OrderItem orderItem);
-
-    @Select("SELECT MAX(id) FROM public.order_items")
-    int findMaxOrderItemId();
-
+    int insertOrderItem(OrderItem orderItem);
 
 
     @Insert(

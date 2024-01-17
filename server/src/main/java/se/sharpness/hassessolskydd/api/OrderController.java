@@ -2,6 +2,7 @@ package se.sharpness.hassessolskydd.api;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import se.sharpness.hassessolskydd.dao.OrderMapper;
 import se.sharpness.hassessolskydd.model.Article;
@@ -30,7 +31,6 @@ private final OrderMapper orderMapper;
         if (result.isPresent()) {
             Order order = result.get();
             order.setOrderItems(defineArticles(orderId.intValue()));
-            System.out.println(order);
             return order;
         } else {
             throw new Exception("Could not find order"); //TODO: crate specific exceptions
@@ -85,7 +85,8 @@ private final OrderMapper orderMapper;
     }
 
     @PostMapping("/order/create")
-    public void createOrder(@RequestBody Order order) {
+    @Transactional
+    public Order createOrder(@RequestBody Order order) {
         order.setFirstContact(LocalDateTime.now());
         if (order.getMeasurementDate() != null) { //TODO: empty JSON is not null
             order.setMeasurementDate(order.getMeasurementDate());
@@ -94,33 +95,30 @@ private final OrderMapper orderMapper;
             order.setInstallationDate(order.getInstallationDate());
         }
 
-        orderMapper.insertOrder(order);
+        int newOrderId = orderMapper.insertOrder(order);
+        order.setId(newOrderId);
 
         for (Article article : order.getOrderItems()) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setOrderId(orderMapper.findMaxOrderId());
+            orderItem.setOrderId(newOrderId);
             orderItem.setItemId(orderMapper.findArticleIdByName(article.getName()));
-            orderMapper.insertOrderItem(orderItem);
+            int newOrderItemId = orderMapper.insertOrderItem(orderItem);
             for (int i = 0; i < article.getAttributes().size(); ++i) {
                 OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
-                orderItemsDetails.setOrderItemId(orderMapper.findMaxOrderItemId());
+                orderItemsDetails.setOrderItemId(newOrderItemId);
                 orderItemsDetails.setAttribute(article.getAttributes().get(i));
                 orderItemsDetails.setValue(article.getValues().get(i));
 
                 orderMapper.insertOrderItemDetails(orderItemsDetails);
             }
         }
+        return order;
     }
 
     @PostMapping("/order-items")
     public void insertOrderItem(@RequestBody OrderItem orderItem) {
         orderMapper.insertOrderItem(orderItem);
 
-    }
-
-    @GetMapping("/order-items/max-id")
-    public int findMaxOrderItemId() {
-        return orderMapper.findMaxOrderItemId();
     }
 
     @PostMapping("/order-items/details")
