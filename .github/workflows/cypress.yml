@@ -22,7 +22,10 @@ jobs:
         run: npm install
 
       - name: Build client
-        run: npm run build 
+        run: |
+          cd client
+          npm run build
+          cd ..
 
       - name: Set Up Java
         uses: actions/setup-java@v2
