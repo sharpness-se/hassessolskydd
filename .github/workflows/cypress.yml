@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17.0.9'
 
       - name: Build and start spring boot
         run: |
