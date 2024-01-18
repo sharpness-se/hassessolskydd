@@ -1,86 +1,96 @@
 /// <reference types="cypress" />
 
-describe('Create Customer Form Test', () => {
-
+describe("Create Customer Form Test", () => {
   interface FormData {
     [key: string]: string;
   }
-  
+
   const validFormData: FormData = {
-    firstname: 'Test',
-    lastname: 'Testson',
-    email: 'test@test.com',
-    phoneNumber: '0731112235',
-    address: 'Testgatan 35',
-    city: 'Teststaden',
-    postalCode: '123 44',
+    firstname: "Test",
+    lastname: "Testson",
+    email: "test@test.com",
+    phoneNumber: "0731112235",
+    address: "Testgatan 35",
+    city: "Teststaden",
+    postalCode: "12344",
   };
 
   beforeEach(() => {
-    cy.visit('http://localhost:8080');
-    cy.contains('Skapa ny kund').click();
-  });
-
-  it('should submit the form successfully', () => {
-
-    cy.intercept('POST', 'http://localhost:8080/api/customers/create_customer').as('handleSubmit');
-
-    Object.entries(validFormData).forEach(([key, value]) => {
-      cy.get(`input[id="${key}"]`).type(value);
-    });
-    cy.get('button[type="submit"]').click();
-
-    cy.wait('@handleSubmit').its('response.statusCode').should('eq', 200);
-  });
-
-  it('should submit a customer that already exists', () => {
-    cy.intercept('POST', 'http://localhost:8080/api/customers/create_customer').as('handleSubmit');
-
-    Object.entries(validFormData).forEach(([key, value]) => {
-      cy.get(`input[id="${key}"]`).type(value);
-    });
-    cy.get('button[type="submit"]').click();
-
-    cy.wait('@handleSubmit').its('response.statusCode').should('eq', 409);
+    cy.visit("http://localhost:8080/skapakund");
 
     cy.request({
-      method: 'POST',
-      url: 'http://localhost:8080/api/deleteCustomerByCustomerNumber/TestTestson0731112235',
+      method: "POST",
+      url: "/api/deleteCustomerByCustomerNumber/TestTestson0731112235",
     });
+
+    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
+  });
+
+  it("should submit the form successfully", () => {
+    Object.entries(validFormData).forEach(([key, value]) => {
+      cy.get(`input[id="${key}"]`).type(value);
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.wait("@handleSubmit").its("response.statusCode").should("eq", 200);
+  });
+
+  it("should submit a customer that already exists", () => {
+    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
+
+    // cy.request({
+    //   method: "POST",
+    //   url: "/api/customers/create_customer",
+    //   body: validFormData,
+    // }).then((res) => expect(res.status).to.eq(200));
+    Object.entries(validFormData).forEach(([key, value]) => {
+      cy.get(`input[id="${key}"]`).type(value);
+    });
+    cy.get('button[type="submit"]').click();
     
+    cy.wait("@handleSubmit").its("response.statusCode").should("eq", 200);
+
+    Object.entries(validFormData).forEach(([key, value]) => {
+      cy.get(`input[id="${key}"]`).type(value);
+    });
+    cy.get('button[type="submit"]').click();
+
+    cy.wait("@handleSubmit").its("response.statusCode").should("eq", 409);
   });
 });
 
-describe('Form Validation', () => {
-
+describe("Form Validation", () => {
   beforeEach(() => {
-    cy.visit('http://localhost:8080');
-    cy.contains('Skapa ny kund').click();
+    cy.visit("http://localhost:8080");
+    cy.contains("Skapa ny kund").click();
   });
-  
+
   interface FormData {
     [key: string]: string;
   }
-  
+
   const validFormData: FormData = {
-    firstname: 'Test',
-    lastname: 'Testson',
-    email: 'test@test.com',
-    phoneNumber: '0731112235',
-    address: 'Testgatan 35',
-    city: 'Teststaden',
-    postalCode: '12344',
+    firstname: "Test",
+    lastname: "Testson",
+    email: "test@test.com",
+    phoneNumber: "0731112235",
+    address: "Testgatan 35",
+    city: "Teststaden",
+    postalCode: "123 44",
   };
 
-  const invalidInput: string[] = ['Abc 123', '123', 'Test!?#', 'abc@def'];
+  const invalidInput: string[] = ["Abc 123", "123", "Test!?#", "abc@def"];
 
   invalidInput.forEach((invalidInput: string) => {
     it(`Tests invalid input for first name: ${invalidInput}`, () => {
       cy.get('input[id="firstname"]').type(invalidInput);
       cy.get('button[type="submit"]').click();
 
-      cy.get(`input[id="firstname"]`).next('p').first().should('include.text', 'Ogiltigt');
-    })
+      cy.get(`input[id="firstname"]`)
+        .next("p")
+        .first()
+        .should("include.text", "Ogiltigt");
+    });
   });
 
   invalidInput.forEach((invalidInput: string) => {
@@ -88,8 +98,11 @@ describe('Form Validation', () => {
       cy.get('input[id="lastname"]').type(invalidInput);
       cy.get('button[type="submit"]').click();
 
-      cy.get(`input[id="lastname"]`).next('p').first().should('include.text', 'Ogiltigt');
-    })
+      cy.get(`input[id="lastname"]`)
+        .next("p")
+        .first()
+        .should("include.text", "Ogiltigt");
+    });
   });
 
   invalidInput.forEach((invalidInput: string) => {
@@ -97,8 +110,11 @@ describe('Form Validation', () => {
       cy.get('input[id="email"]').type(invalidInput);
       cy.get('button[type="submit"]').click();
 
-      cy.get(`input[id="email"]`).next('p').first().should('include.text', 'Ogiltig');
-    })
+      cy.get(`input[id="email"]`)
+        .next("p")
+        .first()
+        .should("include.text", "Ogiltig");
+    });
   });
 
   invalidInput.forEach((invalidInput: string) => {
@@ -106,8 +122,11 @@ describe('Form Validation', () => {
       cy.get('input[id="phoneNumber"]').type(invalidInput);
       cy.get('button[type="submit"]').click();
 
-      cy.get(`input[id="phoneNumber"]`).next('p').first().should('include.text', 'siffror');
-    })
+      cy.get(`input[id="phoneNumber"]`)
+        .next("p")
+        .first()
+        .should("include.text", "siffror");
+    });
   });
 
   invalidInput.forEach((invalidInput: string) => {
@@ -115,94 +134,120 @@ describe('Form Validation', () => {
       cy.get('input[id="city"]').type(invalidInput);
       cy.get('button[type="submit"]').click();
 
-      cy.get(`input[id="city"]`).next('p').first().should('include.text', 'endast bokstäver');
-    })
+      cy.get(`input[id="city"]`)
+        .next("p")
+        .first()
+        .should("include.text", "endast bokstäver");
+    });
   });
-  
+
   invalidInput.forEach((invalidInput: string) => {
     it(`Tests invalid input for postal code: ${invalidInput}`, () => {
       cy.get('input[id="postalCode"]').type(invalidInput);
       cy.get('button[type="submit"]').click();
 
-      cy.get(`input[id="postalCode"]`).next('p').first().should('include.text', 'siffror');
-    })
+      cy.get(`input[id="postalCode"]`)
+        .next("p")
+        .first()
+        .should("include.text", "siffror");
+    });
   });
 
-  it('should get a validation error if first name is not filled in', () => {
+  it("should get a validation error if first name is not filled in", () => {
     Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'firstname') {
+      if (key !== "firstname") {
         cy.get(`input[id="${key}"]`).type(value);
       }
     });
     cy.get('button[type="submit"]').click();
 
-    cy.get(`input[id="firstname"]`).next('p').first().should('include.text', 'obligatoriskt');
+    cy.get(`input[id="firstname"]`)
+      .next("p")
+      .first()
+      .should("include.text", "obligatoriskt");
   });
 
-  it('should get a validation error if last name is not filled in', () => {
+  it("should get a validation error if last name is not filled in", () => {
     Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'lastname') {
+      if (key !== "lastname") {
         cy.get(`input[id="${key}"]`).type(value);
       }
     });
     cy.get('button[type="submit"]').click();
 
-    cy.get(`input[id="lastname"]`).next('p').first().should('include.text', 'obligatoriskt');
+    cy.get(`input[id="lastname"]`)
+      .next("p")
+      .first()
+      .should("include.text", "obligatoriskt");
   });
 
-  it('should get a validation error if email is not filled in', () => {
+  it("should get a validation error if email is not filled in", () => {
     Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'email') {
+      if (key !== "email") {
         cy.get(`input[id="${key}"]`).type(value);
       }
     });
     cy.get('button[type="submit"]').click();
 
-    cy.get(`input[id="email"]`).next('p').first().should('include.text', 'obligatoriskt');
+    cy.get(`input[id="email"]`)
+      .next("p")
+      .first()
+      .should("include.text", "obligatoriskt");
   });
 
-  it('should get a validation error if phone number is not filled in', () => {
+  it("should get a validation error if phone number is not filled in", () => {
     Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'phoneNumber') {
+      if (key !== "phoneNumber") {
         cy.get(`input[id="${key}"]`).type(value);
       }
     });
     cy.get('button[type="submit"]').click();
 
-    cy.get(`input[id="phoneNumber"]`).next('p').first().should('include.text', 'obligatoriskt');
+    cy.get(`input[id="phoneNumber"]`)
+      .next("p")
+      .first()
+      .should("include.text", "Telefonnummer måste vara minst 8 siffror");
   });
 
-  it('should get a validation error if address is not filled in', () => {
+  it("should get a validation error if address is not filled in", () => {
     Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'address') {
+      if (key !== "address") {
         cy.get(`input[id="${key}"]`).type(value);
       }
     });
     cy.get('button[type="submit"]').click();
 
-    cy.get(`input[id="address"]`).next('p').first().should('include.text', 'obligatoriskt');
+    cy.get(`input[id="address"]`)
+      .next("p")
+      .first()
+      .should("include.text", "obligatoriskt");
   });
 
-  it('should get a validation error if city is not filled in', () => {
+  it("should get a validation error if city is not filled in", () => {
     Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'city') {
+      if (key !== "city") {
         cy.get(`input[id="${key}"]`).type(value);
       }
     });
     cy.get('button[type="submit"]').click();
 
-    cy.get(`input[id="city"]`).next('p').first().should('include.text', 'obligatoriskt');
+    cy.get(`input[id="city"]`)
+      .next("p")
+      .first()
+      .should("include.text", "obligatoriskt");
   });
 
-  it('should get a validation error if postal code is not filled in', () => {
+  it("should get a validation error if postal code is not filled in", () => {
     Object.entries(validFormData).forEach(([key, value]) => {
-      if (key !== 'postalCode') {
+      if (key !== "postalCode") {
         cy.get(`input[id="${key}"]`).type(value);
       }
     });
     cy.get('button[type="submit"]').click();
 
-    cy.get(`input[id="postalCode"]`).next('p').first().should('include.text', 'obligatoriskt');
+    cy.get(`input[id="postalCode"]`)
+      .next("p")
+      .first()
+      .should("include.text", "Postkod måste vara minst 5 siffror");
   });
-
 });

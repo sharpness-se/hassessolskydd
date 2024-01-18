@@ -168,6 +168,16 @@ function CreateCustomerComponent() {
       toast.error("Data submission failed: Validation error!");
     }
   };
+
+  function addSpaceAtFourthChar(inputString: string) {
+    if (inputString.length >= 4) {
+      if (inputString.charAt(3) !== ' ') {
+        inputString = inputString.slice(0, 3) + ' ' + inputString.slice(3);
+      }
+    }
+    return inputString;
+  }
+  
   return (
     <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
       <h2 className="text-xl font-bold text-gray-800 mb-3">Personuppgifter</h2>
@@ -236,7 +246,7 @@ function CreateCustomerComponent() {
             handleChange("city", e.target.value)
           }
           onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleChange("postalCode", e.target.value)
+            handleChange("postalCode", addSpaceAtFourthChar(e.target.value))
           }
           errorOne={errors.city.error}
           errorTwo={errors.postalCode.error}

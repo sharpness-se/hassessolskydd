@@ -2,8 +2,10 @@
 
 describe("Create order autocomplete tests", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/skapaorder");
+    //cy.setBaseUrl("http://localhost:8080")
+    cy.visit('http://localhost:8080/skapaorder');
   });
+
   it("the h1 contains the correct text", () => {
     cy.getByData("hero-heading").contains("Skapa Order");
   });
