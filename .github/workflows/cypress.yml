@@ -25,9 +25,9 @@ jobs:
 
       - name: Build client
         run: |
+          cd client
           npm run build
-          cd ..
-
+      
       - name: Set Up Java
         uses: actions/setup-java@v2
         with:
