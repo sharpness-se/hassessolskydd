@@ -5,7 +5,7 @@ interface ContactDateProps {
 }
 
 const ContactDateComponent: React.FC<ContactDateProps> = ({ heading }) => {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [currentDate] = useState<Date>(new Date());
 
   return (
     <div className="bg-white rounded p-5 w-full pb-11">
