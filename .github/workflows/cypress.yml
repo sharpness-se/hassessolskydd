@@ -1,0 +1,40 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build client
+        run: npm run build 
+
+      - name: Set Up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Build and start spring boot
+        run: |
+          cd server
+          ./gradlew build
+          java -jar build/libs/server-0.0.1-SNAPSHOT.jar
+
+      - name: Run Cypress tests
+        run: npm run cypress:run 
