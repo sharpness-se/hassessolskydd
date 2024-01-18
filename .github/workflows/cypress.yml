@@ -34,11 +34,13 @@ jobs:
           distribution: "adopt"
           java-version: "17.0.9"
 
-      - name: Build and start spring boot
+      - name: Build Gradle
         run: |
           cd server
           ./gradlew build
-          java -jar build/libs/server-0.0.1-SNAPSHOT.jar
+
+      - name: Start Spring Boot
+        run:  java -jar server/build/libs/server-0.0.1-SNAPSHOT.jar
 
       - name: Run Cypress tests
         run: npm run cypress
