@@ -9,6 +9,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      # Start a PostgreSQL container
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+        ports:
+          - 5432:5432
+        options: --health-cmd="pg_isready -U $POSTGRES_USER" --health-interval=10s --health-timeout=5s --health-retries=5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,6 +29,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: v20.9.0
+      
 
       - name: Install dependencies
         run: |
@@ -34,10 +47,16 @@ jobs:
           distribution: "adopt"
           java-version: "17.0.9"
 
-      - name: Build Gradle
+      - name: Build and Package
         run: |
           cd server
           ./gradlew build
+        # Upload the JAR file as an artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: server-artifact
+          path: server/build/libs/
 
       - name: Start Spring Boot
         run:  java -jar server/build/libs/server-0.0.1-SNAPSHOT.jar
