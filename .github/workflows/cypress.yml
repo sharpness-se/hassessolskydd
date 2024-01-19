@@ -47,19 +47,13 @@ jobs:
           distribution: "adopt"
           java-version: "17.0.9"
 
-      - name: Build and Package
+      - name: Build and Deploy Spring Boot App
         run: |
           cd server
           ./gradlew build
-        # Upload the JAR file as an artifact
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: server-artifact
-          path: server/build/libs/
-
-      - name: Start Spring Boot
-        run:  java -jar server/build/libs/server-0.0.1-SNAPSHOT.jar
+          java -jar build/libs/server-0.0.1-SNAPSHOT.jar
 
       - name: Run Cypress tests
-        run: npm run cypress
+        run: |
+          cd client
+          npm run cypress
