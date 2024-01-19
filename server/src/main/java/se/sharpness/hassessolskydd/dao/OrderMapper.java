@@ -40,12 +40,13 @@ public interface OrderMapper {
 
     @Select( //This insert has to be @Select because we need to return the id of the inserted row
             "INSERT INTO \"order\"" +
-            "(customer_number, first_contact, measurement_date, installation_date, notes, indoorOutdoor) " +
+            "(customer_number, first_contact, measurement_date, installation_date, notes, installation_details, indoorOutdoor) " +
             "VALUES" +
-            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{indoorOutdoor})" +
+            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{installationDetails.id}, #{indoorOutdoor})" +
             "RETURNING id"
     )
     int insertOrder(Order order);
+
 
 
     @Select( //This insert has to be @Select because we need to return the id of the inserted row

@@ -15,7 +15,7 @@ public class Order {
     private LocalDateTime installationDate;
     private String notes;
     //Photos
-    //private InstallationDetails installationDetails;
+    private InstallationDetails installationDetails;
     private IndoorOutdoor indoorOutdoor;
     private List<Article> orderItems;
 

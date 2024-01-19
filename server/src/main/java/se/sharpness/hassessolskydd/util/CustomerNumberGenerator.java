@@ -7,6 +7,6 @@ import se.sharpness.hassessolskydd.model.Customer;
 public class CustomerNumberGenerator {
 
     static public String createCustomerNumber(Customer customer) {
-        return customer.getFirstname()+customer.getLastname()+customer.getPhoneNumber();
+        return customer.getFirstname()+customer.getLastname()+customer.getPhoneNumber().replaceAll("\\s+", "");
     }
 }

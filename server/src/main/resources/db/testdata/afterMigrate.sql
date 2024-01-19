@@ -35,31 +35,13 @@ VALUES
     (-1, -1, true, 'Brick facade', '1st floor', 30, true, false),
     (-2, -2, false, 'Wooden facade', '2nd floor', 40, false, true) ON CONFLICT DO NOTHING;
 
--- Insert sample data into the "public.products" table
-INSERT INTO public.products (id, plissegardin, terassmarkis)
-VALUES
-    (-1, 1, 0),
-    (-2, 0, 1) ON CONFLICT DO NOTHING;
-
 -- Insert sample data into the "public.order" table
-INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, indooroutdoor)
+INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, installation_details, indooroutdoor)
 VALUES
-    (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 'INDOOR'),
-    (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 'OUTDOOR'),
-    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 3', 'OUTDOOR'),
-    (-4, 'pallekuling0812345678', '2024-01-01', '2024-01-18', '2024-02-01', 'Notes for Palles first order', 'INDOOR') ON CONFLICT DO NOTHING;
-
--- Insert sample data into the "public.plissegardin" table
-INSERT INTO public.plissegardin (id, order_id, measure_type, width, height, weave_number, model, mounting, allmogebeslag, controls, control_side, draw_string_colour, cassette_colour, indoor_outdoor, is_external_order)
-VALUES
-    (-1, -1, 'Inside Mount', 120, 150, 'Weave 1', 'Model A', 'Ceiling', false, 'Manual', 'Left', 'White', 'Silver', true, false),
-    (-2, -2, 'Outside Mount', 200, 180, 'Weave 2', 'Model B', 'Wall', true, 'Motorized', 'Right', 'Black', 'Black', false, true) ON CONFLICT DO NOTHING;
-
--- Insert sample data into the "public.terassmarkis" table
-INSERT INTO public.terassmarkis (id, order_id, measuring_type, model, weave_number, controls, length, width, facade_details, sun_wind_automation, shake_sensor, support_legs, indoor_outdoor)
-VALUES
-    (-1, -1, 'Outside Mount', 'Model X', 'Weave 3', 'Motorized', 300, 250, 'Brick facade', true, false, true, false),
-    (-2, -2, 'Inside Mount', 'Model Y', 'Weave 4', 'Manual', 400, 300, 'Wooden facade', false, true, false, true) ON CONFLICT DO NOTHING;
+    (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', null, 'INDOOR'),
+    (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', null, 'OUTDOOR'),
+    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 3', null, 'OUTDOOR'),
+    (-4, 'pallekuling0812345678', '2024-01-01', '2024-01-18', '2024-02-01', 'Notes for Palles first order', null, 'INDOOR') ON CONFLICT DO NOTHING;
 
 INSERT INTO public.articles (id, name)
 VALUES

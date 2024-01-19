@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class InstallationDetails {
 
-    private Long id;
+    private int id;
     private boolean isNormal;
     private String facadeDetails;
     private String floorDetails;

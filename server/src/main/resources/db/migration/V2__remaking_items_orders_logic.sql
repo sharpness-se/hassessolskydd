@@ -1,6 +1,19 @@
+DROP TABLE public.products;
+DROP TABLE public.plissegardin;
+DROP TABLE public.terassmarkis;
+
 ALTER TABLE public.order
-    DROP COLUMN products,
-    DROP COLUMN installation_details;
+    DROP COLUMN products;
+
+ALTER TABLE public.order
+    ALTER COLUMN customer_number DROP NOT NULL,
+    ALTER COLUMN first_contact DROP NOT NULL,
+    ALTER COLUMN measurement_date DROP NOT NULL,
+    ALTER COLUMN installation_date DROP NOT NULL,
+    ALTER COLUMN installation_details DROP NOT NULL;
+
+ALTER TABLE public.installation_details
+    ALTER COLUMN is_normal DROP NOT NULL;
 
 ALTER TABLE ONLY public.order ALTER COLUMN id SET DEFAULT nextval('public.order_id_seq'::regclass);
 
@@ -10,20 +23,25 @@ ALTER TABLE public.order
 ALTER TABLE public.order
     ADD COLUMN order_status integer;
 
-
 ALTER TABLE public.order
     ALTER COLUMN customer_number SET DATA TYPE character varying(255);
 
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_installation_details_fkey FOREIGN KEY (installation_details) REFERENCES public.installation_details(id);
+
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_placed_by_user_fkey FOREIGN KEY (placed_by_user) REFERENCES public.userx(id);
+
+ALTER TABLE ONLY public.order ALTER COLUMN id SET DEFAULT nextval('public.order_id_seq'::regclass);
+
+
 ALTER TABLE customer ADD CONSTRAINT unique_customer_number UNIQUE (customer_number);
+
 
 ALTER TABLE ONLY public.order
     ADD CONSTRAINT order_customer_fkey FOREIGN KEY (customer_number) REFERENCES public.customer(customer_number);
 
-/*ALTER TABLE ONLY public.order
-    ADD CONSTRAINT order_installation_details_fkey FOREIGN KEY (installation_details) REFERENCES public.installation_details(id);
-*/
-ALTER TABLE ONLY public.order
-    ADD CONSTRAINT order_placed_by_user_fkey FOREIGN KEY (placed_by_user) REFERENCES public.userx(id);
+
 
 CREATE TABLE public.articles (
     id integer NOT NULL,
@@ -87,15 +105,5 @@ ALTER SEQUENCE public.item_attributes_id_seq OWNED BY public.item_attributes.id;
 
 ALTER TABLE ONLY public.item_attributes ALTER COLUMN id SET DEFAULT nextval('public.item_attributes_id_seq'::regclass);
 
-ALTER TABLE public.order
-    ALTER COLUMN customer_number DROP NOT NULL,
-    ALTER COLUMN first_contact DROP NOT NULL,
-    ALTER COLUMN measurement_date DROP NOT NULL,
-    ALTER COLUMN installation_date DROP NOT NULL;
 
-ALTER TABLE public.installation_details
-    ALTER COLUMN is_normal DROP NOT NULL;
-
-
-ALTER TABLE ONLY public.order ALTER COLUMN id SET DEFAULT nextval('public.order_id_seq'::regclass);
 
