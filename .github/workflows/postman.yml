@@ -25,6 +25,9 @@ jobs:
       - name: Build and Run Spring Boot application
         run: ./gradlew bootRun &
 
+      - name: Sleep for 1 minute
+        run: sleep 1m
+
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
