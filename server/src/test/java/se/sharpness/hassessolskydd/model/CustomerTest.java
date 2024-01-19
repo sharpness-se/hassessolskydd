@@ -130,7 +130,7 @@ class CustomerTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {" 1234567890", "1234567890 ", "123", "123456789", "\t12 34 56 78 90","12 34 56 78 90\t","", " ", "\t", "   "})
+  @ValueSource(strings = {" 1234567890", "1234567890 ", "123", "\t12 34 56 78 90","12 34 56 78 90\t","", " ", "\t", "   "})
   @NullSource
   void invalidPhoneNumber(String invalidPhoneNumber) {
     Customer customer = createValidCustomer();

@@ -25,7 +25,7 @@ public class Customer {
     @Size(max = 40)
     private String address;
 
-    @Pattern(regexp = "^[0-9\\s]+$") //"^\\d{3} \\d{2}$"
+    @Pattern(regexp = "^\\d{3}[\\s?]\\d{2}$") //"^\\d{3} \\d{2}$"
     @NotBlank
     @Size(min = 5, max = 6)
     private String postalCode;
@@ -35,7 +35,7 @@ public class Customer {
     @Size(max = 40)
     private String city;
 
-    @Pattern(regexp = "^[0-9()+\\- ]*$") //"^[+]?[0-9]+([-\\s][0-9]+)*$"
+    @Pattern(regexp = "^[+]?[0-9]+([-\\s][0-9]+)*$") //"^[+]?[0-9]+([-\\s][0-9]+)*$"
     @NotBlank
     @Size(min = 8, max = 20) //@Size(min = 10, max = 20)
     private String phoneNumber;
