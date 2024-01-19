@@ -12,7 +12,7 @@ describe("Create Customer Form Test", () => {
     phoneNumber: "0731112235",
     address: "Testgatan 35",
     city: "Teststaden",
-    postalCode: "12344",
+    postalCode: "123 44",
   };
 
   beforeEach(() => {
@@ -23,10 +23,12 @@ describe("Create Customer Form Test", () => {
       url: "/api/deleteCustomerByCustomerNumber/TestTestson0731112235",
     });
 
-    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
+    //cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
   });
 
-  it("should submit the form successfully", () => {
+  it.only("should submit the form successfully", () => {
+    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
+
     Object.entries(validFormData).forEach(([key, value]) => {
       cy.get(`input[id="${key}"]`).type(value);
     });
@@ -35,21 +37,16 @@ describe("Create Customer Form Test", () => {
     cy.wait("@handleSubmit").its("response.statusCode").should("eq", 200);
   });
 
-  it("should submit a customer that already exists", () => {
-    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
-
-    // cy.request({
-    //   method: "POST",
-    //   url: "/api/customers/create_customer",
-    //   body: validFormData,
-    // }).then((res) => expect(res.status).to.eq(200));
-    Object.entries(validFormData).forEach(([key, value]) => {
-      cy.get(`input[id="${key}"]`).type(value);
-    });
-    cy.get('button[type="submit"]').click();
+  it.only("should submit a customer that already exists", () => {
     
-    cy.wait("@handleSubmit").its("response.statusCode").should("eq", 200);
+    cy.request({
+      method: "POST",
+      url: "http://localhost:8080/api/customers/create_customer",
+      body: validFormData,
+    }).then((res) => { expect(res.status).to.eq(200); cy.log(JSON.stringify(res))});
 
+    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
+    
     Object.entries(validFormData).forEach(([key, value]) => {
       cy.get(`input[id="${key}"]`).type(value);
     });
