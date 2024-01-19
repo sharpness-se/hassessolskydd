@@ -18,16 +18,12 @@ jobs:
       - name: Run database container
         run: |
           docker run --name hassessolskyddDB -e POSTGRES_USER=hassessolskydd -e POSTGRES_PASSWORD=r4d3+ -e POSTGRES_DB=hassessolskydd -p 5432:5432 -d postgres:latest
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew build
 
-      - name: Start Spring Boot application
-        run: nohup java -jar server/build/libs/hassessolskydd-0.0.1-SNAPSHOT.jar > spring-boot-log.txt 2>&1 &
-
-      - name: Wait for Spring Boot application to start
-        run: sleep 30s
+      - name: Build and Run Spring Boot application
+        run: ./gradlew bootRun &
 
       - name: Install Postman CLI
         run: |
