@@ -1,0 +1,34 @@
+name: Automated API tests using Postman CLI
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Run database container
+        run: |
+          docker run --name hassessolskyddDB -e POSTGRES_USER=hassessolskydd -e POSTGRES_PASSWORD=r4d3+ -e POSTGRES_DB=hassessolskydd -p 5432:5432 -d postgres:latest
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Start Spring Boot application
+        run: java -jar build/libs/hassessolskydd-0.0.1-SNAPSHOT.jar &
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Run API tests
+        run: |
+          postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef"
