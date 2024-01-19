@@ -21,25 +21,21 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        id: gradle-build
         run: ./gradlew build
 
-  postman:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
       - name: Start Spring Boot application
-        run: java -jar server/build/libs/hassessolskydd-0.0.1-SNAPSHOT.jar &
+        run: nohup java -jar server/build/libs/hassessolskydd-0.0.1-SNAPSHOT.jar > spring-boot-log.txt 2>&1 &
+
+      - name: Wait for Spring Boot application to start
+        run: sleep 30s
+
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+
       - name: Run API tests
         run: |
           postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef"
