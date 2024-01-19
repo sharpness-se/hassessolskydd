@@ -61,16 +61,4 @@ public interface OrderMapper {
     )
     void insertOrderItemDetails(OrderItemsDetails orderItemsDetails);
 
-
-
-
-
-
-    /*@Results(value = {
-            @Result(property = "customerNumber", column = "customer_number"),
-            @Result(property = "products", column = "products", many = @Many (select = "se.sharpness.hassessolskydd.dao.ProductsMapper.findProductsByOrderId"))
-    }) */
-    //Optional<Order> findAllOrdersByCustomerNumber(String customerNumber);
-    //Where should we do the specific order search? In the controller or in the mapper?
-
 }
