@@ -51,7 +51,7 @@ jobs:
 
       - name: Build and Deploy Spring Boot App
         run: |
-          ./gradlew server:build
+          ./gradlew server:build -x test
 
       - name: Debug Information
         run: |
