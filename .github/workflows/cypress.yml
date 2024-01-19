@@ -52,11 +52,11 @@ jobs:
 
       - name: Debug Information
         run: |
-          ls -R $GITHUB_WORKSPACE
+          ls -R $GITHUB_WORKSPACE/server/build/libs/
           pwd
         
       - name: Start Spring Boot
-        run: java -jar build/libs/server-0.0.1-SNAPSHOT.jar
+        run: java -jar $GITHUB_WORKSPACE/server/build/libs/server-0.0.1-SNAPSHOT.jar
         
       - name: Wait for Spring Boot to Start
         run: sleep 30
