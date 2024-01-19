@@ -9,6 +9,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      REACT_APP_BACKEND_URL: http://localhost:8080
+
     services:
       # Start a PostgreSQL container
       postgres:
@@ -57,12 +60,6 @@ jobs:
         
       - name: Start Spring Boot
         run:  java -jar server/build/libs/server-0.0.1-SNAPSHOT.jar &
-          # Add a delay to allow the Spring Boot application to start
-          # Adjust the sleep duration based on the time your application needs to start
-          # For example, if it needs 30 seconds, use "sleep 30"
-
-      - name: Wait for Springboot
-        run: sleep 10
 
       - name: Run Cypress tests
         run: |
