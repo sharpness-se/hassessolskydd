@@ -8,12 +8,22 @@ import ContactDateComponent from "../components/ContactDateComponent";
 import Accordion from "../components/AccordionComponent";
 import { baseUrl } from "../settings/baseUrl";
 import CustomerCartComponent from "../components/cart/CustomerCartComponent";
-import CreateOrderFormComponent from "../components/createOrderForm/Pilsegardin";
+
+import toast, { Toaster } from "react-hot-toast";
+import Pilsegardin from "../components/createOrderProductForms/Pilsegardin";
 
 export interface Product {
   name: string;
   attributes: string[];
   values: string[];
+}
+export interface FormData {
+  customerNumber?: string;
+  measurementDate?: Date;
+  notes?: string;
+  instalationDetails?: string;
+  indoorOutdoor?: string;
+  orderItems?: Product[];
 }
 
 export default function CreateOrderPageComponent() {
@@ -22,7 +32,7 @@ export default function CreateOrderPageComponent() {
   const [hidden, setHidden] = useState(true);
   const [product, setProduct] = useState("");
   const [customerCart, setCustomerCart] = useState<Product[]>([]);
-
+  const [formData, setFormData] = useState<FormData>();
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -52,8 +62,41 @@ export default function CreateOrderPageComponent() {
   }, []);
 
   useEffect(() => {
-    console.log(customerCart);
-  }, [customerCart]);
+    const currentCustomer = customer?.customerNumber;
+    setFormData({
+      customerNumber: currentCustomer,
+      orderItems: customerCart,
+    });
+  }, [customerCart, customer]);
+
+  const handleSubmit = async () => {
+    console.log("Updated formData:", formData);
+    if (!formData?.customerNumber) {
+      toast.error("Please Select a Customer!");
+      return;
+    }
+    try {
+      const response = await fetch(`${baseUrl}/api/order/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        toast.success("Order Submitted Successfully!");
+        const data = await response.json();
+        console.log(data);
+      }
+       if (!response.ok) {
+         toast.error(`Something went wrong! Status: ${response.status} `);
+       }
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center p-20 xl:px-60">
       <h1 data-test="hero-heading" className="text-5xl mb-11 min-w-max">
@@ -104,7 +147,7 @@ export default function CreateOrderPageComponent() {
           </div>
         )}
         {!hidden && product === "Pilsegardin" && (
-          <CreateOrderFormComponent
+          <Pilsegardin
             product={product}
             clearOnClick={() => {
               setHidden(true);
@@ -115,9 +158,11 @@ export default function CreateOrderPageComponent() {
         )}
       </Accordion>
       <CustomerCartComponent
+        handleSubmit={handleSubmit}
         cart={customerCart}
         cartCallBack={setCustomerCart}
       ></CustomerCartComponent>
+      <Toaster position="bottom-center" reverseOrder={false} />
     </div>
   );
 }
