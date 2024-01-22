@@ -30,7 +30,8 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
       name: product,
       attributes: [
         "Antal",
-        "Bred och Höjd",
+        "Bred",
+        "Höjd",
         "Modell",
         "Vävnummer",
         "Beslag",
@@ -40,7 +41,8 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
       ],
       values: [
         numberOfProduct,
-        `${width}m x ${length}m`,
+        `${width}m`,
+        `${length}m`,
         model,
         weave,
         fitting,
