@@ -27,7 +27,7 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
   const addToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const item = {
-      name: product,
+      name: product.toLowerCase(),
       attributes: [
         "Antal",
         "Bred",
