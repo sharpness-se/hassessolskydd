@@ -46,7 +46,8 @@ VALUES
 INSERT INTO public.articles (id, name)
 VALUES
     (-1, 'persienn'),
-    (-2, 'fönstermarkis') ON CONFLICT DO NOTHING;
+    (-2, 'fönstermarkis'),
+    (-3, 'pilsegardin') ON CONFLICT DO NOTHING;
 
 INSERT INTO public.order_items (id, order_id, item_id)
 VALUES
