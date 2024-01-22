@@ -7,11 +7,13 @@ interface CustomerCartProps {
   children?: ReactNode;
   cart: Product[];
   cartCallBack: Dispatch<SetStateAction<Product[]>>;
+  handleSubmit: () => Promise<void>;
 }
 const CustomerCartComponent: React.FC<CustomerCartProps> = ({
   children,
   cart,
   cartCallBack,
+  handleSubmit
 }) => {
   return (
     <div className="bg-white rounded p-5 max-w-3xl w-[715px] mt-5">
@@ -40,7 +42,7 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
           <div>{children}</div>
         </div>
         <div className="flex w-full justify-center">
-          <StartMenuButton text={"Submit Order"} />
+          <StartMenuButton text={"Submit Order"} handleSubmit={handleSubmit}/>
         </div>
       </div>
     </div>
