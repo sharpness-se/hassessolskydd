@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import StartPageComponent from './pages/StartPageComponent';
-import CreateCustomerPageComponent from './pages/CreateCustomerPageComponent';
-import CreateOrderPageComponent from './pages/CreateOrderPageComponent';
+import StartPageComponent from './pages/StartPage';
+import CreateCustomerPageComponent from './pages/CreateCustomerPage';
+import CreateOrderPageComponent from './pages/CreateOrderPage';
 
 function App() {
   return (

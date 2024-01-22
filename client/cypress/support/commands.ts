@@ -35,3 +35,20 @@
 //     }
 //   }
 // }
+declare namespace Cypress {
+    interface Chainable {
+      getByData(dataTestAttribute: string): Chainable<JQuery<HTMLElement>>
+  }
+  interface Chainable {
+    setBaseUrl(baseUrl: string): void;
+  }
+  }
+  
+  Cypress.Commands.add("getByData", (selector) => {
+    return cy.get(`[data-test=${selector}]`)
+  })
+
+  Cypress.Commands.add("setBaseUrl", (baseUrl) => {
+    Cypress.config("baseUrl", baseUrl);
+  });
+  

@@ -3,13 +3,13 @@ import { IoClose, IoSearch } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
 import { useClickOutside } from "react-click-outside-hook";
 import { MoonLoader } from "react-spinners";
-import useDebounceHook from "../hooks/useDebounceHook";
-import SearchResultComponent from "./searchBar/SearchResultComponent";
-import { baseUrl } from "../settings/baseUrl";
+import useDebounceHook from "../../hooks/useDebounceHook";
+import SearchResultComponent from "./SearchResultComponent";
+import { baseUrl } from "../../settings/baseUrl";
 
 export interface Customer {
-  id: string;
-  firstname?: string;
+  id?: string;
+  firstname: string;
   lastname?: string;
   email?: string;
   phoneNumber?: string;
@@ -17,6 +17,7 @@ export interface Customer {
   postalCode?: string;
   city?: string;
   error?: string;
+  customerNumber?: string;
 }
 
 interface SearchBarProps {
@@ -40,7 +41,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
     if (searchResults.length > 0) {
       setIsExpanded(true);
     }
-  },[searchResults]);
+  }, [searchResults]);
   const collapseContainer = useCallback(() => {
     setIsExpanded(false);
     setSearchQuery("");
@@ -49,7 +50,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (isClickedOutside && isExpanded) {
@@ -58,8 +59,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
     if (searchResults.length > 0) {
       expandContainer();
     }
-    
-  }, [isClickedOutside, searchResults, collapseContainer, expandContainer, isExpanded]);
+  }, [
+    isClickedOutside,
+    searchResults,
+    collapseContainer,
+    expandContainer,
+    isExpanded,
+  ]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -80,6 +86,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
       postalCode: select.postalCode,
       city: select.city,
       error: select.error,
+      customerNumber: select.customerNumber,
     };
     onCustomerSelect(selectedCustomer);
     collapseContainer();
@@ -100,10 +107,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
 
       if (response.status === 204) {
         // Handle no customers found
-        setSearchResults([{ id: "error", error: "No Customer Found!" }]);
+       // setSearchResults([{ id: "error", error: "No Customer Found!" }]);
       } else {
         const data = await response.json();
         setSearchResults(data);
+        console.log(data);
       }
     } catch (error) {
       console.error(error);
@@ -113,8 +121,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
   };
   useDebounceHook(searchQuery, 500, handleSearch);
   return (
-    <>
-      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">Kund</label>
+    <div className="bg-white p-5 rounded w-full mb-5 max-h-[7em] z-50">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+        Kund
+      </label>
       <motion.div
         animate={isExpanded ? "expanded" : "collapse"}
         variants={containerVariants}
@@ -167,13 +177,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
               {searchResults.length > 0 &&
                 searchResults.map((item) => {
                   return (
-                    <React.Fragment key={item.id+"frag"}>
+                    <React.Fragment key={item.id + "frag"}>
                       <SearchResultComponent
                         onSelect={handleSelect}
                         error={item.error}
                         item={item}
                       />
-            
                     </React.Fragment>
                   );
                 })}
@@ -181,7 +190,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onCustomerSelect }) => {
           }
         </div>
       </motion.div>
-    </>
+    </div>
   );
 };
 

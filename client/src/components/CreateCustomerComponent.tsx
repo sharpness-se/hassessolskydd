@@ -40,8 +40,8 @@ function CreateCustomerComponent() {
       ),
     phoneNumber: Yup.string()
       .required("Telefon är obligatoriskt")
-      .matches(/^[0-9()+\- ]*$/, "Ogiltigt telefonnummerformat")
-      .min(9, "Telefonnummer måste vara minst 9 siffror"),
+      .matches(/^[+]?[0-9]+([-\\s][0-9]+)*$/, "Ogiltigt telefonnummerformat")
+      .min(8, "Telefonnummer måste vara minst 8 siffror"),
     address: Yup.string()
       .required("Adress är obligatoriskt")
       .matches(/^[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/, "Ange en giltig adress"),
@@ -50,7 +50,7 @@ function CreateCustomerComponent() {
       .matches(/^[a-zA-ZåäöÅÄÖ]*$/, "Ange endast bokstäver"),
     postalCode: Yup.string()
       .required("Postkod är obligatoriskt")
-      .matches(/^[0-9\s]+$/, "Ange endast siffror.")
+      .matches(/^\d{3}\s?\d{2}$/, "Ange endast siffror.")
       .min(5, "Postkod måste vara minst 5 siffror"),
   });
 
@@ -168,10 +168,20 @@ function CreateCustomerComponent() {
       toast.error("Data submission failed: Validation error!");
     }
   };
+
+  function addSpaceAtFourthChar(inputString: string) {
+    if (inputString.length >= 4) {
+      if (inputString.charAt(3) !== ' ') {
+        inputString = inputString.slice(0, 3) + ' ' + inputString.slice(3);
+      }
+    }
+    return inputString;
+  }
+  
   return (
     <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
       <h2 className="text-xl font-bold text-gray-800 mb-3">Personuppgifter</h2>
-      <FormComponent onSubmit={handleSubmit}>
+      <FormComponent submitButtonText={"Skapa Kund"} backButtonText="Tillbaka" onSubmit={handleSubmit}>
         <DoubleFieldInputRow
           labelOne="förnamn"
           labelTwo="efternamn"
@@ -236,7 +246,7 @@ function CreateCustomerComponent() {
             handleChange("city", e.target.value)
           }
           onChangeTwo={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleChange("postalCode", e.target.value)
+            handleChange("postalCode", addSpaceAtFourthChar(e.target.value))
           }
           errorOne={errors.city.error}
           errorTwo={errors.postalCode.error}
