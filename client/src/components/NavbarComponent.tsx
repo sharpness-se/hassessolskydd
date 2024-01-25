@@ -33,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
       </nav>
 
       <div
-        className={`bg-blue-600 w-80 h-full fixed top-16 right-0 z-0 transition-all ${
+        className={`bg-blue-600 w-80 h-full fixed top-16 right-0 z-40 transition-all ${
           isMenuOpen
             ? "block transition-transform ease-out duration-300 transform translate-x-0"
             : "hidden transform translate-x-full"
