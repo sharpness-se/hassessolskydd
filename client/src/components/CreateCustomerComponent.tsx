@@ -28,14 +28,14 @@ function CreateCustomerComponent() {
   const schema = Yup.object().shape({
     firstname: Yup.string()
       .required("Förnamn är obligatoriskt")
-      .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
+      .matches(/^(?!\s)(?!.*\s{2})[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
     lastname: Yup.string()
       .required("Efternamn är obligatoriskt")
-      .matches(/^[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
+      .matches(/^(?!\s)(?!.*\s{2})[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
     email: Yup.string()
       .required("Email är obligatoriskt")
       .matches(
-        /^(|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-åäöÅÄÖ]+\.[a-zA-ZåäöÅÄÖ]{2,})$/,
+        /^(?!.*@.*@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-åäöÅÄÖ]+\.[a-zA-ZåäöÅÄÖ]{2,}$/,
         "Ogiltig emailadress"
       ),
     phoneNumber: Yup.string()
@@ -44,7 +44,7 @@ function CreateCustomerComponent() {
       .min(8, "Telefonnummer måste vara minst 8 siffror"),
     address: Yup.string()
       .required("Adress är obligatoriskt")
-      .matches(/^[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/, "Ange en giltig adress"),
+      .matches(/^(?!\s)(?!.*\s{2})[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/, "Ange en giltig adress"),
     city: Yup.string()
       .required("Ort är obligatoriskt")
       .matches(/^[a-zA-ZåäöÅÄÖ]*$/, "Ange endast bokstäver"),
@@ -239,7 +239,7 @@ function CreateCustomerComponent() {
           idOne="city"
           idTwo="postalCode"
           placeholderOne="Stockholm"
-          placeholderTwo="11129"
+          placeholderTwo="111 29"
           valueOne={formData.city}
           valueTwo={formData.postalCode}
           onChangeOne={(e: React.ChangeEvent<HTMLInputElement>) =>

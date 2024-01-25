@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Accordion from "../AccordionComponent";
 import { Product } from "../../pages/CreateOrderPage";
-import { nanoid } from 'nanoid'
+import { nanoid } from "nanoid";
 interface CartItemProps {
   product?: Product;
   itemIndex?: number;
@@ -10,13 +10,17 @@ interface CartItemProps {
   key: string;
 }
 
-const CartItemComponent: React.FC<CartItemProps> = ({ product, itemIndex, cartCallback, cart, key }) => {
-
+const CartItemComponent: React.FC<CartItemProps> = ({
+  product,
+  itemIndex,
+  cartCallback,
+  cart,
+  key,
+}) => {
   const deleteCartItem = () => {
-    
-    const updatedProducts = cart?.filter((_, index) => index !== itemIndex)
+    const updatedProducts = cart?.filter((_, index) => index !== itemIndex);
     cartCallback(updatedProducts);
-  }
+  };
   return (
     <div className="bg-white rounded-lg mb-5" key={key}>
       <Accordion title="Pilsegardin" addDelete deleteCallback={deleteCartItem}>
@@ -26,7 +30,10 @@ const CartItemComponent: React.FC<CartItemProps> = ({ product, itemIndex, cartCa
               product.attributes.map((item, index) => {
                 if (index === 0) {
                   return (
-                    <div className="grid grid-cols-4 col-span-4 " key={nanoid()}>
+                    <div
+                      className="grid grid-cols-4 col-span-4 "
+                      key={nanoid()}
+                    >
                       <div className="grid grid-cols-1 ">
                         <span className="">{item}</span>
                         <span>{product.values[index]}</span>

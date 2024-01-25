@@ -10,7 +10,7 @@ export default function StartPageComponent() {
       <StartMenuButton text="Skapa ny kund" href="/skapakund"></StartMenuButton>
       <StartMenuButton text="Skapa order" href="/skapaorder"></StartMenuButton>
       <StartMenuButton text="Se kunder" href=""></StartMenuButton>
-      <StartMenuButton text="Se ordrar" href=""></StartMenuButton>
+      <StartMenuButton text="Se ordrar" href="/sökordrar"></StartMenuButton>
     </main>
   );
 }
