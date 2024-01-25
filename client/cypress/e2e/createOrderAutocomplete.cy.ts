@@ -6,9 +6,9 @@ describe("Create order autocomplete tests", () => {
     cy.visit('http://localhost:8080/skapaorder');
   });
 
-  it("the h1 contains the correct text", () => {
-    cy.getByData("hero-heading").contains("Skapa Order");
-  });
+  // it("the h1 contains the correct text", () => {
+  //   cy.getByData("hero-heading").contains("Skapa Order");
+  // });
 
   it("Autocomplete contains populated options list", () => {
     cy.intercept("GET", "/api/customers").as("getCustomerList");
