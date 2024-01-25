@@ -78,27 +78,33 @@ private final OrderMapper orderMapper;
 
     public List<Article> defineArticles(int orderId) {
         List<OrderItemsDetails> itemDetails = getOrderItemDetails(orderId);
+
+        if (itemDetails == null) {
+            return null;
+        }
+
         List<Article> orderItems = new ArrayList<>();
         Map<Integer, Article> articleMap = new HashMap<>();
 
         for (OrderItemsDetails item : itemDetails) {
-            int orderItemsId = item.getOrderItemId();
+            if (item != null) { // Add a null check for each item
+                int orderItemsId = item.getOrderItemId();
 
-            if (!articleMap.containsKey(orderItemsId)) {
-                Article newArticle = new Article();
-                newArticle.setName(item.getName());
-                newArticle.setAttributes(new ArrayList<>());
-                newArticle.setValues(new ArrayList<>());
+                if (!articleMap.containsKey(orderItemsId)) {
+                    Article newArticle = new Article();
+                    newArticle.setName(item.getName());
+                    newArticle.setAttributes(new ArrayList<>());
+                    newArticle.setValues(new ArrayList<>());
 
-                orderItems.add(newArticle);
-                articleMap.put(orderItemsId, newArticle);
+                    orderItems.add(newArticle);
+                    articleMap.put(orderItemsId, newArticle);
+                }
+
+                Article currentArticle = articleMap.get(orderItemsId);
+                currentArticle.getAttributes().add(item.getAttribute());
+                currentArticle.getValues().add(item.getValue());
             }
-
-            Article currentArticle = articleMap.get(orderItemsId);
-            currentArticle.getAttributes().add(item.getAttribute());
-            currentArticle.getValues().add(item.getValue());
         }
-
         return orderItems;
     }
 
