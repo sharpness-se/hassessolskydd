@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
         <Link to={"/"}>
           <p>Tillbaka</p>
         </Link>
-        <h2 className="text-xl font-bold">{title}</h2>
+        <h2 className="text-2xl font-bold">{title}</h2>
         <button onClick={toggleMenu}>
           {isMenuOpen ? <FaX /> : <FaBars />}
         </button>
