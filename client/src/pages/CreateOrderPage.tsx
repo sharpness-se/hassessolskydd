@@ -11,6 +11,7 @@ import CustomerCartComponent from "../components/cart/CustomerCartComponent";
 
 import toast, { Toaster } from "react-hot-toast";
 import Pilsegardin from "../components/createOrderProductForms/Pilsegardin";
+import Navbar from "../components/NavbarComponent";
 
 export interface Product {
   name: string;
@@ -88,9 +89,9 @@ export default function CreateOrderPageComponent() {
         const data = await response.json();
         console.log(data);
       }
-       if (!response.ok) {
-         toast.error(`Something went wrong! Status: ${response.status} `);
-       }
+      if (!response.ok) {
+        toast.error(`Something went wrong! Status: ${response.status} `);
+      }
     } catch (error) {
       toast.error("Something went wrong");
       console.error(error);
@@ -98,71 +99,75 @@ export default function CreateOrderPageComponent() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-20 xl:px-60">
-      <h1 data-test="hero-heading" className="text-5xl mb-11 min-w-max">
-        Skapa Order
-      </h1>
-      <div className="flex w-full justify-center">
-        <div className="flex flex-col mb-[22px]">
-          <MuiSearchBarComponent
-            setSelectedCustomer={setCustomer}
-            selectedCustomer={customer}
-            options={options}
-            setOptions={setOptions}
-          />
-          <ContactDateComponent heading={"Typ av ärende"} />
-        </div>
-        <div className="flex-2">
-          <CustomerDetailsComponent customer={customer} />
-        </div>
-      </div>
-      <Accordion title={"Typ av ärende"} applyHeight customOnClick>
-        {hidden && (
-          <div className={"flex justify-center items-center w-full h-full"}>
-            <label
-              htmlFor="mySelect"
-              className="tracking-wide uppercase font-bold text-s text-gray-700 mr-5"
-            >
-              Välj en produkt:
-            </label>
-            <select
-              id="myselect"
-              onChange={(e) => {
-                setProduct(e.target.value);
-                setHidden(false);
-              }}
-              value={product}
-              className="p-2 px-3 border font-bold text-s text-gray-700"
-            >
-              <option
-                className="text-xs font-bold text-gray-700"
-                value=""
-                disabled
-                hidden
-              >
-                Produkt...
-              </option>
-              <option value="Pilsegardin">Pilsegardin</option>
-            </select>
+    <>
+      <Navbar title="Skapa Order" />
+
+      <div className="flex min-h-screen flex-col items-center p-20 xl:px-60">
+        {/* <h1 data-test="hero-heading" className="text-5xl mb-11 min-w-max">
+          Skapa Order
+        </h1> */}
+        <div className="flex w-full justify-center mt-10 z-0">
+          <div className="flex flex-col mb-[22px]">
+            <MuiSearchBarComponent
+              setSelectedCustomer={setCustomer}
+              selectedCustomer={customer}
+              options={options}
+              setOptions={setOptions}
+            />
+            <ContactDateComponent heading={"Typ av ärende"} />
           </div>
-        )}
-        {!hidden && product === "Pilsegardin" && (
-          <Pilsegardin
-            product={product}
-            clearOnClick={() => {
-              setHidden(true);
-              setProduct("");
-            }}
-            cartCallback={setCustomerCart}
-          />
-        )}
-      </Accordion>
-      <CustomerCartComponent
-        handleSubmit={handleSubmit}
-        cart={customerCart}
-        cartCallBack={setCustomerCart}
-      ></CustomerCartComponent>
-      <Toaster position="bottom-center" reverseOrder={false} />
-    </div>
+          <div className="flex-2">
+            <CustomerDetailsComponent customer={customer} />
+          </div>
+        </div>
+        <Accordion title={"Typ av ärende"} applyHeight customOnClick>
+          {hidden && (
+            <div className={"flex justify-center items-center w-full h-full"}>
+              <label
+                htmlFor="mySelect"
+                className="tracking-wide uppercase font-bold text-s text-gray-700 mr-5"
+              >
+                Välj en produkt:
+              </label>
+              <select
+                id="myselect"
+                onChange={(e) => {
+                  setProduct(e.target.value);
+                  setHidden(false);
+                }}
+                value={product}
+                className="p-2 px-3 border font-bold text-s text-gray-700"
+              >
+                <option
+                  className="text-xs font-bold text-gray-700"
+                  value=""
+                  disabled
+                  hidden
+                >
+                  Produkt...
+                </option>
+                <option value="Pilsegardin">Pilsegardin</option>
+              </select>
+            </div>
+          )}
+          {!hidden && product === "Pilsegardin" && (
+            <Pilsegardin
+              product={product}
+              clearOnClick={() => {
+                setHidden(true);
+                setProduct("");
+              }}
+              cartCallback={setCustomerCart}
+            />
+          )}
+        </Accordion>
+        <CustomerCartComponent
+          handleSubmit={handleSubmit}
+          cart={customerCart}
+          cartCallBack={setCustomerCart}
+        ></CustomerCartComponent>
+        <Toaster position="bottom-center" reverseOrder={false} />
+      </div>
+    </>
   );
 }
