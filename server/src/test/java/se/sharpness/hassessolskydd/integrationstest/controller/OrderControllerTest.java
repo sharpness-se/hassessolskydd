@@ -53,6 +53,16 @@ class OrderControllerTest extends HassesDbTest{
     }
 
     @Test
+    void findAllOrders() {
+        List<Order> orders = orderController.findAllOrders();
+        assertEquals(4, orders.size(), "List size should be 4");
+        assertEquals(-1L, orders.get(0).getId());
+        assertEquals(-2L, orders.get(1).getId());
+        assertEquals("CUST001", orders.get(2).getCustomerNumber());
+        assertEquals(3, orderController.defineArticles(orders.get(0).getId()).size());
+    }
+
+    @Test
     void getOrderItemDetails() {
         int orderId = -2;
         List<OrderItemsDetails> itemDetails = orderController.getOrderItemDetails(orderId);
