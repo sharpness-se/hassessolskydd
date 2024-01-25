@@ -37,6 +37,7 @@ private final OrderMapper orderMapper;
         }
     }
 
+
     @GetMapping("/order/all/{customerNumber}")
     public List<Order> findOrderByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
 
@@ -50,6 +51,19 @@ private final OrderMapper orderMapper;
         } else {
             throw new Exception("Could not find orders for this Customer");
         }
+    }
+
+    @GetMapping("/order/all")
+    public List<Order> findAllOrders() {
+        List<Order> Orders = orderMapper.findAllOrders();
+        for (Order order : Orders) {
+            int orderId = order.getId();
+            List<Article> articles = defineArticles(orderId);
+            if (articles != null) {
+                order.setOrderItems(articles);
+            }
+        }
+        return Orders;
     }
 
     public List<OrderItemsDetails> getOrderItemDetails(@PathVariable int orderId) {

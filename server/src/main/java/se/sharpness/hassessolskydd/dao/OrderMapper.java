@@ -34,6 +34,9 @@ public interface OrderMapper {
     )
     List<OrderItemsDetails> findOrderDetailsByOrderId(int orderId);
 
+    @Select("SELECT * FROM public.order")
+    List<Order> findAllOrders();
+
     @Select("select id from public.articles where name = #{name}")
     int findArticleIdByName(String name);
 
@@ -60,5 +63,4 @@ public interface OrderMapper {
             "INSERT INTO public.item_attributes (order_items_id, attribute, value) VALUES (#{orderItemId}, #{attribute}, #{value})"
     )
     void insertOrderItemDetails(OrderItemsDetails orderItemsDetails);
-
 }
