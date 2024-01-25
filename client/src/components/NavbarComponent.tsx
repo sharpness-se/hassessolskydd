@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaX } from "react-icons/fa6";
+import { FaAngleLeft, FaBars, FaX } from "react-icons/fa6";
 
 interface NavbarProps {
   title: string;
@@ -17,12 +17,19 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
     <>
       <nav className="bg-blue-500 p-5 text-white fixed top-0 w-full flex justify-between z-50">
         <Link to={"/"}>
-          <p>Tillbaka</p>
+          <div className="flex">
+            <FaAngleLeft />
+            <p>Tillbaka</p>
+          </div>
         </Link>
-        <h2 className="text-2xl font-bold">{title}</h2>
-        <button onClick={toggleMenu}>
-          {isMenuOpen ? <FaX /> : <FaBars />}
-        </button>
+        <div>
+          <h2 className="text-2xl font-bold">{title}</h2>
+        </div>
+        <div className="">
+          <button onClick={toggleMenu}>
+            {isMenuOpen ? <FaX size={30} /> : <FaBars size={30} />}
+          </button>
+        </div>
       </nav>
 
       <div
