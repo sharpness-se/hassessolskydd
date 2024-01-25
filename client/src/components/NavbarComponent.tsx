@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaAngleLeft, FaBars, FaX } from "react-icons/fa6";
 
@@ -33,17 +33,23 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
       </nav>
 
       <div
-        className={`bg-blue-600 w-80 h-full p-5 fixed top-16 right-0 z-0 transition-all ${
+        className={`bg-blue-600 w-80 h-full fixed top-16 right-0 z-0 transition-all ${
           isMenuOpen
             ? "block transition-transform ease-out duration-300 transform translate-x-0"
             : "hidden transform translate-x-full"
         }`}
       >
-        <ul>
-          <li>
+        <ul className="text-white font-bold text-xl mt-6">
+          <li className="p-5 shadow-md">
             <Link to={"/skapakund"}>Skapa ny kund</Link>
+          </li>
+          <li className="p-5 shadow-md">
             <Link to={"/skapaorder"}>Skapa order</Link>
+          </li>
+          <li className="p-5 shadow-md">
             <Link to={"/"}>Se kunder</Link>
+          </li>
+          <li className="p-5 shadow-md">
             <Link to={"/"}>Se ordrar</Link>
           </li>
         </ul>
