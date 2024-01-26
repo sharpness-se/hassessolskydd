@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import se.sharpness.hassessolskydd.dao.OrderMapper;
+import se.sharpness.hassessolskydd.model.Alternate_Order;
 import se.sharpness.hassessolskydd.model.Article;
+import se.sharpness.hassessolskydd.model.Cart;
 import se.sharpness.hassessolskydd.model.Order;
 import se.sharpness.hassessolskydd.model.OrderItem;
 import se.sharpness.hassessolskydd.model.OrderItemsDetails;
@@ -38,7 +40,8 @@ private final OrderMapper orderMapper;
     }
 
     @GetMapping("/order/all/{customerNumber}")
-    public List<Order> findOrderByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws Exception {
+    public List<Order> findOrderByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber)
+            throws Exception {
 
         final var result = orderMapper.findAllOrdersByCustomerNumber(customerNumber);
         if (result != null && !result.isEmpty()) {
@@ -51,6 +54,33 @@ private final OrderMapper orderMapper;
             throw new Exception("Could not find orders for this Customer");
         }
     }
+    
+    @GetMapping("/order")
+    public List<Alternate_Order> AlternatefindAllOrders()  {
+        List<Alternate_Order> Orders = orderMapper.AlternatefindAllOrders();
+        for (Alternate_Order order : Orders) {
+            int orderId = order.getId();
+            Cart cart = defineCart(orderId);
+            if (cart != null) {
+                order.setCart(cart);
+            }
+        }
+        return Orders;
+    }
+    
+
+    @GetMapping("/order/all")
+    public List<Order> findAllOrders() {
+        List<Order> Orders = orderMapper.findAllOrders();
+        for (Order order : Orders) {
+            int orderId = order.getId();
+            List<Article> articles = defineArticles(orderId);
+            if (articles != null) {
+                order.setOrderItems(articles);
+            }
+        }
+        return Orders;
+    }
 
     public List<OrderItemsDetails> getOrderItemDetails(@PathVariable int orderId) {
         List<OrderItemsDetails> itemDetails = orderMapper.findOrderDetailsByOrderId(orderId);
@@ -62,6 +92,10 @@ private final OrderMapper orderMapper;
         }
     }
 
+    public Cart defineCart(int orderId) {
+        final Cart result = orderMapper.findCart(orderId);
+        return result;
+    }
     public List<Article> defineArticles(int orderId) {
         List<OrderItemsDetails> itemDetails = getOrderItemDetails(orderId);
         List<Article> orderItems = new ArrayList<>();
@@ -70,15 +104,15 @@ private final OrderMapper orderMapper;
         for (OrderItemsDetails item : itemDetails) {
             int orderItemsId = item.getOrderItemId();
 
-            if (!articleMap.containsKey(orderItemsId)) {
-                Article newArticle = new Article();
-                newArticle.setName(item.getName());
-                newArticle.setAttributes(new ArrayList<>());
-                newArticle.setValues(new ArrayList<>());
-
-                orderItems.add(newArticle);
-                articleMap.put(orderItemsId, newArticle);
-            }
+                if (!articleMap.containsKey(orderItemsId)) {
+                    Article newArticle = new Article();
+                    newArticle.setName(item.getName());
+                    newArticle.setOrderItemId(item.getOrderItemId());
+                    newArticle.setAttributes(new ArrayList<>());
+                    newArticle.setValues(new ArrayList<>());
+                    orderItems.add(newArticle);
+                    articleMap.put(orderItemsId, newArticle);
+                }
 
             Article currentArticle = articleMap.get(orderItemsId);
             currentArticle.getAttributes().add(item.getAttribute());

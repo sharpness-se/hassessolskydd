@@ -8,6 +8,7 @@ import java.util.List;
 public class Article {
 
     private String name;
+    private int orderItemId;
     private List<String> attributes;
     private List<String> values;
 }
