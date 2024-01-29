@@ -19,8 +19,15 @@ const Accordion: React.FC<AccordionProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className={`bg-white rounded p-5 max-w-[44.5rem] ${title==="Typ av ärende"? "w-[44.5rem]":"w-full"}`}>
-      <div className="flex justify-between items-center">
+    <div
+      className={`bg-white rounded p-5 max-w-[44.5rem] ${
+        title === "Typ av ärende" ? "w-[44.5rem]" : "w-full"
+      }`}
+    >
+      <div
+        onClick={() => setIsExpanded((prevIsExpanded) => !prevIsExpanded)}
+        className="flex justify-between items-center cursor-pointer"
+      >
         <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold">
           {title}
         </h2>
@@ -33,10 +40,7 @@ const Accordion: React.FC<AccordionProps> = ({
               TA BORT
             </button>
           )}
-          <button
-            onClick={() => setIsExpanded((prevIsExpanded) => !prevIsExpanded)}
-            className=""
-          >
+          <button className="">
             {isExpanded ? (
               <FaChevronUp className="align-middle" />
             ) : (
