@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
         <Link to={"/"}>
           <div className="flex items-center">
             <FaAngleLeft className="align-middle" />
-            <p>Tillbaka</p>
+            <p className="font-bold">Tillbaka</p>
           </div>
         </Link>
         <div>
