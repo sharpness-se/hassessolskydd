@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
 
   return (
     <>
-      <nav className="bg-blue-500 p-5 text-white fixed top-0 w-full flex items-center justify-between z-50">
+      <nav className="bg-blue-500 p-5 text-white sticky top-0 w-full flex items-center justify-between z-50">
         <Link to={"/"}>
           <div className="flex">
             <FaAngleLeft className="align-middle" />
@@ -33,11 +33,11 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
       </nav>
 
       <div
-        className={`bg-blue-600 w-80 h-full fixed top-16 right-0 z-40 transition-transform duration-300 ${
+        className={`bg-blue-600 w-80 h-full absolute right-0 z-40 transition-transform duration-300 ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <ul className="text-white font-bold text-xl mt-6">
+        <ul className="text-white font-bold text-xl">
           <li className="p-5 shadow-sm">
             <Link to={"/skapakund"}>Skapa ny kund</Link>
           </li>
