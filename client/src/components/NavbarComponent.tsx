@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
             <Link to={"/"}>Se kunder</Link>
           </li>
           <li className="p-5 shadow-sm">
-            <Link to={"/"}>Se ordrar</Link>
+            <Link to={"/sökordrar"}>Se ordrar</Link>
           </li>
         </ul>
       </div>
