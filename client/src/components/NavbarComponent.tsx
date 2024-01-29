@@ -38,16 +38,16 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
         }`}
       >
         <ul className="text-white font-bold text-xl mt-6">
-          <li className="p-5 shadow-md">
+          <li className="p-5 shadow-sm">
             <Link to={"/skapakund"}>Skapa ny kund</Link>
           </li>
-          <li className="p-5 shadow-md">
+          <li className="p-5 shadow-sm">
             <Link to={"/skapaorder"}>Skapa order</Link>
           </li>
-          <li className="p-5 shadow-md">
+          <li className="p-5 shadow-sm">
             <Link to={"/"}>Se kunder</Link>
           </li>
-          <li className="p-5 shadow-md">
+          <li className="p-5 shadow-sm">
             <Link to={"/"}>Se ordrar</Link>
           </li>
         </ul>
