@@ -114,7 +114,7 @@ export default function CreateOrderPageComponent() {
               options={options}
               setOptions={setOptions}
             />
-            <ContactDateComponent heading={"Typ av ärende"} />
+            <ContactDateComponent heading={"Datum"} />
           </div>
           <div className="flex-2">
             <CustomerDetailsComponent customer={customer} />
