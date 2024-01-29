@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
     <>
       <nav className="bg-blue-500 p-5 text-white sticky top-0 w-full flex items-center justify-between z-50">
         <Link to={"/"}>
-          <div className="flex">
+          <div className="flex items-center">
             <FaAngleLeft className="align-middle" />
             <p>Tillbaka</p>
           </div>
