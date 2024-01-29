@@ -120,7 +120,7 @@ export default function CreateOrderPageComponent() {
             <CustomerDetailsComponent customer={customer} />
           </div>
         </div>
-        <Accordion title={"Typ av ärende"} applyHeight customOnClick>
+        <Accordion title={"Produkter"} applyHeight customOnClick>
           {hidden && (
             <div className={"flex justify-center items-center w-full h-full"}>
               <label
