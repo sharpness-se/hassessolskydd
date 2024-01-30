@@ -7,8 +7,10 @@ import {
   getCoreRowModel,
   AccessorFn,
 } from "@tanstack/react-table";
+
+type Order = { customerNumber: string; firstContact: string; id: string };
+
 export default function SearchOrderPage() {
-  type Order = { customerNumber: string; firstContact: string; id: string };
   const [orderList, setOrderList] = useState<Order[]>([]);
   const columnHelper = createColumnHelper<Order>();
 
@@ -54,11 +56,13 @@ export default function SearchOrderPage() {
     };
     fetchData();
   }, []);
+
   const table = useReactTable({
     data: orderList, // Renamed 'orderList' to 'data'
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
     <div className="flex min-h-screen flex-col items-center p-20 xl:px">
       <h1 data-test="search-heading" className="text-5xl mb-11 min-w-max">
@@ -95,7 +99,10 @@ export default function SearchOrderPage() {
                 <tr key={row.id} className="border">
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td key={cell.id} className="px-5 py-1 text-[10px] border border-cyan-800">
+                      <td
+                        key={cell.id}
+                        className="px-5 py-1 text-[10px] border border-cyan-800"
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
