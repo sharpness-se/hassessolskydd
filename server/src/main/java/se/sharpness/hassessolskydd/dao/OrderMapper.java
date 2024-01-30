@@ -14,7 +14,7 @@ public interface OrderMapper {
     @Select(
       "select * from \"order\" where id = #{id}"
     )
-    Optional<Order> findOrderByOrderId(Long id);
+    Optional<Order> findOrderByOrderId(int id);
 
     @Select("select * from \"order\" where customer_number = #{customerNumber}")
     List<Order> findAllOrdersByCustomerNumber(String customerNumber);

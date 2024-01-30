@@ -18,13 +18,4 @@ public class Order {
     private InstallationDetails installationDetails;
     private IndoorOutdoor indoorOutdoor;
     private List<Article> orderItems;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
 }

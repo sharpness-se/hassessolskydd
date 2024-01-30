@@ -34,7 +34,7 @@ class OrderMapperTest extends HassesDbTest {
 
     @Test
     void findOrderByOrderId() {
-        Optional<Order> order = orderMapper.findOrderByOrderId(-1L);
+        Optional<Order> order = orderMapper.findOrderByOrderId(-1);
         assertTrue(order.isPresent());
         assertEquals(-1L, order.get().getId());
     }

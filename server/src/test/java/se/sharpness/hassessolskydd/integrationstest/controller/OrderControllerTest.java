@@ -30,7 +30,7 @@ class OrderControllerTest extends HassesDbTest{
     @Test
     void findOrderByOrderId() throws Exception {
 
-        Order order = orderController.findOrderByOrderId(-1L);
+        Order order = orderController.findOrderByOrderId(-1);
         assertEquals(-1L, order.getId());
         assertEquals("CUST001", order.getCustomerNumber());
         assertEquals("2023-11-01T00:00", order.getFirstContact().toString());

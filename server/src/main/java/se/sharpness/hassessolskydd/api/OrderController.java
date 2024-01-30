@@ -25,12 +25,12 @@ private final CustomerMapper customerMapper;
     }
 
    @GetMapping("/order/{orderId}")
-    public Order findOrderByOrderId(@PathVariable(value = "orderId") Long orderId) throws Exception {
+    public Order findOrderByOrderId(@PathVariable(value = "orderId") int orderId) throws Exception {
 
         final var result = orderMapper.findOrderByOrderId(orderId);
         if (result.isPresent()) {
             Order order = result.get();
-            order.setOrderItems(defineArticles(orderId.intValue()));
+            order.setOrderItems(defineArticles(orderId));
             return order;
         } else {
             throw new Exception("Could not find order"); //TODO: crate specific exceptions
@@ -54,20 +54,18 @@ private final CustomerMapper customerMapper;
     }
 
     @GetMapping("/order/all")
-    public List<Order> findAllOrders() {
+    public List<OrderAndCustomer> findAllOrders() throws Exception {
         List<Order> Orders = orderMapper.findAllOrders();
+        List<OrderAndCustomer> orderAndCustomers = new ArrayList<>();
         for (Order order : Orders) {
             int orderId = order.getId();
-            List<Article> articles = defineArticles(orderId);
-            if (articles != null) {
-                order.setOrderItems(articles);
-            }
+            orderAndCustomers.add(findOrderWithCustomerByOrderId(orderId));
         }
-        return Orders;
+        return orderAndCustomers;
     }
 
     @GetMapping("/order/withcustomer/{orderId}")
-    public OrderAndCustomer findOrderWithCustomerByOrderId(@PathVariable(value = "orderId") Long orderId) throws Exception {
+    public OrderAndCustomer findOrderWithCustomerByOrderId(@PathVariable(value = "orderId") int orderId) throws Exception {
 
         final var result = orderMapper.findOrderByOrderId(orderId);
 
@@ -83,7 +81,7 @@ private final CustomerMapper customerMapper;
                 throw new Exception("Could not find customer");
             }
 
-            orderAndCustomer.getOrder().setOrderItems(defineArticles(orderId.intValue()));
+            orderAndCustomer.getOrder().setOrderItems(defineArticles(orderId));
             return orderAndCustomer;
         } else {
             throw new Exception("Could not find order"); //TODO: crate specific exceptions

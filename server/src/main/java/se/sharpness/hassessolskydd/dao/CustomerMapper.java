@@ -35,11 +35,6 @@ public interface CustomerMapper {
   void createCustomer(Customer customer); //TODO: Should return fail/success?
 
   @Select(
-    "select max(id) from customer"
-  )
-  int getMaxId();
-
-  @Select(
     "SELECT * FROM customer " +
       "WHERE firstname ILIKE '%' || #{searchTerm} || '%' " +
       "   OR lastname ILIKE '%' || #{searchTerm} || '%' " +
