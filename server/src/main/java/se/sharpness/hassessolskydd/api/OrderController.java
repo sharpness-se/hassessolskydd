@@ -4,11 +4,9 @@ package se.sharpness.hassessolskydd.api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.dao.OrderMapper;
-import se.sharpness.hassessolskydd.model.Article;
-import se.sharpness.hassessolskydd.model.Order;
-import se.sharpness.hassessolskydd.model.OrderItem;
-import se.sharpness.hassessolskydd.model.OrderItemsDetails;
+import se.sharpness.hassessolskydd.model.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,10 +16,12 @@ import java.util.*;
 public class OrderController extends BaseApiController {
 
 private final OrderMapper orderMapper;
+private final CustomerMapper customerMapper;
 
 
-    public OrderController(OrderMapper orderMapper) {
+    public OrderController(OrderMapper orderMapper, CustomerMapper customerMapper) {
         this.orderMapper = orderMapper;
+        this.customerMapper = customerMapper;
     }
 
    @GetMapping("/order/{orderId}")
@@ -64,6 +64,30 @@ private final OrderMapper orderMapper;
             }
         }
         return Orders;
+    }
+
+    @GetMapping("/order/withcustomer/{orderId}")
+    public OrderAndCustomer findOrderWithCustomerByOrderId(@PathVariable(value = "orderId") Long orderId) throws Exception {
+
+        final var result = orderMapper.findOrderByOrderId(orderId);
+
+        if (result.isPresent()) {
+            OrderAndCustomer orderAndCustomer = new OrderAndCustomer();
+            orderAndCustomer.setOrder(result.get());
+            var customerNumber = result.get().getCustomerNumber();
+
+            final var customerResult = customerMapper.findByCustomerNumber(customerNumber);
+            if (customerResult.isPresent()) {
+                orderAndCustomer.setCustomer(customerResult.get());
+            } else {
+                throw new Exception("Could not find customer");
+            }
+
+            orderAndCustomer.getOrder().setOrderItems(defineArticles(orderId.intValue()));
+            return orderAndCustomer;
+        } else {
+            throw new Exception("Could not find order"); //TODO: crate specific exceptions
+        }
     }
 
     public List<OrderItemsDetails> getOrderItemDetails(@PathVariable int orderId) {
