@@ -30,7 +30,7 @@ export default function SearchOrderPage() {
       (row) => `${row.customer.firstname} ${row.customer.lastname}`,
       { id: "name", header: "Customer" }
     ),
-    columnHelper.accessor((row) => `${row.order.customerNumber}`, {
+    columnHelper.accessor((row) => `${row.order.customerNumber.slice(0,12)}`, {
       id: "customerNumber",
       header: "Customer Id",
     }),
@@ -85,20 +85,20 @@ export default function SearchOrderPage() {
   return (
     <div className="flex min-h-screen flex-col items-center p-20 xl:px">
       <h1 data-test="search-heading" className="text-5xl mb-11 min-w-max">
-        Sök Ordrar
+        Se Ordrar
       </h1>
 
-      <div className="w-full rounded-lg p-10 bg-white shadow-md">
-        <h2 className="text-xl font-bold text-gray-700 mb-3">Sök Ordrar</h2>
+      <div className="table-auto w-full rounded-lg p-10 bg-white shadow-md">
+      {/* <h2 className="text-xl font-bold text-gray-700 mb-3">Sök Ordrar</h2> */}
 
-        <table className="table-auto border border-slate-400 shadow-2xl w-full">
-          <thead>
+        <table className="h-full w-full border-spacing-4 min-h-[20em] p-2">
+          <thead >
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <tr key={headerGroup.id} className="text-sm">
                   {headerGroup.headers.map((header) => {
                     return (
-                      <th id={header.id} className="border-spacing-y-3">
+                      <th id={header.id} className="text-left pl-2">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -117,11 +117,11 @@ export default function SearchOrderPage() {
               return (
                 <tr
                   key={row.id}
-                  className="shadow-lg hover:bg-blue-600 hover:font-bold hover:text-white"
+                  className="shadow-lg hover:bg-blue-600 hover:font-sm hover:text-white"
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td key={cell.id} className="text-[16px] px-2">
+                      <td key={cell.id} className="text-[16px] mx-1 flex-wrap pl-2">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
