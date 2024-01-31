@@ -100,12 +100,15 @@ export default function SearchOrderPage() {
     <>
       <Navbar title="Se Ordrar" />
       <div className="flex min-h-screen flex-col items-center p-20 xl:px">
-        <input
-          placeholder="Sök order..."
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            filterOrders(e.target.value);
-          }}
-        />
+        <div className="flex justify-left w-full">
+          <input
+            className="appearance-none text-gray-700 border shadow-md rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white w-[20em]"
+            placeholder="Sök order..."
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              filterOrders(e.target.value);
+            }}
+          />
+        </div>
 
         <div className="table-auto w-full rounded-lg p-10 bg-white shadow-md">
           {/* <h2 className="text-xl font-bold text-gray-700 mb-3">Sök Ordrar</h2> */}
@@ -140,10 +143,7 @@ export default function SearchOrderPage() {
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
-                        <td
-                          key={cell.id}
-                          className="text-[16px] mx-1 flex-wrap pl-2"
-                        >
+                        <td key={cell.id} className="text-[16px] mx-1  pl-2">
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext(),
