@@ -1,31 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { baseUrl } from "../settings/baseUrl";
+import { Row } from "react-table";
+
 import {
   useReactTable,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   AccessorFn,
+  ColumnDef,
 } from "@tanstack/react-table";
+import { Customer } from "../components/searchBar/CustomSearch";
 
 type Order = { customerNumber: string; firstContact: string; id: string };
 
+type OrderInfo = { order: Order; customer: Customer };
+interface RowType {
+  id: string; // Adjust the type according to your data structure
+  original: OrderInfo; // Adjust the type according to your data structure
+  // Add other properties as needed based on your actual data structure
+}
+
 export default function SearchOrderPage() {
-  const [orderList, setOrderList] = useState<Order[]>([]);
-  const columnHelper = createColumnHelper<Order>();
+  const [orderList, setOrderList] = useState<OrderInfo[]>([]);
+  const columnHelper = createColumnHelper<OrderInfo>();
 
   const columns = [
-    columnHelper.accessor((row) => `${row.customerNumber}`, {
+    columnHelper.accessor(
+      (row) => `${row.customer.firstname} ${row.customer.lastname}`,
+      { id: "name", header: "Customer" }
+    ),
+    columnHelper.accessor((row) => `${row.order.customerNumber}`, {
       id: "customerNumber",
       header: "Customer Id",
     }),
-    columnHelper.accessor((row) => `${row.firstContact.slice(0, 10)}`, {
+    columnHelper.accessor((row) => `${row.order.firstContact.slice(0, 10)}`, {
       id: "firstContact",
       header: "Date",
     }),
-    columnHelper.accessor((row) => `${row.id}`, {
+    columnHelper.accessor((row) => `${row.order.id}`, {
       id: "id",
       header: "Order ID",
+    }),
+    columnHelper.accessor((row) => `${row.customer.city}`, {
+      id: "region",
+      header: "Region",
     }),
   ];
 
