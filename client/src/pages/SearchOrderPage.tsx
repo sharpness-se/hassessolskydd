@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { baseUrl } from "../settings/baseUrl";
-import { Row } from "react-table";
+
 
 import {
   useReactTable,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
-  AccessorFn,
-  ColumnDef,
 } from "@tanstack/react-table";
 import { Customer } from "../components/searchBar/CustomSearch";
 
