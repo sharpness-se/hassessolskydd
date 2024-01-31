@@ -91,14 +91,14 @@ export default function SearchOrderPage() {
       <div className="w-full rounded-lg p-10 bg-white shadow-md">
         <h2 className="text-xl font-bold text-gray-700 mb-3">Sök Ordrar</h2>
 
-        <table className="table-auto border-separate border-spacing-2 border border-slate-400">
+        <table className="table-auto border border-slate-400 shadow-2xl w-full">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => {
               return (
-                <tr key={headerGroup.id} className="text-sm text-left">
+                <tr key={headerGroup.id} className="text-sm">
                   {headerGroup.headers.map((header) => {
                     return (
-                      <th id={header.id}>
+                      <th id={header.id} className="border-spacing-y-3">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -112,16 +112,16 @@ export default function SearchOrderPage() {
               );
             })}
           </thead>
-          <tbody>
+          <tbody className="">
             {table.getRowModel().rows.map((row) => {
               return (
-                <tr key={row.id} className="border">
+                <tr
+                  key={row.id}
+                  className="shadow-lg hover:bg-blue-600 hover:font-bold hover:text-white"
+                >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td
-                        key={cell.id}
-                        className="px-5 py-1 text-[10px] border border-cyan-800"
-                      >
+                      <td key={cell.id} className="text-[16px] px-2">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
