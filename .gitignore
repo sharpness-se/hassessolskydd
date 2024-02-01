@@ -18,3 +18,4 @@ server/src/main/resources/*
 # Ignore vscode settings
 .vscode
 
+.env
