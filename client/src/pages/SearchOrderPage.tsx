@@ -8,17 +8,11 @@ import {
   getCoreRowModel,
 } from '@tanstack/react-table';
 import { Customer } from '../components/searchBar/CustomSearch';
-import { filter } from 'cypress/types/bluebird';
 import Navbar from '../components/NavbarComponent';
 
 type Order = { customerNumber: string; firstContact: string; id: string };
 
 type OrderInfo = { order: Order; customer: Customer };
-interface RowType {
-  id: string; // Adjust the type according to your data structure
-  original: OrderInfo; // Adjust the type according to your data structure
-  // Add other properties as needed based on your actual data structure
-}
 
 export default function SearchOrderPage() {
   const [orderList, setOrderList] = useState<OrderInfo[]>([]);
