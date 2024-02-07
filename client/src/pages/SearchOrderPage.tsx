@@ -6,6 +6,8 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  ColumnSort
 } from '@tanstack/react-table';
 import { Customer } from '../components/searchBar/CustomSearch';
 import Navbar from '../components/NavbarComponent';
@@ -18,7 +20,7 @@ export default function SearchOrderPage() {
   const [orderList, setOrderList] = useState<OrderInfo[]>([]);
   const columnHelper = createColumnHelper<OrderInfo>();
   const [filteredList, setFilteredList] = useState(orderList);
-
+  const [sorting, setSorting] = React.useState<ColumnSort[]>([]);
   const columns = [
     columnHelper.accessor(
       (row) => `${row.customer.firstname} ${row.customer.lastname}`,
@@ -75,6 +77,11 @@ export default function SearchOrderPage() {
     data: filteredList, // Renamed 'orderList' to 'data'
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting: sorting
+    },
+    onSortingChange: setSorting
   });
 
   const filterOrders = (input: string) => {
@@ -107,20 +114,24 @@ export default function SearchOrderPage() {
         <div className="table-auto w-full rounded-lg p-10 bg-white shadow-md">
           {/* <h2 className="text-xl font-bold text-gray-700 mb-3">Sök Ordrar</h2> */}
 
-          <table className="h-full w-full border-spacing-4 min-h-[20em] p-2">
+          <table className="w-full border-spacing-4 p-2">
             <thead>
-              {table.getHeaderGroups().map((headerGroup) => {
+            {table.getHeaderGroups().map((headerGroup) => {
                 return (
                   <tr key={headerGroup.id} className="text-sm">
                     {headerGroup.headers.map((header) => {
+                      const column = header.column as any; // Type cast to 'any' to access the sorting properties
+                      const isSorted = header.column.getIsSorted();
+                      const sortIcon = isSorted === "asc" ? " 🔼" : isSorted === "desc" ? " 🔽" : null;
                       return (
-                        <th id={header.id} className="text-left pl-2">
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
+                        <th
+                          key={header.id}
+                          className="text-left pl-2"
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {header.isPlaceholder? null : flexRender(header.column.columnDef.header, header.getContext())}
+                          
+                          {sortIcon}
                         </th>
                       );
                     })}
@@ -137,7 +148,7 @@ export default function SearchOrderPage() {
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
-                        <td key={cell.id} className="text-[16px] mx-1 pl-2">
+                        <td key={cell.id} className="text-[16px] mx-1 pl-2 py-7">
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext(),
@@ -152,7 +163,6 @@ export default function SearchOrderPage() {
           </table>
         </div>
       </div>
-      test
     </>
   );
 }
