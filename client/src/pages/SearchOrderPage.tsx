@@ -85,12 +85,10 @@ export default function SearchOrderPage() {
   });
 
   const filterOrders = (input: string) => {
-    console.log({ orderList: orderList });
     const filteredArray = orderList.filter((item) => {
       const customerName = `${item.customer.firstname} ${item.customer.lastname} ${item.customer.customerNumber} ${item.customer.city} ${item.order.id} ${item.order.firstContact}`;
       return customerName.toLowerCase().includes(input?.toLowerCase() || '');
     });
-    console.log({ filteredArray: filteredArray });
 
     return filteredList.length > 0
       ? setFilteredList(filteredArray)
@@ -120,7 +118,6 @@ export default function SearchOrderPage() {
                 return (
                   <tr key={headerGroup.id} className="text-sm">
                     {headerGroup.headers.map((header) => {
-                      const column = header.column as any; // Type cast to 'any' to access the sorting properties
                       const isSorted = header.column.getIsSorted();
                       const sortIcon = isSorted === "asc" ? " 🔼" : isSorted === "desc" ? " 🔽" : null;
                       return (
