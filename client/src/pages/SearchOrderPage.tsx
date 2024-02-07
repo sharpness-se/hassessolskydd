@@ -145,7 +145,7 @@ export default function SearchOrderPage() {
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
-                        <td key={cell.id} className="text-[16px] mx-1 pl-2 py-7">
+                        <td key={cell.id} className="text-[16px] pl-2 py-7 min-w-[6em]">
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext(),
