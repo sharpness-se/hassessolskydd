@@ -26,7 +26,7 @@ export default function SearchOrderPage() {
       (row) => `${row.customer.firstname} ${row.customer.lastname}`,
       { id: 'name', header: 'Customer' },
     ),
-    columnHelper.accessor((row) => `${row.order.customerNumber.slice(0, 12)}`, {
+    columnHelper.accessor((row) => `${row.order.customerNumber}`, {
       id: 'customerNumber',
       header: 'Customer Id',
     }),
@@ -36,7 +36,7 @@ export default function SearchOrderPage() {
     }),
     columnHelper.accessor((row) => `${row.order.id}`, {
       id: 'id',
-      header: 'Order ID',
+      header: 'Order Id',
     }),
     columnHelper.accessor((row) => `${row.customer.city}`, {
       id: 'region',
