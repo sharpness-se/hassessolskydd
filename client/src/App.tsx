@@ -1,10 +1,10 @@
-import React from "react";
-import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import StartPageComponent from "./pages/StartPage";
-import CreateCustomerPageComponent from "./pages/CreateCustomerPage";
-import CreateOrderPageComponent from "./pages/CreateOrderPage";
-import SearchOrderPage from "./pages/SearchOrderPage";
+import React from 'react';
+import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import StartPageComponent from './pages/StartPage';
+import CreateCustomerPageComponent from './pages/CreateCustomerPage';
+import CreateOrderPageComponent from './pages/CreateOrderPage';
+import SearchOrderPage from './pages/SearchOrderPage';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <Route path="/" element={<StartPageComponent />} />
       <Route path="/skapakund" element={<CreateCustomerPageComponent />} />
       <Route path="/skapaorder" element={<CreateOrderPageComponent />} />
-      <Route path="/sökordrar" element={<SearchOrderPage />} />
+      <Route path="/seordrar" element={<SearchOrderPage />} />
     </Routes>
   );
 }
