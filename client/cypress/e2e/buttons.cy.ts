@@ -9,4 +9,14 @@ describe('Link Tests', () => {
     cy.contains('Skapa ny kund').click()
     cy.url().should('include', '/skapakund');
   })
+
+  it('Clicks "Create Order" link', () => {
+    cy.contains('Skapa order').click()
+    cy.url().should('include', '/skapaorder');
+  })
+
+  it('Clicks "See Orders" link', () => {
+    cy.contains('Se ordrar').click()
+    cy.url().should('include', '/s%C3%B6kordrar');
+  })
 })
