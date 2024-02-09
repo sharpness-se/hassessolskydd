@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { baseUrl } from '../settings/baseUrl';
+import React, { useEffect, useState } from "react";
+import { baseUrl } from "../settings/baseUrl";
 
 import {
   useReactTable,
@@ -7,10 +7,10 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  ColumnSort
-} from '@tanstack/react-table';
-import { Customer } from '../components/searchBar/CustomSearch';
-import Navbar from '../components/NavbarComponent';
+  ColumnSort,
+} from "@tanstack/react-table";
+import { Customer } from "../components/searchBar/CustomSearch";
+import Navbar from "../components/NavbarComponent";
 
 type Order = { customerNumber: string; firstContact: string; id: string };
 
@@ -24,23 +24,23 @@ export default function SearchOrderPage() {
   const columns = [
     columnHelper.accessor(
       (row) => `${row.customer.firstname} ${row.customer.lastname}`,
-      { id: 'name', header: 'Customer' },
+      { id: "name", header: "Customer" }
     ),
     columnHelper.accessor((row) => `${row.order.customerNumber}`, {
-      id: 'customerNumber',
-      header: 'Customer Id',
+      id: "customerNumber",
+      header: "Customer Id",
     }),
     columnHelper.accessor((row) => `${row.order.firstContact.slice(0, 10)}`, {
-      id: 'firstContact',
-      header: 'Date',
+      id: "firstContact",
+      header: "Date",
     }),
     columnHelper.accessor((row) => `${row.order.id}`, {
-      id: 'id',
-      header: 'Order Id',
+      id: "id",
+      header: "Order Id",
     }),
     columnHelper.accessor((row) => `${row.customer.city}`, {
-      id: 'region',
-      header: 'Region',
+      id: "region",
+      header: "Region",
     }),
   ];
 
@@ -52,14 +52,14 @@ export default function SearchOrderPage() {
       };
       try {
         const response = await fetch(prepareUrl(), {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
 
         if (response.status === 204) {
-          console.log('No Customers Found!');
+          console.log("No Customers Found!");
         } else {
           const data = await response.json();
           setOrderList(data);
@@ -79,15 +79,15 @@ export default function SearchOrderPage() {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     state: {
-      sorting: sorting
+      sorting: sorting,
     },
-    onSortingChange: setSorting
+    onSortingChange: setSorting,
   });
 
   const filterOrders = (input: string) => {
     const filteredArray = orderList.filter((item) => {
       const customerName = `${item.customer.firstname} ${item.customer.lastname} ${item.customer.customerNumber} ${item.customer.city} ${item.order.id} ${item.order.firstContact}`;
-      return customerName.toLowerCase().includes(input?.toLowerCase() || '');
+      return customerName.toLowerCase().includes(input?.toLowerCase() || "");
     });
 
     return filteredList.length > 0
@@ -114,20 +114,30 @@ export default function SearchOrderPage() {
 
           <table className="w-full border-spacing-4 p-2">
             <thead>
-            {table.getHeaderGroups().map((headerGroup) => {
+              {table.getHeaderGroups().map((headerGroup) => {
                 return (
                   <tr key={headerGroup.id} className="text-sm">
                     {headerGroup.headers.map((header) => {
                       const isSorted = header.column.getIsSorted();
-                      const sortIcon = isSorted === "asc" ? " 🔼" : isSorted === "desc" ? " 🔽" : null;
+                      const sortIcon =
+                        isSorted === "asc"
+                          ? " 🔼"
+                          : isSorted === "desc"
+                            ? " 🔽"
+                            : null;
                       return (
                         <th
                           key={header.id}
                           className="text-left pl-2"
                           onClick={header.column.getToggleSortingHandler()}
                         >
-                          {header.isPlaceholder? null : flexRender(header.column.columnDef.header, header.getContext())}
-                          
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+
                           {sortIcon}
                         </th>
                       );
@@ -145,10 +155,13 @@ export default function SearchOrderPage() {
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
-                        <td key={cell.id} className="text-[16px] pl-2 py-7 min-w-[6em]">
+                        <td
+                          key={cell.id}
+                          className="text-[16px] pl-2 py-7 min-w-[6em]"
+                        >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext(),
+                            cell.getContext()
                           )}
                         </td>
                       );
