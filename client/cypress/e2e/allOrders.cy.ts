@@ -82,7 +82,14 @@ describe("See all orders tests", () => {
   });
 
   it("Checks that table is populated", () => {
-    cy.get("table").should("exist"); // Check if the table element exists
-    cy.get("table tbody tr").should("have.length", 2); // Check if there are rows in the table body
+    cy.get("table").should("exist"); 
+    cy.get("table tbody tr").should("have.length", 2);
+  });
+
+  it('Searches table for "Stockholm"', () => {
+    cy.get('input').type('Stockholm');
+    cy.get('table tbody tr').each(($row) => { 
+      cy.wrap($row).should('contain', 'Stockholm');
+    });
   });
 });
