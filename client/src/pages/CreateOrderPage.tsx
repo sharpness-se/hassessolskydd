@@ -103,9 +103,6 @@ export default function CreateOrderPageComponent() {
       <Navbar title="Skapa Order" />
 
       <div className="flex min-h-screen flex-col items-center p-20 xl:px-60">
-        {/* <h1 data-test="hero-heading" className="text-5xl mb-11 min-w-max">
-          Skapa Order
-        </h1> */}
         <div className="flex w-full justify-center mt-10 z-0">
           <div className="flex flex-col mb-[22px]">
             <MuiSearchBarComponent
