@@ -16,7 +16,7 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
   handleSubmit,
 }) => {
   return (
-    <div className="bg-white rounded p-5 max-w-3xl w-[715px] mt-5">
+    <div className="bg-white rounded p-5 max-w-3xl w-[715px]">
       <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold mb-1 pb-2">
         Kundkorg:
       </h2>

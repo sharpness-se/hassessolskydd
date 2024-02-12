@@ -4,7 +4,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 interface AccordionProps {
   title: string;
   addDelete?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
   applyHeight?: boolean;
   customOnClick?: boolean;
   deleteCallback?: () => void;
@@ -23,7 +23,7 @@ const Accordion: React.FC<AccordionProps> = ({
   return (
     <div
       className={`bg-white rounded p-5 max-w-[44.5rem] ${
-        primary ? "w-[44.5rem]" : "w-full"
+        primary ? "w-[44.5rem] mb-5" : "w-full"
       }`}
     >
       <div

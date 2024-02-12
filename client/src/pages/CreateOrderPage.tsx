@@ -18,11 +18,15 @@ export interface Product {
   attributes: string[];
   values: string[];
 }
+export interface InstallationDetails {
+  attributes?: string[];
+  values?: string[];
+}
 export interface FormData {
   customerNumber?: string;
   measurementDate?: Date;
   notes?: string;
-  instalationDetails?: string;
+  installationDetails?: InstallationDetails;
   indoorOutdoor?: string;
   orderItems?: Product[];
 }
@@ -34,6 +38,10 @@ export default function CreateOrderPageComponent() {
   const [product, setProduct] = useState("");
   const [customerCart, setCustomerCart] = useState<Product[]>([]);
   const [formData, setFormData] = useState<FormData>();
+  const [notes, setNotes] = useState<string>("");
+  const [installationDetails, setInstallationDetails] =
+    useState<InstallationDetails>({ attributes: ["våning"], values: [""] });
+  
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -67,8 +75,9 @@ export default function CreateOrderPageComponent() {
     setFormData({
       customerNumber: currentCustomer,
       orderItems: customerCart,
+      notes: notes,
     });
-  }, [customerCart, customer]);
+  }, [customerCart, customer, notes]);
 
   const handleSubmit = async () => {
     console.log("Updated formData:", formData);
@@ -88,6 +97,7 @@ export default function CreateOrderPageComponent() {
         toast.success("Order Submitted Successfully!");
         const data = await response.json();
         console.log(data);
+        setNotes("");
       }
       if (!response.ok) {
         toast.error(`Something went wrong! Status: ${response.status} `);
@@ -157,6 +167,40 @@ export default function CreateOrderPageComponent() {
               cartCallback={setCustomerCart}
             />
           )}
+        </Accordion>
+        <Accordion title={"Anteckningar"} primary>
+          <textarea
+            id="anteckningar"
+            className="bg-gray-100 w-full rounded-sm min-h-[160px]"
+            value={notes}
+            maxLength={2000}
+            onChange={(e) => {
+              setNotes(e.target.value);
+            }}
+          ></textarea>
+        </Accordion>
+        <Accordion title="Montering" primary>
+          <form>
+            <label htmlFor="normal">
+              <input type="radio" name="montering" value="normal" />
+              Normal
+            </label>
+            <label htmlFor="avancerad" className="ml-5">
+              <input type="radio" name="montering" value="avancerad" />
+              Avancerad
+            </label>
+            <label htmlFor="våning">Våning</label>
+            <input type="text" id="våning"></input>
+            <label>Lift?</label>
+            <input type="checkbox" />
+            {/* Are these defined choices below? */}
+            <label>Fasad</label>
+            <input type="text" />
+            {/* Are these defined choices below? */}
+            <label>Kabel</label>
+            <input type="text"></input>
+            <label>Fjärrkontroll</label>
+          </form>
         </Accordion>
         <CustomerCartComponent
           handleSubmit={handleSubmit}
