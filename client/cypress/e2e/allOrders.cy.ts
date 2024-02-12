@@ -4,7 +4,7 @@ describe("See all orders tests", () => {
     cy.visit(`http://localhost:8080/seordrar`);
     cy.intercept(
       "GET",
-      `https://hasses-be-c8520bea6cc2.herokuapp.com/api/order/all`,
+      `/api/order/all`,
       (req) => {
         req.reply({
           body: [
