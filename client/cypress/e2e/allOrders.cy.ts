@@ -86,6 +86,61 @@ describe("See all orders tests", () => {
     cy.get("table tbody tr").should("have.length", 2);
   });
 
+  it('Sorts table by Customer', () => {
+    cy.contains('th', 'Customer').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(0).should('contain', 'Customer 2 Lastname 2');
+    });
+    cy.contains('th', 'Customer').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(0).should('contain', 'Customer 1 Lastname 1');
+    });
+  });
+
+  it('Sorts table by Customer ID', () => {
+    cy.contains('th', 'Customer Id').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(1).should('contain', 'CUST002');
+    });
+    cy.contains('th', 'Customer Id').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(1).should('contain', 'CUST001');
+    });
+  });
+
+  it('Sorts table by Date', () => {
+    cy.contains('th', 'Date').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(2).should('contain', '2023-11-02');
+    });
+    cy.contains('th', 'Date').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(2).should('contain', '2023-11-01');
+    });
+  });
+
+  it('Sorts table by Order Id', () => {
+    cy.contains('th', 'Order Id').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(3).should('contain', '-2');
+    });
+    cy.contains('th', 'Order Id').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(3).should('contain', '-1');
+    });
+  });
+
+  it('Sorts table by Region', () => {
+    cy.contains('th', 'Region').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(4).should('contain', 'Stockholm');
+    });
+    cy.contains('th', 'Region').click();
+    cy.get('table tbody tr').first().within(() => {
+      cy.get('td').eq(4).should('contain', 'Skåne');
+    });
+  });
+
   it('Searches table for "Stockholm"', () => {
     cy.get('input').type('Stockholm');
     cy.get('table tbody tr').each(($row) => { 
