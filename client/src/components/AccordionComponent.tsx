@@ -8,6 +8,7 @@ interface AccordionProps {
   applyHeight?: boolean;
   customOnClick?: boolean;
   deleteCallback?: () => void;
+  primary?: boolean;
 }
 
 const Accordion: React.FC<AccordionProps> = ({
@@ -15,13 +16,14 @@ const Accordion: React.FC<AccordionProps> = ({
   addDelete,
   children,
   deleteCallback,
+  primary
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div
       className={`bg-white rounded p-5 max-w-[44.5rem] ${
-        title === "Typ av ärende" ? "w-[44.5rem]" : "w-full"
+        primary ? "w-[44.5rem]" : "w-full"
       }`}
     >
       <div
