@@ -39,9 +39,21 @@ export default function CreateOrderPageComponent() {
   const [customerCart, setCustomerCart] = useState<Product[]>([]);
   const [formData, setFormData] = useState<FormData>();
   const [notes, setNotes] = useState<string>("");
+  const [controller, setController] = useState<string>("");
+  const [lift, setLift] = useState<boolean>(false);
   const [installationDetails, setInstallationDetails] =
-    useState<InstallationDetails>({ attributes: ["våning"], values: [""] });
-  
+    useState<InstallationDetails>({
+      attributes: [
+        "montering",
+        "våning",
+        "lift",
+        "fasad",
+        "kabel",
+        "fjärrkontroll",
+      ],
+      values: ["", "", "nej", "", "", ""],
+    });
+  const [montering, setMontering] = useState<string>("");
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -76,8 +88,16 @@ export default function CreateOrderPageComponent() {
       customerNumber: currentCustomer,
       orderItems: customerCart,
       notes: notes,
+      //installationDetails: installationDetails
     });
-  }, [customerCart, customer, notes]);
+  }, [customerCart, customer, notes, installationDetails]);
+
+  const handleInstalationDetailsUpdate = (attribute: string, value: string) => {
+    const index = installationDetails.attributes?.lastIndexOf(attribute) || 0;
+    const newArray = installationDetails.values || [];
+    newArray[index] = value;
+    setInstallationDetails((prev) => ({ ...prev, values: newArray }));
+  };
 
   const handleSubmit = async () => {
     console.log("Updated formData:", formData);
@@ -100,18 +120,20 @@ export default function CreateOrderPageComponent() {
         setNotes("");
       }
       if (!response.ok) {
-        toast.error(`Something went wrong! Status: ${response.status} `);
+        toast.error(`Something went wrong! Status: ${response.status}`);
       }
     } catch (error) {
       toast.error("Something went wrong");
       console.error(error);
     }
   };
-
+  useEffect(() => {
+    //handleInstalationDetailsUpdate("montering", montering);
+    console.log(installationDetails);
+  }, [installationDetails]);
   return (
     <>
       <Navbar title="Skapa Order" />
-
       <div className="flex min-h-screen flex-col items-center p-20 xl:px-60">
         <div className="flex w-full justify-center mt-10 z-0">
           <div className="flex flex-col mb-[22px]">
@@ -180,26 +202,103 @@ export default function CreateOrderPageComponent() {
           ></textarea>
         </Accordion>
         <Accordion title="Montering" primary>
-          <form>
-            <label htmlFor="normal">
-              <input type="radio" name="montering" value="normal" />
-              Normal
-            </label>
-            <label htmlFor="avancerad" className="ml-5">
-              <input type="radio" name="montering" value="avancerad" />
-              Avancerad
-            </label>
-            <label htmlFor="våning">Våning</label>
-            <input type="text" id="våning"></input>
-            <label>Lift?</label>
-            <input type="checkbox" />
+          <form className="flex flex-col">
+            <div>
+              <label htmlFor="normal">
+                <input
+                  type="radio"
+                  name="montering"
+                  value="normal"
+                  checked={montering === "normal"}
+                  onChange={(e) => {
+                    setMontering(e.target.value);
+                    handleInstalationDetailsUpdate("montering", e.target.value);
+                  }}
+                />
+                Normal
+              </label>
+              <label htmlFor="avancerad" className="ml-5">
+                <input
+                  type="radio"
+                  name="montering"
+                  value="avancerad"
+                  checked={montering === "avancerad"}
+                  onChange={(e) => {
+                    setMontering(e.target.value);
+                    handleInstalationDetailsUpdate("montering", e.target.value);
+                  }}
+                />
+                Avancerad
+              </label>
+            </div>
+            <div>
+              <div>
+                <label htmlFor="våning">Våning</label>
+                <input
+                  className="bg-gray-100 rounded-sm w-24"
+                  type="text"
+                  id="våning"
+                  onChange={(e) => {
+                    handleInstalationDetailsUpdate("våning", e.target.value);
+                  }}
+                ></input>
+              </div>
+              <div>
+                <label>Lift?</label>
+                <input
+                  type="checkbox"
+                  className="ml-2 w-4 h-4"
+                  checked={lift}
+                  onChange={(e) => {
+                    setLift(e.target.checked);
+                    handleInstalationDetailsUpdate(
+                      "lift",
+                      `${e.target.checked ? "ja" : "nej"}`
+                    );
+                  }}
+                />
+              </div>
+            </div>
             {/* Are these defined choices below? */}
-            <label>Fasad</label>
-            <input type="text" />
-            {/* Are these defined choices below? */}
-            <label>Kabel</label>
-            <input type="text"></input>
-            <label>Fjärrkontroll</label>
+            <div>
+              <label>Fasad</label>
+              <input
+                type="text"
+                className="bg-gray-100 rounded-sm mx-3 w-24"
+                onChange={(e) => {
+                  handleInstalationDetailsUpdate("fasad", e.target.value);
+                }}
+              />
+
+              {/* Are these defined choices below? */}
+
+              <label>Kabel</label>
+              <input
+                type="text"
+                className="bg-gray-100 rounded-sm mx-3 w-24"
+                onChange={(e) => {
+                  handleInstalationDetailsUpdate("kabel", e.target.value);
+                }}
+              ></input>
+
+              <label>Fjärrkontroll</label>
+
+              <select
+                value={controller}
+                onChange={(e) => {
+                  setController(e.target.value);
+                  handleInstalationDetailsUpdate(
+                    "fjärrkontroll",
+                    e.target.value
+                  );
+                }}
+              >
+                <option value="">Ingen</option>
+                <option value="mono">Mono</option>
+                <option value="lumero">Lumero</option>
+                <option value="vario">Vario</option>
+              </select>
+            </div>
           </form>
         </Accordion>
         <CustomerCartComponent
