@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 import MuiSearchBarComponent, {
   Customer,
-} from "../components/searchBar/MuiSearchBarComponent";
-import CustomerDetailsComponent from "../components/CustomerDetailsComponent";
-import ContactDateComponent from "../components/ContactDateComponent";
-import Accordion from "../components/AccordionComponent";
-import { baseUrl } from "../settings/baseUrl";
-import CustomerCartComponent from "../components/cart/CustomerCartComponent";
+} from '../components/searchBar/MuiSearchBarComponent';
+import CustomerDetailsComponent from '../components/CustomerDetailsComponent';
+import ContactDateComponent from '../components/ContactDateComponent';
+import Accordion from '../components/AccordionComponent';
+import { baseUrl } from '../settings/baseUrl';
+import CustomerCartComponent from '../components/cart/CustomerCartComponent';
 
-import toast, { Toaster } from "react-hot-toast";
-import Pilsegardin from "../components/createOrderProductForms/Pilsegardin";
-import Navbar from "../components/NavbarComponent";
+import toast, { Toaster } from 'react-hot-toast';
+import Pilsegardin from '../components/createOrderProductForms/Pilsegardin';
+import Navbar from '../components/NavbarComponent';
 
 export interface Product {
   name: string;
@@ -35,25 +35,25 @@ export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
   const [options, setOptions] = React.useState<Customer[]>([]);
   const [hidden, setHidden] = useState(true);
-  const [product, setProduct] = useState("");
+  const [product, setProduct] = useState('');
   const [customerCart, setCustomerCart] = useState<Product[]>([]);
   const [formData, setFormData] = useState<FormData>();
-  const [notes, setNotes] = useState<string>("");
-  const [controller, setController] = useState<string>("");
+  const [notes, setNotes] = useState<string>('');
+  const [controller, setController] = useState<string>('');
   const [lift, setLift] = useState<boolean>(false);
   const [installationDetails, setInstallationDetails] =
     useState<InstallationDetails>({
       attributes: [
-        "montering",
-        "våning",
-        "lift",
-        "fasad",
-        "kabel",
-        "fjärrkontroll",
+        'montering',
+        'våning',
+        'lift',
+        'fasad',
+        'kabel',
+        'fjärrkontroll',
       ],
-      values: ["", "", "nej", "", "", ""],
+      values: ['', '', 'nej', '', '', ''],
     });
-  const [montering, setMontering] = useState<string>("");
+  const [montering, setMontering] = useState<string>('');
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -63,14 +63,14 @@ export default function CreateOrderPageComponent() {
     const fetchData: () => Promise<void> = async () => {
       try {
         const response = await fetch(prepareUrl(), {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
 
         if (response.status === 204) {
-          console.log("No Customers Found!");
+          console.log('No Customers Found!');
         } else {
           const data = await response.json();
           setOptions(data);
@@ -100,30 +100,30 @@ export default function CreateOrderPageComponent() {
   };
 
   const handleSubmit = async () => {
-    console.log("Updated formData:", formData);
+    console.log('Updated formData:', formData);
     if (!formData?.customerNumber) {
-      toast.error("Please Select a Customer!");
+      toast.error('Please Select a Customer!');
       return;
     }
     try {
       const response = await fetch(`${baseUrl}/api/order/create`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        toast.success("Order Submitted Successfully!");
+        toast.success('Order Submitted Successfully!');
         const data = await response.json();
         console.log(data);
-        setNotes("");
+        setNotes('');
       }
       if (!response.ok) {
         toast.error(`Something went wrong! Status: ${response.status}`);
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong');
       console.error(error);
     }
   };
@@ -143,15 +143,15 @@ export default function CreateOrderPageComponent() {
               options={options}
               setOptions={setOptions}
             />
-            <ContactDateComponent heading={"Datum"} />
+            <ContactDateComponent heading={'Datum'} />
           </div>
           <div className="flex-2">
             <CustomerDetailsComponent customer={customer} />
           </div>
         </div>
-        <Accordion title={"Produkter"} applyHeight customOnClick primary>
+        <Accordion title={'Produkter'} applyHeight customOnClick primary>
           {hidden && (
-            <div className={"flex justify-center items-center w-full h-full"}>
+            <div className={'flex justify-center items-center w-full h-full'}>
               <label
                 htmlFor="mySelect"
                 className="tracking-wide uppercase font-bold text-s text-gray-700 mr-5"
@@ -179,21 +179,21 @@ export default function CreateOrderPageComponent() {
               </select>
             </div>
           )}
-          {!hidden && product === "Pilsegardin" && (
+          {!hidden && product === 'Pilsegardin' && (
             <Pilsegardin
               product={product}
               clearOnClick={() => {
                 setHidden(true);
-                setProduct("");
+                setProduct('');
               }}
               cartCallback={setCustomerCart}
             />
           )}
         </Accordion>
-        <Accordion title={"Anteckningar"} primary>
+        <Accordion title={'Anteckningar'} primary>
           <textarea
             id="anteckningar"
-            className="bg-gray-100 w-full rounded-sm min-h-[160px]"
+            className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
             value={notes}
             maxLength={2000}
             onChange={(e) => {
@@ -203,101 +203,151 @@ export default function CreateOrderPageComponent() {
         </Accordion>
         <Accordion title="Montering" primary>
           <form className="flex flex-col">
-            <div>
-              <label htmlFor="normal">
+            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+              Montering
+            </label>
+            <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex mb-3">
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+                <div className="flex items-center ps-3">
+                  <input
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                    type="radio"
+                    name="montering"
+                    value="normal"
+                    checked={montering === 'normal'}
+                    onChange={(e) => {
+                      setMontering(e.target.value);
+                      handleInstalationDetailsUpdate(
+                        'montering',
+                        e.target.value,
+                      );
+                    }}
+                  />
+                  <label
+                    htmlFor="normal"
+                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                  >
+                    Normal
+                  </label>
+                </div>
+              </li>
+
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                <div className="flex items-center ps-3">
+                  <input
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                    type="radio"
+                    name="montering"
+                    value="avancerad"
+                    checked={montering === 'avancerad'}
+                    onChange={(e) => {
+                      setMontering(e.target.value);
+                      handleInstalationDetailsUpdate(
+                        'montering',
+                        e.target.value,
+                      );
+                    }}
+                  />
+                  <label
+                    htmlFor="avancerad"
+                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                  >
+                    Avancerad
+                  </label>
+                </div>
+              </li>
+            </ul>
+
+            {/* Are these defined choices below? */}
+            <div className="flex w-full space-x-5">
+              <div className="w-full">
+                <label
+                  htmlFor="våning"
+                  className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
+                >
+                  Våning
+                </label>{' '}
+                <br />
                 <input
-                  type="radio"
-                  name="montering"
-                  value="normal"
-                  checked={montering === "normal"}
-                  onChange={(e) => {
-                    setMontering(e.target.value);
-                    handleInstalationDetailsUpdate("montering", e.target.value);
-                  }}
-                />
-                Normal
-              </label>
-              <label htmlFor="avancerad" className="ml-5">
-                <input
-                  type="radio"
-                  name="montering"
-                  value="avancerad"
-                  checked={montering === "avancerad"}
-                  onChange={(e) => {
-                    setMontering(e.target.value);
-                    handleInstalationDetailsUpdate("montering", e.target.value);
-                  }}
-                />
-                Avancerad
-              </label>
-            </div>
-            <div>
-              <div>
-                <label htmlFor="våning">Våning</label>
-                <input
-                  className="bg-gray-100 rounded-sm w-24"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   type="text"
                   id="våning"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate("våning", e.target.value);
+                    handleInstalationDetailsUpdate('våning', e.target.value);
                   }}
                 ></input>
               </div>
-              <div>
-                <label>Lift?</label>
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Fasad
+                </label>
+                <br />
                 <input
-                  type="checkbox"
-                  className="ml-2 w-4 h-4"
-                  checked={lift}
+                  type="text"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    setLift(e.target.checked);
-                    handleInstalationDetailsUpdate(
-                      "lift",
-                      `${e.target.checked ? "ja" : "nej"}`
-                    );
+                    handleInstalationDetailsUpdate('fasad', e.target.value);
                   }}
                 />
               </div>
             </div>
-            {/* Are these defined choices below? */}
-            <div>
-              <label>Fasad</label>
-              <input
-                type="text"
-                className="bg-gray-100 rounded-sm mx-3 w-24"
-                onChange={(e) => {
-                  handleInstalationDetailsUpdate("fasad", e.target.value);
-                }}
-              />
 
+            <div className="flex w-full space-x-5 mb-3">
               {/* Are these defined choices below? */}
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Kabel
+                </label>
+                <br />
+                <input
+                  type="text"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  onChange={(e) => {
+                    handleInstalationDetailsUpdate('kabel', e.target.value);
+                  }}
+                ></input>
+              </div>
 
-              <label>Kabel</label>
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Fjärrkontroll
+                </label>
+                <br />
+                <select
+                  className="w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  value={controller}
+                  onChange={(e) => {
+                    setController(e.target.value);
+                    handleInstalationDetailsUpdate(
+                      'fjärrkontroll',
+                      e.target.value,
+                    );
+                  }}
+                >
+                  <option value="">Ingen</option>
+                  <option value="mono">Mono</option>
+                  <option value="lumero">Lumero</option>
+                  <option value="vario">Vario</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex items-center ps-4 border border-gray-200 rounded-lg">
               <input
-                type="text"
-                className="bg-gray-100 rounded-sm mx-3 w-24"
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                checked={lift}
                 onChange={(e) => {
-                  handleInstalationDetailsUpdate("kabel", e.target.value);
-                }}
-              ></input>
-
-              <label>Fjärrkontroll</label>
-
-              <select
-                value={controller}
-                onChange={(e) => {
-                  setController(e.target.value);
+                  setLift(e.target.checked);
                   handleInstalationDetailsUpdate(
-                    "fjärrkontroll",
-                    e.target.value
+                    'lift',
+                    `${e.target.checked ? 'ja' : 'nej'}`,
                   );
                 }}
-              >
-                <option value="">Ingen</option>
-                <option value="mono">Mono</option>
-                <option value="lumero">Lumero</option>
-                <option value="vario">Vario</option>
-              </select>
+              />
+              <label className="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                Behövs lift?
+              </label>
             </div>
           </form>
         </Accordion>
