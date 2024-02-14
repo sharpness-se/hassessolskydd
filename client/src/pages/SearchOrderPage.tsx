@@ -133,7 +133,7 @@ export default function SearchOrderPage() {
       if ("customer" in item) {
         customerName = `${item.customer.firstname} ${item.customer.lastname} ${item.customer.customerNumber} ${item.customer.city} ${item.order.id} ${item.order.firstContact}`;
       } else {
-        customerName = `${item.firstname} ${item.lastname} ${item.customerNumber} ${item.city}`;
+        customerName = `${item.firstname} ${item.lastname} ${item.customerNumber} ${item.city} ${item.email} ${item.phoneNumber}`;
       }
       return customerName.toLowerCase().includes(input?.toLowerCase() || "");
     });
