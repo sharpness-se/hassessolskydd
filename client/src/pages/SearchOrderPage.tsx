@@ -39,7 +39,7 @@ export default function SearchOrderPage() {
         if ("order" in row) {
           return `${row.order.customerNumber}`;
         }
-        return "";
+        return `${row.customerNumber}`;
       },
       { id: "customerNumber", header: "Customer Id" }
     ),
@@ -48,36 +48,44 @@ export default function SearchOrderPage() {
         if ("order" in row) {
           return `${row.order.firstContact.slice(0, 10)}`;
         }
-        return "";
+        return `${row.phoneNumber}`;
       },
-      { id: "firstContact", header: "Date" }
+      {
+        id: showOrder ? "firstContact" : "phoneNumber",
+        header: showOrder ? "Date" : "Telefon",
+      }
     ),
     orderColumnHelper.accessor(
       (row) => {
         if ("order" in row) {
           return `${row.order.id}`;
         }
-        return "";
+        return `${row.email}`;
       },
-      { id: "id", header: "Order Id" }
+      {
+        id: showOrder ? "id" : "email",
+        header: showOrder ? "Order Id" : "Email",
+      }
     ),
     orderColumnHelper.accessor(
       (row) => {
         if ("customer" in row) {
           return `${row.customer.city}`;
         }
-        return "";
+        return `${row.city}`;
       },
       { id: "region", header: "Region" }
     ),
   ];
-  
+
   useEffect(() => {
     function prepareUrl(url: string) {
       return encodeURI(url);
     }
-    console.log(showOrder)
-    const fetchData: (showOrderData: boolean) => Promise<void> = async (showOrderData) => {
+    console.log(showOrder);
+    const fetchData: (showOrderData: boolean) => Promise<void> = async (
+      showOrderData
+    ) => {
       let encodedURL = "";
       if (showOrderData) {
         encodedURL = prepareUrl(`${baseUrl}/api/order/all`);
@@ -96,12 +104,10 @@ export default function SearchOrderPage() {
         if (response.status === 204) {
           console.log("No Customers Found!");
         } else {
-          
-            const data = await response.json();
-            setOrderList(data);
-            setFilteredList(data);
-            console.table(data);
-          
+          const data = await response.json();
+          setOrderList(data);
+          setFilteredList(data);
+          console.table(data);
         }
       } catch (err) {
         console.error(err);
@@ -109,7 +115,6 @@ export default function SearchOrderPage() {
     };
     fetchData(showOrder);
   }, [showOrder]);
-
 
   const table = useReactTable({
     data: filteredList,
@@ -168,8 +173,6 @@ export default function SearchOrderPage() {
           </button>
         </div>
         <div className="table-auto w-full rounded-lg p-10 bg-white shadow-md">
-          {/* <h2 className="text-xl font-bold text-gray-700 mb-3">Sök Ordrar</h2> */}
-
           <table className="w-full border-spacing-4 p-2">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => {
