@@ -158,21 +158,21 @@ export default function SearchOrderPage() {
         </div>
         <div className="flex items-start w-full">
           <button
-            className={` ${showOrder === true ? 'bg-blue-600 text-white' : 'bg-white'} px-5 py-1 rounded-sm font-bold`}
+            className={` ${showOrder ? 'bg-white font-bold' : 'bg-blue-500 text-white'} px-6 py-2 rounded-t `}
             onClick={() => {
               setShowOrder(true);
             }}
           >
-            Sök order
+            Ordrar
           </button>
           <button
-            className={` ${showOrder === false ? 'bg-blue-600 text-white' : 'bg-white'} px-5 py-1  rounded-sm font-bold`}
+            className={` ${showOrder ? 'bg-blue-500 text-white' : 'bg-white font-bold'} px-6 py-2  rounded-t `}
             onClick={() => setShowOrder(false)}
           >
-            Sök kund
+            Kunder
           </button>
         </div>
-        <div className="table-auto w-full rounded-lg p-10 bg-white shadow-md">
+        <div className="table-auto w-full rounded-r-lg rounded-bl-lg p-10 bg-white shadow-md">
           <table className="w-full border-spacing-4 p-2">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => {
