@@ -151,13 +151,14 @@ export default function CreateOrderPageComponent() {
         </div>
         <Accordion title={'Produkter'} applyHeight customOnClick primary>
           {hidden && (
-            <div className={'flex justify-center items-center w-full h-full'}>
+            <div className={'w-full'}>
               <label
                 htmlFor="mySelect"
-                className="tracking-wide uppercase font-bold text-s text-gray-700 mr-5"
+                className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
               >
                 Välj en produkt:
               </label>
+              <br />
               <select
                 id="myselect"
                 onChange={(e) => {
@@ -165,7 +166,7 @@ export default function CreateOrderPageComponent() {
                   setHidden(false);
                 }}
                 value={product}
-                className="p-2 px-3 border font-bold text-s text-gray-700"
+                className="w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
               >
                 <option
                   className="text-xs font-bold text-gray-700"
