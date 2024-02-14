@@ -17,41 +17,76 @@ type Order = { customerNumber: string; firstContact: string; id: string };
 type OrderInfo = { order: Order; customer: Customer };
 
 export default function SearchOrderPage() {
-  const [orderList, setOrderList] = useState<OrderInfo[]>([]);
-  const columnHelper = createColumnHelper<OrderInfo>();
-  const [filteredList, setFilteredList] = useState(orderList);
+  const [orderList, setOrderList] = useState<(OrderInfo | Customer)[]>([]);
+  const orderColumnHelper = createColumnHelper<OrderInfo | Customer>();
+  const [filteredList, setFilteredList] =
+    useState<(OrderInfo | Customer)[]>(orderList);
   const [sorting, setSorting] = React.useState<ColumnSort[]>([]);
+  const [showOrder, setShowOrder] = useState(true);
+
   const columns = [
-    columnHelper.accessor(
-      (row) => `${row.customer.firstname} ${row.customer.lastname}`,
+    orderColumnHelper.accessor(
+      (row) => {
+        if ("customer" in row) {
+          return `${row.customer.firstname} ${row.customer.lastname}`;
+        }
+        return `${row.firstname} ${row.lastname}`;
+      },
       { id: "name", header: "Customer" }
     ),
-    columnHelper.accessor((row) => `${row.order.customerNumber}`, {
-      id: "customerNumber",
-      header: "Customer Id",
-    }),
-    columnHelper.accessor((row) => `${row.order.firstContact.slice(0, 10)}`, {
-      id: "firstContact",
-      header: "Date",
-    }),
-    columnHelper.accessor((row) => `${row.order.id}`, {
-      id: "id",
-      header: "Order Id",
-    }),
-    columnHelper.accessor((row) => `${row.customer.city}`, {
-      id: "region",
-      header: "Region",
-    }),
+    orderColumnHelper.accessor(
+      (row) => {
+        if ("order" in row) {
+          return `${row.order.customerNumber}`;
+        }
+        return "";
+      },
+      { id: "customerNumber", header: "Customer Id" }
+    ),
+    orderColumnHelper.accessor(
+      (row) => {
+        if ("order" in row) {
+          return `${row.order.firstContact.slice(0, 10)}`;
+        }
+        return "";
+      },
+      { id: "firstContact", header: "Date" }
+    ),
+    orderColumnHelper.accessor(
+      (row) => {
+        if ("order" in row) {
+          return `${row.order.id}`;
+        }
+        return "";
+      },
+      { id: "id", header: "Order Id" }
+    ),
+    orderColumnHelper.accessor(
+      (row) => {
+        if ("customer" in row) {
+          return `${row.customer.city}`;
+        }
+        return "";
+      },
+      { id: "region", header: "Region" }
+    ),
   ];
-
+  
   useEffect(() => {
-    const fetchData: () => Promise<void> = async () => {
-      const prepareUrl = () => {
-        const url = `${baseUrl}/api/order/all`;
-        return encodeURI(url);
-      };
+    function prepareUrl(url: string) {
+      return encodeURI(url);
+    }
+    console.log(showOrder)
+    const fetchData: (showOrderData: boolean) => Promise<void> = async (showOrderData) => {
+      let encodedURL = "";
+      if (showOrderData) {
+        encodedURL = prepareUrl(`${baseUrl}/api/order/all`);
+      } else {
+        encodedURL = prepareUrl(`${baseUrl}/api/customers`);
+      }
+
       try {
-        const response = await fetch(prepareUrl(), {
+        const response = await fetch(encodedURL, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -61,20 +96,23 @@ export default function SearchOrderPage() {
         if (response.status === 204) {
           console.log("No Customers Found!");
         } else {
-          const data = await response.json();
-          setOrderList(data);
-          setFilteredList(data);
-          console.table(data);
+          
+            const data = await response.json();
+            setOrderList(data);
+            setFilteredList(data);
+            console.table(data);
+          
         }
       } catch (err) {
         console.error(err);
       }
     };
-    fetchData();
-  }, []);
+    fetchData(showOrder);
+  }, [showOrder]);
+
 
   const table = useReactTable({
-    data: filteredList, // Renamed 'orderList' to 'data'
+    data: filteredList,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -86,7 +124,12 @@ export default function SearchOrderPage() {
 
   const filterOrders = (input: string) => {
     const filteredArray = orderList.filter((item) => {
-      const customerName = `${item.customer.firstname} ${item.customer.lastname} ${item.customer.customerNumber} ${item.customer.city} ${item.order.id} ${item.order.firstContact}`;
+      let customerName;
+      if ("customer" in item) {
+        customerName = `${item.customer.firstname} ${item.customer.lastname} ${item.customer.customerNumber} ${item.customer.city} ${item.order.id} ${item.order.firstContact}`;
+      } else {
+        customerName = `${item.firstname} ${item.lastname} ${item.customerNumber} ${item.city}`;
+      }
       return customerName.toLowerCase().includes(input?.toLowerCase() || "");
     });
 
@@ -108,7 +151,22 @@ export default function SearchOrderPage() {
             }}
           />
         </div>
-
+        <div className="flex items-start w-full">
+          <button
+            className={` ${showOrder === true ? "bg-blue-600 text-white" : "bg-white"} px-5 py-1 rounded-sm font-bold`}
+            onClick={() => {
+              setShowOrder(true);
+            }}
+          >
+            Sök order
+          </button>
+          <button
+            className={` ${showOrder === false ? "bg-blue-600 text-white" : "bg-white"} px-5 py-1  rounded-sm font-bold`}
+            onClick={() => setShowOrder(false)}
+          >
+            Sök kund
+          </button>
+        </div>
         <div className="table-auto w-full rounded-lg p-10 bg-white shadow-md">
           {/* <h2 className="text-xl font-bold text-gray-700 mb-3">Sök Ordrar</h2> */}
 
