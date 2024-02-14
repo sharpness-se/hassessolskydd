@@ -267,7 +267,7 @@ export default function CreateOrderPageComponent() {
                   className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
                 >
                   Våning
-                </label>{' '}
+                </label>
                 <br />
                 <input
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
