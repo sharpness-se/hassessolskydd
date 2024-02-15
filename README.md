@@ -43,8 +43,10 @@
   
       - Locally Cypress test can be viewed in /client/cypress/e2e
   
-      1. To run tests locally open Client from the root:
-         - cd Client"
-         - npx cypress open (in the terminal) 
-         - click on E2E
-         - choose a browser on which to run tests.
+        1. To run tests locally from the root use command:
+            - cd Client"
+            - npx cypress open (in the terminal) 
+            - click on E2E
+            - choose a browser on which to run tests.
+        
+            * Note if a lot of tests fail, try running npm run build in the client folder to rebuild the backend, then restart the backend, and run the tests again.
