@@ -90,7 +90,7 @@ export default function CreateOrderPageComponent() {
       customerNumber: currentCustomer,
       orderItems: customerCart,
       notes: notes,
-      installationDetails: installationDetails
+      //installationDetails: installationDetails
     });
   }, [customerCart, customer, notes, installationDetails]);
 
@@ -100,31 +100,31 @@ export default function CreateOrderPageComponent() {
 
   const handleSubmit = async () => {
     console.log('Updated formData:', formData);
-    // if (!formData?.customerNumber) {
-    //   toast.error('Please Select a Customer!');
-    //   return;
-    // }
-    // try {
-    //   const response = await fetch(`${baseUrl}/api/order/create`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   if (response.ok) {
-    //     toast.success('Order Submitted Successfully!');
-    //     const data = await response.json();
-    //     console.log(data);
-    //     setNotes('');
-    //   }
-    //   if (!response.ok) {
-    //     toast.error(`Something went wrong! Status: ${response.status}`);
-    //   }
-    // } catch (error) {
-    //   toast.error('Something went wrong');
-    //   console.error(error);
-    // }
+    if (!formData?.customerNumber) {
+      toast.error('Please Select a Customer!');
+      return;
+    }
+    try {
+      const response = await fetch(`${baseUrl}/api/order/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        toast.success('Order Submitted Successfully!');
+        const data = await response.json();
+        console.log(data);
+        setNotes('');
+      }
+      if (!response.ok) {
+        toast.error(`Something went wrong! Status: ${response.status}`);
+      }
+    } catch (error) {
+      toast.error('Something went wrong');
+      console.error(error);
+    }
   };
   // useEffect(() => {
   //   //handleInstalationDetailsUpdate("montering", montering);
