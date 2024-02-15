@@ -12,6 +12,7 @@ import se.sharpness.hassessolskydd.status_messages.errors.VeryStrangeException;
 import se.sharpness.hassessolskydd.util.CustomerNumberGenerator;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @ControllerAdvice
@@ -60,6 +61,29 @@ public class CustomerController extends BaseApiController {
             return customerMapper.findByCustomerNumber(customer.getCustomerNumber()).orElseThrow(VeryStrangeException::new);
         } else {
             throw new ResourceConflictException(customer.getCustomerNumber());
+        }
+    }
+
+    @PutMapping("/customers/update/{customerNumber}") //TODO: If customer name is changed should customerNumber be changed? Should this be transactional?
+    public Customer updateCustomer(@PathVariable(value = "customerNumber") String customerNumber, @RequestBody @Valid Customer customer) throws StatusMessage {
+
+        Optional<Customer> existingCustomerOptional = customerMapper.findByCustomerNumber(customerNumber);
+        if (existingCustomerOptional.isPresent()) {
+            Customer existingCustomer = existingCustomerOptional.get();
+
+            existingCustomer.setFirstname(customer.getFirstname());
+            existingCustomer.setLastname(customer.getLastname());
+            existingCustomer.setAddress(customer.getAddress());
+            existingCustomer.setPostalCode(customer.getPostalCode());
+            existingCustomer.setCity(customer.getCity());
+            existingCustomer.setPhoneNumber(customer.getPhoneNumber());
+            existingCustomer.setEmail(customer.getEmail());
+
+            customerMapper.updateCustomer(existingCustomer);
+
+            return existingCustomer;
+        } else {
+            throw new CustomerNotFoundException(customerNumber);
         }
     }
 

@@ -1,9 +1,6 @@
 package se.sharpness.hassessolskydd.dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import se.sharpness.hassessolskydd.model.Customer;
 
 import java.util.List;
@@ -33,6 +30,20 @@ public interface CustomerMapper {
     """)
   @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
   void createCustomer(Customer customer); //TODO: Should return fail/success?
+
+  @Update("""
+        update customer
+        set 
+            firstname = #{firstname},
+            lastname = #{lastname},
+            address = #{address},
+            postal_code = #{postalCode},
+            city = #{city},
+            phone_number = #{phoneNumber},
+            email = #{email}
+        WHERE customer_number = #{customerNumber}
+        """)
+  void updateCustomer(Customer customer);
 
   @Select(
     "SELECT * FROM customer " +
