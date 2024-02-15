@@ -62,5 +62,21 @@ public interface OrderMapper {
     @Insert(
             "INSERT INTO public.item_attributes (order_items_id, attribute, value) VALUES (#{orderItemId}, #{attribute}, #{value})"
     )
-    void insertOrderItemDetails(OrderItemsDetails orderItemsDetails);
+    int insertOrderItemDetails(OrderItemsDetails orderItemsDetails);
+
+    @Update(
+            "UPDATE public.order " +
+            "SET " +
+            "customer_number = #{customerNumber}, " +
+            "measurement_date = #{measurementDate}, " +
+            "installation_date = #{installationDate}, " +
+            "notes = #{notes}, " +
+            "installation_details = #{installationDetails.id}, " +
+            "indoorOutdoor = #{indoorOutdoor} " +
+            "WHERE id = #{id}"
+    )
+    void updateOrder(Order existingOrder);
+
+    @Delete("DELETE FROM public.order_items WHERE order_id = #{orderId}")
+    void deleteOrderItemsByOrderId(int orderId);
 }

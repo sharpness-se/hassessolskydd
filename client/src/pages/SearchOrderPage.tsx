@@ -172,12 +172,12 @@ export default function SearchOrderPage() {
             Kunder
           </button>
         </div>
-        <div className="table-auto w-full rounded-r-lg rounded-bl-lg p-10 bg-white shadow-md">
+        <div className="table-auto w-full rounded-r-lg rounded-bl-lg p-10 bg-white">
           <table className="w-full border-spacing-4 p-2">
-            <thead>
+            <thead className="bg-blue-500">
               {table.getHeaderGroups().map((headerGroup) => {
                 return (
-                  <tr key={headerGroup.id} className="text-sm">
+                  <tr key={headerGroup.id} className="text-md text-white">
                     {headerGroup.headers.map((header) => {
                       const isSorted = header.column.getIsSorted();
                       const sortIcon =
@@ -189,7 +189,7 @@ export default function SearchOrderPage() {
                       return (
                         <th
                           key={header.id}
-                          className="text-left pl-2"
+                          className="text-left p-5"
                           onClick={header.column.getToggleSortingHandler()}
                         >
                           {header.isPlaceholder
@@ -212,13 +212,13 @@ export default function SearchOrderPage() {
                 return (
                   <tr
                     key={row.id}
-                    className="shadow-lg hover:bg-blue-600 hover:font-sm hover:text-white"
+                    className="hover:bg-blue-600 hover:font-sm hover:text-white"
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <td
                           key={cell.id}
-                          className="text-[16px] pl-2 py-7 min-w-[6em]"
+                          className="text-[16px] p-5 min-w-[6em]"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

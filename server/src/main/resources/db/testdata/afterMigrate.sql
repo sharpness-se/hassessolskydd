@@ -32,8 +32,8 @@ VALUES
 -- Insert sample data into the "public.installation_details" table
 INSERT INTO public.installation_details (id, order_id, is_normal, facade_details, floor_details, cable_length, remote_control, lift_needed)
 VALUES
-    (-1, -1, true, 'Brick facade', '1st floor', 30, true, false),
-    (-2, -2, false, 'Wooden facade', '2nd floor', 40, false, true) ON CONFLICT DO NOTHING;
+    (-1, -1, 'true', 'Brick facade', '1st floor', '30', 'true', 'false'),
+    (-2, -2, 'false', 'Wooden facade', '2nd floor', '40', 'false', 'true') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.order" table
 INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, installation_details, indooroutdoor)
