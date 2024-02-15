@@ -2,12 +2,12 @@ import React, { Dispatch, SetStateAction } from "react";
 import Accordion from "../AccordionComponent";
 import { Product } from "../../pages/CreateOrderPage";
 import { nanoid } from "nanoid";
+
 interface CartItemProps {
   product?: Product;
   itemIndex?: number;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   cart: Product[];
-  key: string;
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({
@@ -15,14 +15,13 @@ const CartItemComponent: React.FC<CartItemProps> = ({
   itemIndex,
   cartCallback,
   cart,
-  key,
 }) => {
   const deleteCartItem = () => {
     const updatedProducts = cart?.filter((_, index) => index !== itemIndex);
     cartCallback(updatedProducts);
   };
   return (
-    <div className="bg-white rounded-lg mb-5" key={key}>
+    <div className="bg-white rounded-lg mb-5">
       <Accordion title="Pilsegardin" addDelete deleteCallback={deleteCartItem}>
         <div className="flex justify-end flex-col bg-white rounded-lg">
           <div className="grid text-xs gap-y-5 gap-x-10 px-5">

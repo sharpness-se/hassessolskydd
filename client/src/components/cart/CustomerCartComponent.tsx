@@ -30,13 +30,14 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
           {cart &&
             cart.map((item, index) => {
               return (
-                <CartItemComponent
-                  product={item}
-                  itemIndex={index}
-                  cart={cart}
-                  cartCallback={cartCallBack}
-                  key={nanoid()}
-                />
+                <React.Fragment key={nanoid()}>
+                  <CartItemComponent
+                    product={item}
+                    itemIndex={index}
+                    cart={cart}
+                    cartCallback={cartCallBack}
+                  />
+                </React.Fragment>
               );
             })}
           <div>{children}</div>
