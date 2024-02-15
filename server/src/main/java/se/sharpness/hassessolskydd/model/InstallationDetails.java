@@ -6,10 +6,12 @@ import lombok.Data;
 public class InstallationDetails {
 
     private int id;
-    private boolean isNormal;
-    private String facadeDetails;
+    private int orderId;
+    private String mountingType;
     private String floorDetails;
-    private Long cableLength;
-    private boolean remoteControl;
-    private boolean needLift;
+    private String needLift;
+    private String facadeDetails;
+    private String cableLength;
+    private String remoteControl;
+
 }

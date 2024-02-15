@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import se.sharpness.hassessolskydd.dao.CustomerMapper;
+import se.sharpness.hassessolskydd.dao.InstallationDetailsMapper;
 import se.sharpness.hassessolskydd.dao.OrderMapper;
 import se.sharpness.hassessolskydd.model.*;
 
@@ -17,11 +18,13 @@ public class OrderController extends BaseApiController {
 
 private final OrderMapper orderMapper;
 private final CustomerMapper customerMapper;
+private final InstallationDetailsMapper installationDetailsMapper;
 
 
-    public OrderController(OrderMapper orderMapper, CustomerMapper customerMapper) {
+    public OrderController(OrderMapper orderMapper, CustomerMapper customerMapper, InstallationDetailsMapper installationDetailsMapper) {
         this.orderMapper = orderMapper;
         this.customerMapper = customerMapper;
+        this.installationDetailsMapper = installationDetailsMapper;
     }
 
    @GetMapping("/order/{orderId}")
@@ -31,6 +34,7 @@ private final CustomerMapper customerMapper;
         if (result.isPresent()) {
             Order order = result.get();
             order.setOrderItems(defineArticles(orderId));
+            order.setInstallationDetails(installationDetailsMapper.findInstallationDetailsByOrderId(orderId).orElse(null));
             return order;
         } else {
             throw new Exception("Could not find order"); //TODO: crate specific exceptions
@@ -46,6 +50,7 @@ private final CustomerMapper customerMapper;
             for (Order order : result) {
                 int orderId = order.getId();
                 order.setOrderItems(defineArticles(orderId));
+                order.setInstallationDetails(installationDetailsMapper.findInstallationDetailsByOrderId(orderId).orElse(null));
             }
             return result;
         } else {
@@ -60,6 +65,7 @@ private final CustomerMapper customerMapper;
         for (Order order : Orders) {
             int orderId = order.getId();
             orderAndCustomers.add(findOrderWithCustomerByOrderId(orderId));
+            //order.setInstallationDetails(installationDetailsMapper.findInstallationDetailsByOrderId(orderId).orElse(null));
         }
         return orderAndCustomers;
     }
@@ -71,7 +77,13 @@ private final CustomerMapper customerMapper;
 
         if (result.isPresent()) {
             OrderAndCustomer orderAndCustomer = new OrderAndCustomer();
-            orderAndCustomer.setOrder(result.get());
+            //
+            Order order = result.get();
+            order.setInstallationDetails(installationDetailsMapper.findInstallationDetailsByOrderId(orderId).orElse(null));
+
+            orderAndCustomer.setOrder(order);
+            //orderAndCustomer.setOrder(result.get());
+
             var customerNumber = result.get().getCustomerNumber();
 
             final var customerResult = customerMapper.findByCustomerNumber(customerNumber);
@@ -170,5 +182,43 @@ private final CustomerMapper customerMapper;
     @PostMapping("/order-items/details")
     public void insertOrderItemDetails(@RequestBody OrderItemsDetails orderItemsDetails) {
         orderMapper.insertOrderItemDetails(orderItemsDetails);
+    }
+
+    @PutMapping("/order/update/{orderId}")
+    @Transactional
+    public Order updateOrder(@PathVariable(value = "orderId") int orderId, @RequestBody Order order) throws Exception {
+
+        Optional<Order> existingOrderOptional = orderMapper.findOrderByOrderId(orderId);
+        if (existingOrderOptional.isPresent()) {
+            Order existingOrder = existingOrderOptional.get();
+            existingOrder.setCustomerNumber(order.getCustomerNumber());
+            existingOrder.setMeasurementDate(order.getMeasurementDate());
+            existingOrder.setInstallationDate(order.getInstallationDate());
+            existingOrder.setNotes(order.getNotes());
+            existingOrder.setIndoorOutdoor(order.getIndoorOutdoor());
+            orderMapper.updateOrder(existingOrder);
+
+            // Delete existing order items
+            orderMapper.deleteOrderItemsByOrderId(orderId);
+
+            // Insert updated order items
+            for (Article article : order.getOrderItems()) {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrderId(orderId);
+                orderItem.setItemId(orderMapper.findArticleIdByName(article.getName()));
+                int newOrderItemId = orderMapper.insertOrderItem(orderItem);
+                for (int i = 0; i < article.getAttributes().size(); ++i) {
+                    OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
+                    orderItemsDetails.setOrderItemId(newOrderItemId);
+                    orderItemsDetails.setAttribute(article.getAttributes().get(i));
+                    orderItemsDetails.setValue(article.getValues().get(i));
+                    orderMapper.insertOrderItemDetails(orderItemsDetails);
+                }
+            }
+
+            return existingOrder;
+        } else {
+            throw new Exception("Could not find order");
+        }
     }
 }
