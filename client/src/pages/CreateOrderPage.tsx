@@ -19,8 +19,12 @@ export interface Product {
   values: string[];
 }
 export interface InstallationDetails {
-  attributes?: string[];
-  values?: string[];
+  isNormal?: String;
+  facadeDetails?: String;
+  floorDetails?: String;
+  cableLength?: String;
+  remoteControl?: String;
+  needLift?: String;
 }
 export interface FormData {
   customerNumber?: string;
@@ -41,19 +45,17 @@ export default function CreateOrderPageComponent() {
   const [notes, setNotes] = useState<string>('');
   const [controller, setController] = useState<string>('');
   const [lift, setLift] = useState<boolean>(false);
+  const [montering, setMontering] = useState<string>('');
   const [installationDetails, setInstallationDetails] =
     useState<InstallationDetails>({
-      attributes: [
-        'montering',
-        'våning',
-        'lift',
-        'fasad',
-        'kabel',
-        'fjärrkontroll',
-      ],
-      values: ['', '', 'nej', '', '', ''],
+      isNormal: undefined,
+      facadeDetails: undefined,
+      floorDetails: undefined,
+      cableLength: undefined,
+      remoteControl: undefined,
+      needLift: "no",
     });
-  const [montering, setMontering] = useState<string>('');
+  
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -88,49 +90,46 @@ export default function CreateOrderPageComponent() {
       customerNumber: currentCustomer,
       orderItems: customerCart,
       notes: notes,
-      //installationDetails: installationDetails
+      installationDetails: installationDetails
     });
   }, [customerCart, customer, notes, installationDetails]);
 
   const handleInstalationDetailsUpdate = (attribute: string, value: string) => {
-    const index = installationDetails.attributes?.lastIndexOf(attribute) || 0;
-    const newArray = installationDetails.values || [];
-    newArray[index] = value;
-    setInstallationDetails((prev) => ({ ...prev, values: newArray }));
+    setInstallationDetails((prev)=>({...prev, [attribute]: value}))
   };
 
   const handleSubmit = async () => {
     console.log('Updated formData:', formData);
-    if (!formData?.customerNumber) {
-      toast.error('Please Select a Customer!');
-      return;
-    }
-    try {
-      const response = await fetch(`${baseUrl}/api/order/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        toast.success('Order Submitted Successfully!');
-        const data = await response.json();
-        console.log(data);
-        setNotes('');
-      }
-      if (!response.ok) {
-        toast.error(`Something went wrong! Status: ${response.status}`);
-      }
-    } catch (error) {
-      toast.error('Something went wrong');
-      console.error(error);
-    }
+    // if (!formData?.customerNumber) {
+    //   toast.error('Please Select a Customer!');
+    //   return;
+    // }
+    // try {
+    //   const response = await fetch(`${baseUrl}/api/order/create`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(formData),
+    //   });
+    //   if (response.ok) {
+    //     toast.success('Order Submitted Successfully!');
+    //     const data = await response.json();
+    //     console.log(data);
+    //     setNotes('');
+    //   }
+    //   if (!response.ok) {
+    //     toast.error(`Something went wrong! Status: ${response.status}`);
+    //   }
+    // } catch (error) {
+    //   toast.error('Something went wrong');
+    //   console.error(error);
+    // }
   };
-  useEffect(() => {
-    //handleInstalationDetailsUpdate("montering", montering);
-    console.log(installationDetails);
-  }, [installationDetails]);
+  // useEffect(() => {
+  //   //handleInstalationDetailsUpdate("montering", montering);
+  //   console.log(installationDetails);
+  // }, [installationDetails]);
   return (
     <>
       <Navbar title="Skapa Order" />
@@ -219,7 +218,7 @@ export default function CreateOrderPageComponent() {
                     onChange={(e) => {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
-                        'montering',
+                        'isNormal',
                         e.target.value,
                       );
                     }}
@@ -240,11 +239,11 @@ export default function CreateOrderPageComponent() {
                     type="radio"
                     name="montering"
                     value="avancerad"
-                    checked={montering === 'avancerad'}
+                    checked={montering === 'advanced'}
                     onChange={(e) => {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
-                        'montering',
+                        'isNormal',
                         e.target.value,
                       );
                     }}
@@ -274,7 +273,7 @@ export default function CreateOrderPageComponent() {
                   type="text"
                   id="våning"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate('våning', e.target.value);
+                    handleInstalationDetailsUpdate('floorDetails', e.target.value);
                   }}
                 ></input>
               </div>
@@ -287,7 +286,7 @@ export default function CreateOrderPageComponent() {
                   type="text"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate('fasad', e.target.value);
+                    handleInstalationDetailsUpdate('facadeDetails', e.target.value);
                   }}
                 />
               </div>
@@ -304,7 +303,7 @@ export default function CreateOrderPageComponent() {
                   type="text"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate('kabel', e.target.value);
+                    handleInstalationDetailsUpdate('cableLength', e.target.value);
                   }}
                 ></input>
               </div>
@@ -320,7 +319,7 @@ export default function CreateOrderPageComponent() {
                   onChange={(e) => {
                     setController(e.target.value);
                     handleInstalationDetailsUpdate(
-                      'fjärrkontroll',
+                      'remoteControl',
                       e.target.value,
                     );
                   }}
@@ -341,8 +340,8 @@ export default function CreateOrderPageComponent() {
                 onChange={(e) => {
                   setLift(e.target.checked);
                   handleInstalationDetailsUpdate(
-                    'lift',
-                    `${e.target.checked ? 'ja' : 'nej'}`,
+                    'needLift',
+                    `${e.target.checked ? 'yes' : 'no'}`,
                   );
                 }}
               />
