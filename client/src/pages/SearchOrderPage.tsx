@@ -158,7 +158,7 @@ export default function SearchOrderPage() {
         </div>
         <div className="flex items-start w-full">
           <button
-            className={` ${showOrder ? 'bg-white font-bold' : 'bg-blue-500 text-white'} px-6 py-2 rounded-t `}
+            className={` ${showOrder ? 'bg-white font-bold' : 'bg-gray-400 text-white'} px-6 py-2 rounded-t `}
             onClick={() => {
               setShowOrder(true);
             }}
@@ -166,7 +166,7 @@ export default function SearchOrderPage() {
             Ordrar
           </button>
           <button
-            className={` ${showOrder ? 'bg-blue-500 text-white' : 'bg-white font-bold'} px-6 py-2  rounded-t `}
+            className={` ${showOrder ? 'bg-gray-400 text-white' : 'bg-white font-bold'} px-6 py-2  rounded-t `}
             onClick={() => setShowOrder(false)}
           >
             Kunder
