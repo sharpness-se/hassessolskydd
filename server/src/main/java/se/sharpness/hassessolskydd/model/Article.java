@@ -8,6 +8,6 @@ import java.util.List;
 public class Article {
 
     private String name;
-    private List<String> attributes;
-    private List<String> values;
+
+    private List<OrderItemDetails> articleDetails;
 }

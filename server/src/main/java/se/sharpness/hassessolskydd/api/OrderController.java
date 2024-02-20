@@ -111,6 +111,39 @@ private final InstallationDetailsMapper installationDetailsMapper;
         }
     }
 
+
+    public List<Article> defineArticles(int orderId) {
+        List<OrderItemDetails> itemDetails = getOrderItemDetails(orderId);
+
+        if (itemDetails == null) {
+            return null;
+        }
+
+        List<Article> orderItems = new ArrayList<>();
+        Map<Integer, Article> articleMap = new HashMap<>();
+
+        for (OrderItemDetails item : itemDetails) {
+            if (item != null) {
+                int orderItemId = item.getOrderItemId();
+
+                if (!articleMap.containsKey(orderItemId)) {
+                    Article newArticle = new Article();
+                    newArticle.setName(item.getName());
+                    newArticle.setArticleDetails(new ArrayList<>()); // Initialize list of OrderItemDetails
+                    orderItems.add(newArticle);
+                    articleMap.put(orderItemId, newArticle);
+                }
+
+                Article currentArticle = articleMap.get(orderItemId);
+                currentArticle.getArticleDetails().add(item); // Add the OrderItemDetails directly to the Article
+            }
+        }
+        return orderItems;
+    }
+
+
+
+/*
     public List<Article> defineArticles(int orderId) {
         List<OrderItemDetails> itemDetails = getOrderItemDetails(orderId);
 

@@ -40,7 +40,7 @@ public class CustomerController extends BaseApiController {
         }
     }
 
-    @GetMapping("/customers/customerNumber/{customerNumber}")
+    @GetMapping("/customer/{customerNumber}")
     public Customer findCustomerByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws StatusMessage {
 
     final var result = customerMapper.findByCustomerNumber(customerNumber);

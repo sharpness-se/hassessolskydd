@@ -110,6 +110,39 @@ public class CustomerControllerTest extends HassesDbTest {
   }
 
   @Test
+  void updateCustomer() {
+    Optional<Customer> dbResponse = customerMapper.findByCustomerNumber("PeterOlofsson0723456789");
+    assertTrue(dbResponse.isPresent());
+    Customer beforeUpdate = dbResponse.get();
+    Customer updatedCustomer = new Customer();
+
+    updatedCustomer.setFirstname("UpdatedFirstName");
+    updatedCustomer.setLastname("UpdatedLastname");
+    updatedCustomer.setAddress("Updated Adress 123");
+    updatedCustomer.setPostalCode("999 99");
+    updatedCustomer.setCity("Updated City");
+    updatedCustomer.setPhoneNumber("+123456789");
+    updatedCustomer.setEmail("updated@email.com");
+
+
+    customerController.updateCustomer(beforeUpdate.getCustomerNumber(), updatedCustomer);
+
+    Optional<Customer> updatedResponse = customerMapper.findByCustomerNumber("PeterOlofsson0723456789");
+    assertTrue(updatedResponse.isPresent());
+    Customer createdCustomer = dbResponse.get();
+    assertEquals("UpdatedFirstName", createdCustomer.getFirstname());
+    assertEquals("UpdatedLastname", createdCustomer.getLastname());
+    assertEquals("Updated Adress 123", createdCustomer.getAddress());
+    assertEquals("999 99", createdCustomer.getPostalCode());
+    assertEquals("Updated City", createdCustomer.getCity());
+    assertEquals("+123456789", createdCustomer.getPhoneNumber());
+    assertEquals("updated@email.com", createdCustomer.getEmail());
+
+
+
+  }
+
+  @Test
   void findByTerm() {
     List<Customer> customerList = customerController.findCustomersByTerm("Eri");
     log.info("Response: {}", customerList.toString());

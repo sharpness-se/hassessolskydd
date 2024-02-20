@@ -85,11 +85,11 @@ class OrderMapperTest extends HassesDbTest {
 
     @Test
     void insertOrderItemDetails() {
-        OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
-        orderItemsDetails.setOrderItemId(-1);
-        orderItemsDetails.setName("plissegardin");
-        orderItemsDetails.setAttribute("Color");
-        orderItemsDetails.setValue("Red");
+        OrderItemDetails orderItemDetails = new OrderItemDetails();
+        orderItemDetails.setOrderItemId(-1);
+        orderItemDetails.setName("plissegardin");
+        orderItemDetails.setAttribute("Color");
+        orderItemDetails.setValue("Red");
 
         assertDoesNotThrow(() -> orderMapper.insertOrderItemDetails(orderItemDetails));
     }
