@@ -8,6 +8,7 @@ import se.sharpness.hassessolskydd.dao.CustomerMapper;
 import se.sharpness.hassessolskydd.dao.InstallationDetailsMapper;
 import se.sharpness.hassessolskydd.dao.OrderMapper;
 import se.sharpness.hassessolskydd.model.*;
+import se.sharpness.hassessolskydd.model.Article;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -100,8 +101,8 @@ private final InstallationDetailsMapper installationDetailsMapper;
         }
     }
 
-    public List<OrderItemsDetails> getOrderItemDetails(@PathVariable int orderId) {
-        List<OrderItemsDetails> itemDetails = orderMapper.findOrderDetailsByOrderId(orderId);
+    public List<OrderItemDetails> getOrderItemDetails(@PathVariable int orderId) {
+        List<OrderItemDetails> itemDetails = orderMapper.findOrderDetailsByOrderId(orderId);
 
         if (itemDetails != null && !itemDetails.isEmpty()) {
             return (itemDetails);
@@ -110,8 +111,9 @@ private final InstallationDetailsMapper installationDetailsMapper;
         }
     }
 
+
     public List<Article> defineArticles(int orderId) {
-        List<OrderItemsDetails> itemDetails = getOrderItemDetails(orderId);
+        List<OrderItemDetails> itemDetails = getOrderItemDetails(orderId);
 
         if (itemDetails == null) {
             return null;
@@ -120,7 +122,39 @@ private final InstallationDetailsMapper installationDetailsMapper;
         List<Article> orderItems = new ArrayList<>();
         Map<Integer, Article> articleMap = new HashMap<>();
 
-        for (OrderItemsDetails item : itemDetails) {
+        for (OrderItemDetails item : itemDetails) {
+            if (item != null) {
+                int orderItemId = item.getOrderItemId();
+
+                if (!articleMap.containsKey(orderItemId)) {
+                    Article newArticle = new Article();
+                    newArticle.setName(item.getName());
+                    newArticle.setArticleDetails(new ArrayList<>()); // Initialize list of OrderItemDetails
+                    orderItems.add(newArticle);
+                    articleMap.put(orderItemId, newArticle);
+                }
+
+                Article currentArticle = articleMap.get(orderItemId);
+                currentArticle.getArticleDetails().add(item); // Add the OrderItemDetails directly to the Article
+            }
+        }
+        return orderItems;
+    }
+
+
+
+/*
+    public List<Article> defineArticles(int orderId) {
+        List<OrderItemDetails> itemDetails = getOrderItemDetails(orderId);
+
+        if (itemDetails == null) {
+            return null;
+        }
+
+        List<Article> orderItems = new ArrayList<>();
+        Map<Integer, Article> articleMap = new HashMap<>();
+
+        for (OrderItemDetails item : itemDetails) {
             if (item != null) { // Add a null check for each item
                 int orderItemsId = item.getOrderItemId();
 
@@ -140,7 +174,7 @@ private final InstallationDetailsMapper installationDetailsMapper;
             }
         }
         return orderItems;
-    }
+    }*/
 
     @PostMapping("/order/create")
     @Transactional
@@ -161,13 +195,13 @@ private final InstallationDetailsMapper installationDetailsMapper;
             orderItem.setOrderId(newOrderId);
             orderItem.setItemId(orderMapper.findArticleIdByName(article.getName()));
             int newOrderItemId = orderMapper.insertOrderItem(orderItem);
-            for (int i = 0; i < article.getAttributes().size(); ++i) {
-                OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
-                orderItemsDetails.setOrderItemId(newOrderItemId);
-                orderItemsDetails.setAttribute(article.getAttributes().get(i));
-                orderItemsDetails.setValue(article.getValues().get(i));
+            for (int i = 0; i < article.getArticleDetails().size(); ++i) {
+                OrderItemDetails orderItemDetails = new OrderItemDetails();
+                orderItemDetails.setOrderItemId(newOrderItemId);
+                orderItemDetails.setAttribute(article.getArticleDetails().get(i).getAttribute());
+                orderItemDetails.setValue(article.getArticleDetails().get(i).getValue());
 
-                orderMapper.insertOrderItemDetails(orderItemsDetails);
+                orderMapper.insertOrderItemDetails(orderItemDetails);
             }
         }
         return order;
@@ -180,8 +214,8 @@ private final InstallationDetailsMapper installationDetailsMapper;
     }
 
     @PostMapping("/order-items/details")
-    public void insertOrderItemDetails(@RequestBody OrderItemsDetails orderItemsDetails) {
-        orderMapper.insertOrderItemDetails(orderItemsDetails);
+    public void insertOrderItemDetails(@RequestBody OrderItemDetails orderItemDetails) {
+        orderMapper.insertOrderItemDetails(orderItemDetails);
     }
 
     @PutMapping("/order/update/{orderId}")
@@ -207,12 +241,12 @@ private final InstallationDetailsMapper installationDetailsMapper;
                 orderItem.setOrderId(orderId);
                 orderItem.setItemId(orderMapper.findArticleIdByName(article.getName()));
                 int newOrderItemId = orderMapper.insertOrderItem(orderItem);
-                for (int i = 0; i < article.getAttributes().size(); ++i) {
-                    OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
-                    orderItemsDetails.setOrderItemId(newOrderItemId);
-                    orderItemsDetails.setAttribute(article.getAttributes().get(i));
-                    orderItemsDetails.setValue(article.getValues().get(i));
-                    orderMapper.insertOrderItemDetails(orderItemsDetails);
+                for (int i = 0; i < article.getArticleDetails().size(); ++i) {
+                    OrderItemDetails orderItemDetails = new OrderItemDetails();
+                    orderItemDetails.setOrderItemId(newOrderItemId);
+                    orderItemDetails.setAttribute(article.getArticleDetails().get(i).getAttribute());
+                    orderItemDetails.setValue(article.getArticleDetails().get(i).getValue());
+                    orderMapper.insertOrderItemDetails(orderItemDetails);
                 }
             }
 

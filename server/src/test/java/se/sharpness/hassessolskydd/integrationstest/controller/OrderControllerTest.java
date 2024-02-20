@@ -81,7 +81,7 @@ class OrderControllerTest extends HassesDbTest{
     @Test
     void getOrderItemDetails() {
         int orderId = -2;
-        List<OrderItemsDetails> itemDetails = orderController.getOrderItemDetails(orderId);
+        List<OrderItemDetails> itemDetails = orderController.getOrderItemDetails(orderId);
 
         assertNotNull(itemDetails, "The returned list should not be null");
         assertEquals(2, itemDetails.size(), "The list should have elements");
@@ -113,18 +113,44 @@ class OrderControllerTest extends HassesDbTest{
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
 
         List<Article> orderItems = new ArrayList<>();
-        Article article1 = new Article();
-        article1.setName("persienn");
-        article1.setAttributes(Arrays.asList("Color", "Material"));
-        article1.setValues(Arrays.asList("Red", "Wood"));
+        List<OrderItemDetails> persiennDetailsList = new ArrayList<>();
 
-        Article article2 = new Article();
-        article2.setName("fönstermarkis");
-        article2.setAttributes(Arrays.asList("Color", "Material"));
-        article2.setValues(Arrays.asList("Brown", "Metal"));
+        OrderItemDetails persiennDetails1 = new OrderItemDetails();
+        persiennDetails1.setValue("Color");
+        persiennDetails1.setAttribute("Red");
 
-        orderItems.add(article1);
-        orderItems.add(article2);
+        OrderItemDetails persiennDetails2 = new OrderItemDetails();
+        persiennDetails2.setValue("Material");
+        persiennDetails2.setAttribute("Wood");
+
+        persiennDetailsList.add(persiennDetails1);
+        persiennDetailsList.add(persiennDetails2);
+
+        List<OrderItemDetails> markisDetailsList = new ArrayList<>();
+
+        OrderItemDetails markisDetails1 = new OrderItemDetails();
+        markisDetails1.setValue("Color");
+        markisDetails1.setAttribute("Brown");
+
+        OrderItemDetails markisDetails2 = new OrderItemDetails();
+        markisDetails2.setValue("Material");
+        markisDetails2.setAttribute("Metal");
+
+        markisDetailsList.add(markisDetails1);
+        markisDetailsList.add(markisDetails2);
+
+        Article persienn = new Article();
+        persienn.setName("persienn");
+        persienn.setArticleDetails(persiennDetailsList);
+
+
+        Article markis = new Article();
+        markis.setName("fönstermarkis");
+        markis.setArticleDetails(markisDetailsList);
+
+
+        orderItems.add(persienn);
+        orderItems.add(markis);
 
         order.setOrderItems(orderItems);
 
@@ -135,7 +161,7 @@ class OrderControllerTest extends HassesDbTest{
         assertEquals("CUST001", createdOrder.getCustomerNumber(), "Customer number should match");
     }
 
-    @Test
+   @Test
     void createOrderFailure() {
         Order order = new Order();
         order.setCustomerNumber("IncorrectCustomerNumber"); //This should fail the validation
@@ -145,21 +171,47 @@ class OrderControllerTest extends HassesDbTest{
         order.setNotes("Some notes about the order");
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
 
-        List<Article> orderItems = new ArrayList<>();
-        Article article1 = new Article();
-        article1.setName("persienn");
-        article1.setAttributes(Arrays.asList("Color", "Material"));
-        article1.setValues(Arrays.asList("Red", "Wood"));
+       List<Article> orderItems = new ArrayList<>();
+       List<OrderItemDetails> persiennDetailsList = new ArrayList<>();
 
-        Article article2 = new Article();
-        article2.setName("fönstermarkis");
-        article2.setAttributes(Arrays.asList("Color", "Material"));
-        article2.setValues(Arrays.asList("Brown", "Metal"));
+       OrderItemDetails persiennDetails1 = new OrderItemDetails();
+       persiennDetails1.setValue("Color");
+       persiennDetails1.setAttribute("Red");
 
-        orderItems.add(article1);
-        orderItems.add(article2);
+       OrderItemDetails persiennDetails2 = new OrderItemDetails();
+       persiennDetails2.setValue("Material");
+       persiennDetails2.setAttribute("Wood");
 
-        order.setOrderItems(orderItems);
+       persiennDetailsList.add(persiennDetails1);
+       persiennDetailsList.add(persiennDetails2);
+
+       List<OrderItemDetails> markisDetailsList = new ArrayList<>();
+
+       OrderItemDetails markisDetails1 = new OrderItemDetails();
+       markisDetails1.setValue("Color");
+       markisDetails1.setAttribute("Brown");
+
+       OrderItemDetails markisDetails2 = new OrderItemDetails();
+       markisDetails2.setValue("Material");
+       markisDetails2.setAttribute("Metal");
+
+       markisDetailsList.add(markisDetails1);
+       markisDetailsList.add(markisDetails2);
+
+       Article persienn = new Article();
+       persienn.setName("persienn");
+       persienn.setArticleDetails(persiennDetailsList);
+
+
+       Article markis = new Article();
+       markis.setName("fönstermarkis");
+       markis.setArticleDetails(markisDetailsList);
+
+
+       orderItems.add(persienn);
+       orderItems.add(markis);
+
+       order.setOrderItems(orderItems);
 
         assertThrows(Exception.class, () -> orderController.createOrder(order),
                 "Should throw an exception when creating an order with an invalid customer number");
@@ -173,8 +225,8 @@ class OrderControllerTest extends HassesDbTest{
 
         assertDoesNotThrow(() -> orderController.insertOrderItem(orderItem),
                 "Should not throw an exception when inserting an order item");
-        List<OrderItemsDetails> orderItemsDetails = orderController.getOrderItemDetails(-2);
-        System.out.println(orderItemsDetails);
+        List<OrderItemDetails> orderItemDetails = orderController.getOrderItemDetails(-2);
+        System.out.println(orderItemDetails);
         assertEquals(3, orderController.getOrderItemDetails(-2).size(),
                 "Should have 3 order item details after inserting an order item");
         //The list will have 3 orderItemsDetails because the @Select "LEFT JOIN public.item_attributes ia ON oi.id = ia.order_items_id" in
@@ -191,17 +243,17 @@ class OrderControllerTest extends HassesDbTest{
         assertDoesNotThrow(() -> orderController.insertOrderItem(orderItem),
                 "Should not throw an exception when inserting an order item");
 
-        OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
-        orderItemsDetails.setOrderItemId(1);
-        orderItemsDetails.setAttribute("Color");
-        orderItemsDetails.setValue("Blue");
+        OrderItemDetails orderItemDetails = new OrderItemDetails();
+        orderItemDetails.setOrderItemId(1);
+        orderItemDetails.setAttribute("Color");
+        orderItemDetails.setValue("Blue");
 
-        assertDoesNotThrow(() -> orderController.insertOrderItemDetails(orderItemsDetails),
+        assertDoesNotThrow(() -> orderController.insertOrderItemDetails(orderItemDetails),
                 "Should not throw an exception when inserting order item details");
 
 
-        List<OrderItemsDetails> itemDetails = orderController.getOrderItemDetails(-3);
-        OrderItemsDetails recievedOrderItemDetails = itemDetails.get(0);
+        List<OrderItemDetails> itemDetails = orderController.getOrderItemDetails(-3);
+        OrderItemDetails recievedOrderItemDetails = itemDetails.get(0);
         assertEquals("fönstermarkis", recievedOrderItemDetails.getName());
         assertEquals("Color", recievedOrderItemDetails.getAttribute());
         assertEquals("Blue", recievedOrderItemDetails.getValue());

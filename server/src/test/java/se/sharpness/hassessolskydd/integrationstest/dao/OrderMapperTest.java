@@ -11,7 +11,7 @@ import se.sharpness.hassessolskydd.integrationstest.HassesDbTest;
 import se.sharpness.hassessolskydd.model.IndoorOutdoor;
 import se.sharpness.hassessolskydd.model.Order;
 import se.sharpness.hassessolskydd.model.OrderItem;
-import se.sharpness.hassessolskydd.model.OrderItemsDetails;
+import se.sharpness.hassessolskydd.model.OrderItemDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,8 +47,8 @@ class OrderMapperTest extends HassesDbTest {
 
     @Test
     void findOrderDetailsByOrderId() {
-        List<OrderItemsDetails> orderItemsDetailsList = orderMapper.findOrderDetailsByOrderId(-1);
-        assertFalse(orderItemsDetailsList.isEmpty());
+        List<OrderItemDetails> orderItemDetailsList = orderMapper.findOrderDetailsByOrderId(-1);
+        assertFalse(orderItemDetailsList.isEmpty());
     }
 
     @Test
@@ -85,12 +85,12 @@ class OrderMapperTest extends HassesDbTest {
 
     @Test
     void insertOrderItemDetails() {
-        OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
-        orderItemsDetails.setOrderItemId(-1);
-        orderItemsDetails.setName("plissegardin");
-        orderItemsDetails.setAttribute("Color");
-        orderItemsDetails.setValue("Red");
+        OrderItemDetails orderItemDetails = new OrderItemDetails();
+        orderItemDetails.setOrderItemId(-1);
+        orderItemDetails.setName("plissegardin");
+        orderItemDetails.setAttribute("Color");
+        orderItemDetails.setValue("Red");
 
-        assertDoesNotThrow(() -> orderMapper.insertOrderItemDetails(orderItemsDetails));
+        assertDoesNotThrow(() -> orderMapper.insertOrderItemDetails(orderItemDetails));
     }
 }

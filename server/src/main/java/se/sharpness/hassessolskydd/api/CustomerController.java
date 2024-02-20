@@ -29,7 +29,7 @@ public class CustomerController extends BaseApiController {
         return customerMapper.findAll();
     }
 
-    @GetMapping("/customers/customerId/{id}")
+    @GetMapping("/customers/customerId/{id}") //TODO: Remove in production
     public Customer findCustomerById(@PathVariable(value = "id") int id) throws StatusMessage {
 
         final var result = customerMapper.findById(id);
@@ -40,7 +40,7 @@ public class CustomerController extends BaseApiController {
         }
     }
 
-    @GetMapping("/customers/customerNumber/{customerNumber}")
+    @GetMapping("/customer/{customerNumber}")
     public Customer findCustomerByCustomerNumber(@PathVariable(value = "customerNumber") String customerNumber) throws StatusMessage {
 
     final var result = customerMapper.findByCustomerNumber(customerNumber);
@@ -52,7 +52,7 @@ public class CustomerController extends BaseApiController {
     }
 
     @ExceptionHandler(ResourceConflictException.class)
-    @PostMapping("/customers/create_customer")
+    @PostMapping("/customer/create_customer")
     public Customer addCustomer(@RequestBody @Valid Customer customer) {
         customer.setCustomerNumber(CustomerNumberGenerator.createCustomerNumber(customer));
         var result = customerMapper.findByCustomerNumber(customer.getCustomerNumber());
@@ -64,7 +64,7 @@ public class CustomerController extends BaseApiController {
         }
     }
 
-    @PutMapping("/customers/update/{customerNumber}") //TODO: If customer name is changed should customerNumber be changed? Should this be transactional?
+    @PutMapping("/customer/update/{customerNumber}") //TODO: If customer name is changed should customerNumber be changed? Should this be transactional?
     public Customer updateCustomer(@PathVariable(value = "customerNumber") String customerNumber, @RequestBody @Valid Customer customer) throws StatusMessage {
 
         Optional<Customer> existingCustomerOptional = customerMapper.findByCustomerNumber(customerNumber);
@@ -87,7 +87,7 @@ public class CustomerController extends BaseApiController {
         }
     }
 
-    @GetMapping("/customers/search/{searchTerm}")
+    @GetMapping("/customer/search/{searchTerm}")
     public List<Customer> findCustomersByTerm(@PathVariable(value = "searchTerm") String searchTerm) throws StatusMessage {
         List<Customer> result = customerMapper.findByTerm(searchTerm);
         if (!result.isEmpty()) {
