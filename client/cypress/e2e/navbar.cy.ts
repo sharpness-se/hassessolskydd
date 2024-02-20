@@ -32,7 +32,7 @@ describe('Navbar Test', () => {
 
 describe('Hamburger Menu Test', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/');
+        cy.visit('http://localhost:8080/');
     });
 
     it('Hamburger menu opens and closes', () => {
