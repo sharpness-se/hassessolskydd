@@ -35,7 +35,7 @@ function EditCustomerPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <div className="flex min-h-screen flex-col items-center p-24 ">

@@ -6,10 +6,9 @@ import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import { baseUrl } from "../settings/baseUrl";
 import { Customer } from "./searchBar/CustomSearch";
-import EditCustomerPage from "../pages/EditCustomerPage";
+
 
 function CreateCustomerComponent({ customer }: { customer?: Customer }) {
-  const [customerEdit, setCustomerEdit] = useState(customer);
 
   interface FormData {
     firstname: string;
