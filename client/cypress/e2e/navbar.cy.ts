@@ -2,7 +2,7 @@
 
 describe('Navbar Test', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/');
+        cy.visit('http://localhost:8080/');
     });
     
     it('Checks that "Create customer" page has navbar with appropriate title', () => {
