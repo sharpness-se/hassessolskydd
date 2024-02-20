@@ -3,7 +3,7 @@ package se.sharpness.hassessolskydd.dao;
 import org.apache.ibatis.annotations.*;
 import se.sharpness.hassessolskydd.model.Order;
 import se.sharpness.hassessolskydd.model.OrderItem;
-import se.sharpness.hassessolskydd.model.OrderItemsDetails;
+import se.sharpness.hassessolskydd.model.OrderItemDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ public interface OrderMapper {
             "LEFT JOIN public.item_attributes ia ON oi.id = ia.order_items_id " +
             "WHERE o.id = #{orderId}"
     )
-    List<OrderItemsDetails> findOrderDetailsByOrderId(int orderId);
+    List<OrderItemDetails> findOrderDetailsByOrderId(int orderId);
 
     @Select("SELECT * FROM public.order")
     List<Order> findAllOrders();
@@ -62,7 +62,7 @@ public interface OrderMapper {
     @Insert(
             "INSERT INTO public.item_attributes (order_items_id, attribute, value) VALUES (#{orderItemId}, #{attribute}, #{value})"
     )
-    int insertOrderItemDetails(OrderItemsDetails orderItemsDetails);
+    int insertOrderItemDetails(OrderItemDetails orderItemDetails);
 
     @Update(
             "UPDATE public.order " +

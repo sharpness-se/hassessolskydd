@@ -81,7 +81,7 @@ class OrderControllerTest extends HassesDbTest{
     @Test
     void getOrderItemDetails() {
         int orderId = -2;
-        List<OrderItemsDetails> itemDetails = orderController.getOrderItemDetails(orderId);
+        List<OrderItemDetails> itemDetails = orderController.getOrderItemDetails(orderId);
 
         assertNotNull(itemDetails, "The returned list should not be null");
         assertEquals(2, itemDetails.size(), "The list should have elements");
@@ -123,8 +123,8 @@ class OrderControllerTest extends HassesDbTest{
         article2.setAttributes(Arrays.asList("Color", "Material"));
         article2.setValues(Arrays.asList("Brown", "Metal"));
 
-        orderItems.add(article1);
-        orderItems.add(article2);
+        orderItems.add(persienn);
+        orderItems.add(markis);
 
         order.setOrderItems(orderItems);
 
@@ -173,8 +173,8 @@ class OrderControllerTest extends HassesDbTest{
 
         assertDoesNotThrow(() -> orderController.insertOrderItem(orderItem),
                 "Should not throw an exception when inserting an order item");
-        List<OrderItemsDetails> orderItemsDetails = orderController.getOrderItemDetails(-2);
-        System.out.println(orderItemsDetails);
+        List<OrderItemDetails> orderItemDetails = orderController.getOrderItemDetails(-2);
+        System.out.println(orderItemDetails);
         assertEquals(3, orderController.getOrderItemDetails(-2).size(),
                 "Should have 3 order item details after inserting an order item");
         //The list will have 3 orderItemsDetails because the @Select "LEFT JOIN public.item_attributes ia ON oi.id = ia.order_items_id" in
@@ -191,17 +191,17 @@ class OrderControllerTest extends HassesDbTest{
         assertDoesNotThrow(() -> orderController.insertOrderItem(orderItem),
                 "Should not throw an exception when inserting an order item");
 
-        OrderItemsDetails orderItemsDetails = new OrderItemsDetails();
-        orderItemsDetails.setOrderItemId(1);
-        orderItemsDetails.setAttribute("Color");
-        orderItemsDetails.setValue("Blue");
+        OrderItemDetails orderItemDetails = new OrderItemDetails();
+        orderItemDetails.setOrderItemId(1);
+        orderItemDetails.setAttribute("Color");
+        orderItemDetails.setValue("Blue");
 
-        assertDoesNotThrow(() -> orderController.insertOrderItemDetails(orderItemsDetails),
+        assertDoesNotThrow(() -> orderController.insertOrderItemDetails(orderItemDetails),
                 "Should not throw an exception when inserting order item details");
 
 
-        List<OrderItemsDetails> itemDetails = orderController.getOrderItemDetails(-3);
-        OrderItemsDetails recievedOrderItemDetails = itemDetails.get(0);
+        List<OrderItemDetails> itemDetails = orderController.getOrderItemDetails(-3);
+        OrderItemDetails recievedOrderItemDetails = itemDetails.get(0);
         assertEquals("fönstermarkis", recievedOrderItemDetails.getName());
         assertEquals("Color", recievedOrderItemDetails.getAttribute());
         assertEquals("Blue", recievedOrderItemDetails.getValue());

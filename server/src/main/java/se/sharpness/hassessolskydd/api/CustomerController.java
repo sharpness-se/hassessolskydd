@@ -29,7 +29,7 @@ public class CustomerController extends BaseApiController {
         return customerMapper.findAll();
     }
 
-    @GetMapping("/customers/customerId/{id}")
+    @GetMapping("/customers/customerId/{id}") //TODO: Remove in production
     public Customer findCustomerById(@PathVariable(value = "id") int id) throws StatusMessage {
 
         final var result = customerMapper.findById(id);
