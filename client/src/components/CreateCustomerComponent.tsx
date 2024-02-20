@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DoubleFieldInputRow from "../components/form/DoubleFieldInputRow";
 import SingleFieldInputRow from "../components/form/SingleFieldInputRow";
 import FormComponent from "../components/form/FormComponent";
 import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import { baseUrl } from "../settings/baseUrl";
+import { Customer } from "./searchBar/CustomSearch";
+import EditCustomerPage from "../pages/EditCustomerPage";
 
-function CreateCustomerComponent() {
+function CreateCustomerComponent({ customer }: { customer?: Customer }) {
+  const [customerEdit, setCustomerEdit] = useState(customer);
+
   interface FormData {
     firstname: string;
     lastname: string;
@@ -28,10 +32,16 @@ function CreateCustomerComponent() {
   const schema = Yup.object().shape({
     firstname: Yup.string()
       .required("Förnamn är obligatoriskt")
-      .matches(/^(?!\s)(?!.*\s{2})[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
+      .matches(
+        /^(?!\s)(?!.*\s{2})[a-zA-ZåäöÅÄÖ\-'.,\s]*$/,
+        "Ogiltigt namnformat"
+      ),
     lastname: Yup.string()
       .required("Efternamn är obligatoriskt")
-      .matches(/^(?!\s)(?!.*\s{2})[a-zA-ZåäöÅÄÖ\-'.,\s]*$/, "Ogiltigt namnformat"),
+      .matches(
+        /^(?!\s)(?!.*\s{2})[a-zA-ZåäöÅÄÖ\-'.,\s]*$/,
+        "Ogiltigt namnformat"
+      ),
     email: Yup.string()
       .required("Email är obligatoriskt")
       .matches(
@@ -44,7 +54,10 @@ function CreateCustomerComponent() {
       .min(8, "Telefonnummer måste vara minst 8 siffror"),
     address: Yup.string()
       .required("Adress är obligatoriskt")
-      .matches(/^(?!\s)(?!.*\s{2})[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/, "Ange en giltig adress"),
+      .matches(
+        /^(?!\s)(?!.*\s{2})[a-zA-Z0-9åäöÅÄÖ\s.,\-#]*$/,
+        "Ange en giltig adress"
+      ),
     city: Yup.string()
       .required("Ort är obligatoriskt")
       .matches(/^[a-zA-ZåäöÅÄÖ]*$/, "Ange endast bokstäver"),
@@ -72,6 +85,7 @@ function CreateCustomerComponent() {
     city: { error: "", touched: false },
     postalCode: { error: "", touched: false },
   });
+
   const [formData, setFormData] = useState<FormData>(generateInitialState());
 
   const [errors, setErrors] = useState<FormDataValidation>(
@@ -114,16 +128,13 @@ function CreateCustomerComponent() {
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
-      const response = await fetch(
-        `${baseUrl}/api/customers/create_customer`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/customers/create_customer`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.status === 409) {
         toast.error("Customer exists!");
@@ -171,17 +182,31 @@ function CreateCustomerComponent() {
 
   function addSpaceAtFourthChar(inputString: string) {
     if (inputString.length >= 4) {
-      if (inputString.charAt(3) !== ' ') {
-        inputString = inputString.slice(0, 3) + ' ' + inputString.slice(3);
+      if (inputString.charAt(3) !== " ") {
+        inputString = inputString.slice(0, 3) + " " + inputString.slice(3);
       }
     }
     return inputString;
   }
-  
+  useEffect(() => {
+    setFormData({
+      firstname: customer?.firstname || "",
+      lastname: customer?.lastname || "",
+      email: customer?.email || "",
+      phoneNumber: customer?.phoneNumber || "",
+      address: customer?.address || "",
+      city: customer?.city || "",
+      postalCode: customer?.postalCode || "",
+    });
+  }, [customer]);
   return (
     <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
       <h2 className="text-xl font-bold text-gray-800 mb-3">Personuppgifter</h2>
-      <FormComponent submitButtonText={"Skapa Kund"} backButtonText="Tillbaka" onSubmit={handleSubmit}>
+      <FormComponent
+        submitButtonText={"Skapa Kund"}
+        backButtonText="Tillbaka"
+        onSubmit={handleSubmit}
+      >
         <DoubleFieldInputRow
           labelOne="förnamn"
           labelTwo="efternamn"
