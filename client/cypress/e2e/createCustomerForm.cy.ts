@@ -27,7 +27,7 @@ describe("Create Customer Form Test", () => {
   });
 
   it.only("should submit the form successfully", () => {
-    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
+    cy.intercept("POST", "/api/customer/create_customer").as("handleSubmit");
 
     Object.entries(validFormData).forEach(([key, value]) => {
       cy.get(`input[id="${key}"]`).type(value);
@@ -41,11 +41,11 @@ describe("Create Customer Form Test", () => {
     
     cy.request({
       method: "POST",
-      url: "http://localhost:8080/api/customers/create_customer",
+      url: "http://localhost:8080/api/customer/create_customer",
       body: validFormData,
     }).then((res) => { expect(res.status).to.eq(200); cy.log(JSON.stringify(res))});
 
-    cy.intercept("POST", "/api/customers/create_customer").as("handleSubmit");
+    cy.intercept("POST", "/api/customer/create_customer").as("handleSubmit");
     
     Object.entries(validFormData).forEach(([key, value]) => {
       cy.get(`input[id="${key}"]`).type(value);

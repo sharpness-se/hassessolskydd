@@ -127,7 +127,7 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
-      const response = await fetch(`${baseUrl}/api/customers/create_customer`, {
+      const response = await fetch(`${baseUrl}/api/customer/create_customer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
