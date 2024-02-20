@@ -6,7 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 // import useDebounceHook from "../../hooks/useDebounceHook";
 export interface Customer {
-  id?: number;
+  id?: string;
   firstname: string;
   lastname: string;
   email?: string;

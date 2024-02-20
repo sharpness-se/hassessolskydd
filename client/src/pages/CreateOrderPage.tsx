@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 import MuiSearchBarComponent, {
   Customer,
-} from '../components/searchBar/MuiSearchBarComponent';
-import CustomerDetailsComponent from '../components/CustomerDetailsComponent';
-import ContactDateComponent from '../components/ContactDateComponent';
-import Accordion from '../components/AccordionComponent';
-import { baseUrl } from '../settings/baseUrl';
-import CustomerCartComponent from '../components/cart/CustomerCartComponent';
+} from "../components/searchBar/MuiSearchBarComponent";
+import CustomerDetailsComponent from "../components/CustomerDetailsComponent";
+import ContactDateComponent from "../components/ContactDateComponent";
+import Accordion from "../components/AccordionComponent";
+import { baseUrl } from "../settings/baseUrl";
+import CustomerCartComponent from "../components/cart/CustomerCartComponent";
 
-import toast, { Toaster } from 'react-hot-toast';
-import Pilsegardin from '../components/createOrderProductForms/Pilsegardin';
-import Navbar from '../components/NavbarComponent';
+import toast, { Toaster } from "react-hot-toast";
+import Pilsegardin from "../components/createOrderProductForms/Pilsegardin";
+import Navbar from "../components/NavbarComponent";
 
 export interface Product {
   name: string;
@@ -19,8 +19,13 @@ export interface Product {
   values: string[];
 }
 export interface InstallationDetails {
-  attributes?: string[];
-  values?: string[];
+  isNormal?: String;
+  facadeDetails?: String;
+  floorDetails?: String;
+  cableLength?: String;
+  remoteControl?: String;
+  needLift?: String;
+  installationNotes?: String;
 }
 export interface FormData {
   customerNumber?: string;
@@ -35,25 +40,24 @@ export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
   const [options, setOptions] = React.useState<Customer[]>([]);
   const [hidden, setHidden] = useState(true);
-  const [product, setProduct] = useState('');
+  const [product, setProduct] = useState("");
   const [customerCart, setCustomerCart] = useState<Product[]>([]);
   const [formData, setFormData] = useState<FormData>();
-  const [notes, setNotes] = useState<string>('');
-  const [controller, setController] = useState<string>('');
+  const [notes, setNotes] = useState<string>("");
+  //const [controller, setController] = useState<string>('');
   const [lift, setLift] = useState<boolean>(false);
+  const [montering, setMontering] = useState<string>("");
   const [installationDetails, setInstallationDetails] =
     useState<InstallationDetails>({
-      attributes: [
-        'montering',
-        'våning',
-        'lift',
-        'fasad',
-        'kabel',
-        'fjärrkontroll',
-      ],
-      values: ['', '', 'nej', '', '', ''],
+      isNormal: undefined,
+      facadeDetails: undefined,
+      floorDetails: undefined,
+      cableLength: undefined,
+      remoteControl: undefined,
+      needLift: "no",
+      installationNotes: undefined,
     });
-  const [montering, setMontering] = useState<string>('');
+
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -63,14 +67,14 @@ export default function CreateOrderPageComponent() {
     const fetchData: () => Promise<void> = async () => {
       try {
         const response = await fetch(prepareUrl(), {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
 
         if (response.status === 204) {
-          console.log('No Customers Found!');
+          console.log("No Customers Found!");
         } else {
           const data = await response.json();
           setOptions(data);
@@ -88,19 +92,16 @@ export default function CreateOrderPageComponent() {
       customerNumber: currentCustomer,
       orderItems: customerCart,
       notes: notes,
-      //installationDetails: installationDetails
+      //installationDetails: installationDetails,
     });
   }, [customerCart, customer, notes, installationDetails]);
 
   const handleInstalationDetailsUpdate = (attribute: string, value: string) => {
-    const index = installationDetails.attributes?.lastIndexOf(attribute) || 0;
-    const newArray = installationDetails.values || [];
-    newArray[index] = value;
-    setInstallationDetails((prev) => ({ ...prev, values: newArray }));
+    setInstallationDetails((prev) => ({ ...prev, [attribute]: value }));
   };
 
   const handleSubmit = async () => {
-    console.log('Updated formData:', formData);
+    console.log("Updated formData:", formData);
     if (!formData?.customerNumber) {
       toast.error('Please Select a Customer!');
       return;
@@ -127,10 +128,10 @@ export default function CreateOrderPageComponent() {
       console.error(error);
     }
   };
-  useEffect(() => {
-    //handleInstalationDetailsUpdate("montering", montering);
-    console.log(installationDetails);
-  }, [installationDetails]);
+  // useEffect(() => {
+  //   //handleInstalationDetailsUpdate("montering", montering);
+  //   console.log(installationDetails);
+  // }, [installationDetails]);
   return (
     <>
       <Navbar title="Skapa Order" />
@@ -143,15 +144,15 @@ export default function CreateOrderPageComponent() {
               options={options}
               setOptions={setOptions}
             />
-            <ContactDateComponent heading={'Datum'} />
+            <ContactDateComponent heading={"Datum"} />
           </div>
           <div className="flex-2">
             <CustomerDetailsComponent customer={customer} />
           </div>
         </div>
-        <Accordion title={'Produkter'} applyHeight customOnClick primary>
+        <Accordion title={"Produkter"} applyHeight customOnClick primary>
           {hidden && (
-            <div className={'w-full'}>
+            <div className={"w-full"}>
               <label
                 htmlFor="mySelect"
                 className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
@@ -180,18 +181,18 @@ export default function CreateOrderPageComponent() {
               </select>
             </div>
           )}
-          {!hidden && product === 'Pilsegardin' && (
+          {!hidden && product === "Pilsegardin" && (
             <Pilsegardin
               product={product}
               clearOnClick={() => {
                 setHidden(true);
-                setProduct('');
+                setProduct("");
               }}
               cartCallback={setCustomerCart}
             />
           )}
         </Accordion>
-        <Accordion title={'Anteckningar'} primary>
+        <Accordion title={"Anteckningar"} primary>
           <textarea
             id="anteckningar"
             className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
@@ -215,12 +216,12 @@ export default function CreateOrderPageComponent() {
                     type="radio"
                     name="montering"
                     value="normal"
-                    checked={montering === 'normal'}
+                    checked={montering === "normal"}
                     onChange={(e) => {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
-                        'montering',
-                        e.target.value,
+                        "isNormal",
+                        e.target.value
                       );
                     }}
                   />
@@ -239,13 +240,13 @@ export default function CreateOrderPageComponent() {
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
                     type="radio"
                     name="montering"
-                    value="avancerad"
-                    checked={montering === 'avancerad'}
+                    value="advanced"
+                    checked={montering === "advanced"}
                     onChange={(e) => {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
-                        'montering',
-                        e.target.value,
+                        "isNormal",
+                        e.target.value
                       );
                     }}
                   />
@@ -274,7 +275,10 @@ export default function CreateOrderPageComponent() {
                   type="text"
                   id="våning"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate('våning', e.target.value);
+                    handleInstalationDetailsUpdate(
+                      "floorDetails",
+                      e.target.value
+                    );
                   }}
                 ></input>
               </div>
@@ -287,7 +291,10 @@ export default function CreateOrderPageComponent() {
                   type="text"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate('fasad', e.target.value);
+                    handleInstalationDetailsUpdate(
+                      "facadeDetails",
+                      e.target.value
+                    );
                   }}
                 />
               </div>
@@ -304,7 +311,10 @@ export default function CreateOrderPageComponent() {
                   type="text"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate('kabel', e.target.value);
+                    handleInstalationDetailsUpdate(
+                      "cableLength",
+                      e.target.value
+                    );
                   }}
                 ></input>
               </div>
@@ -314,13 +324,23 @@ export default function CreateOrderPageComponent() {
                   Fjärrkontroll
                 </label>
                 <br />
-                <select
+                <input
+                  type="text"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  onChange={(e) => {
+                    handleInstalationDetailsUpdate(
+                      "remoteControl",
+                      e.target.value
+                    );
+                  }}
+                ></input>
+                {/* <select
                   className="w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   value={controller}
                   onChange={(e) => {
                     setController(e.target.value);
                     handleInstalationDetailsUpdate(
-                      'fjärrkontroll',
+                      'remoteControl',
                       e.target.value,
                     );
                   }}
@@ -329,11 +349,11 @@ export default function CreateOrderPageComponent() {
                   <option value="mono">Mono</option>
                   <option value="lumero">Lumero</option>
                   <option value="vario">Vario</option>
-                </select>
+                </select> */}
               </div>
             </div>
 
-            <div className="flex items-center ps-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center ps-4 border border-gray-200 rounded-lg mb-5">
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
@@ -341,14 +361,30 @@ export default function CreateOrderPageComponent() {
                 onChange={(e) => {
                   setLift(e.target.checked);
                   handleInstalationDetailsUpdate(
-                    'lift',
-                    `${e.target.checked ? 'ja' : 'nej'}`,
+                    "needLift",
+                    `${e.target.checked ? "yes" : "no"}`
                   );
                 }}
               />
               <label className="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                 Behövs lift?
               </label>
+            </div>
+            <div className="flex w-full space-x-5 mb-3">
+              {/* Are these defined choices below? */}
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Monteringsanteckningar
+                </label>
+                <textarea
+                  id="anteckningar"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
+                  maxLength={2000}
+                  onChange={(e) => {
+                    handleInstalationDetailsUpdate("installationNotes", e.target.value);
+                  }}
+                ></textarea>
+              </div>
             </div>
           </form>
         </Accordion>

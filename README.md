@@ -15,16 +15,38 @@
           - Push the changes to Heroku.
 
 ## Local Environment
+    #Backend
+        1. Start Docker-desktop and start the database image
+            - make sure docker desktop is running
+            - start image hassessolskydd
+            * if you dont have an image for hassesssolskyd Open terminal in the project root and use command "docker-compose up" 
+         
+        2. Navigate to /server/src/main/java/se/sharpness/hassessolskydd in vscode and click on hassessolskyddApplication.java and press the play button at the top right
+    
     #Frontend
-        * Currently localhost:3000 is not whitelisted in the java backend so any contact with the backend will be denied by CORS
-        * Locally only #2 works at the moment
+        1. Check backend is running in a terminal (vscode or terminal or by visiting http://localhost:8080)
+    
+        2. From the root go to /client in a terminal and use command:   
+             - npm start
   
-        1. To test changes before git commit:
-             - Save files
-             - "npm start" (This will open http://localhost:3000)
+        3. Navigate to http://localhost:3000 in a browser if one doesnt open automatically. Making changes in the frontend code will automatically update in the browser.
   
-        2. To test frontend changes served from the backend:
+        *To test frontend changes served from the backend:
              - Check docker desktop is running and that the database container is up ("docker-compose up" in the project root if its not)
              - Save files
              - "npm run build" in the client folder (This will build and run copy-files.js which will populate the static folder in the backend)
-             - Start the backend and navigate to http://localhost:8080
+             - Start or Restart the backend and navigate to http://localhost:8080
+
+## Test Environment
+    #Frontend: Cypress
+      - Cypress tests are automatically run during every push request through a workflow and github actions
+  
+      - Locally Cypress test can be viewed in /client/cypress/e2e
+  
+        1. To run tests locally from the root use command:
+            - cd Client"
+            - npx cypress open (in the terminal) 
+            - click on E2E
+            - choose a browser on which to run tests.
+        
+            * Note if a lot of tests fail, try running npm run build in the client folder to rebuild the backend, then restart the backend, and run the tests again.
