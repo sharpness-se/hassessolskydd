@@ -10,7 +10,7 @@ function EditCustomerPage() {
   let { id } = useParams();
   useEffect(() => {
     const prepareUrl = (id: string | undefined) => {
-      const url = `${baseUrl}/api/customers/customerNumber/${id}`;
+      const url = `${baseUrl}/api/customer/customerNumber/${id}`;
 
       return encodeURI(url);
     };
@@ -35,7 +35,7 @@ function EditCustomerPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <div className="flex min-h-screen flex-col items-center p-24 ">

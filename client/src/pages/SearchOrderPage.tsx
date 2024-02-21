@@ -8,12 +8,11 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   ColumnSort,
-  RowData,
-  Row,
+
 } from "@tanstack/react-table";
 import { Customer } from "../components/searchBar/CustomSearch";
 import Navbar from "../components/NavbarComponent";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Order = { customerNumber: string; firstContact: string; id: string };
 
@@ -26,7 +25,7 @@ export default function SearchOrderPage() {
     useState<(OrderInfo | Customer)[]>(orderList);
   const [sorting, setSorting] = React.useState<ColumnSort[]>([]);
   const [showOrder, setShowOrder] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const columns = [
     orderColumnHelper.accessor(
       (row) => {
@@ -213,31 +212,30 @@ export default function SearchOrderPage() {
             <tbody className="">
               {table.getRowModel().rows.map((row) => {
                 return (
-                  
                   <tr
                     key={row.id}
                     className="hover:bg-blue-600 hover:font-sm hover:text-white"
                     onClick={() => {
-                      if((row.original as Customer).customerNumber)
-                      navigate(`/customer/${(row.original as Customer).customerNumber}`)
+                      if ((row.original as Customer).customerNumber)
+                        navigate(
+                          `/customer/${(row.original as Customer).customerNumber}`
+                        );
                     }}
                   >
                     {row.getVisibleCells().map((cell, index) => {
-                      
                       return (
                         <td
                           key={cell.id}
                           className="text-[16px] p-5 min-w-[6em]"
                         >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
                         </td>
                       );
                     })}
                   </tr>
-                    
                 );
               })}
             </tbody>

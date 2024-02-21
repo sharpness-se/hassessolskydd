@@ -6,10 +6,9 @@ import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import { baseUrl } from "../settings/baseUrl";
 import { Customer } from "./searchBar/CustomSearch";
-import EditCustomerPage from "../pages/EditCustomerPage";
+
 
 function CreateCustomerComponent({ customer }: { customer?: Customer }) {
-  const [customerEdit, setCustomerEdit] = useState(customer);
 
   interface FormData {
     firstname: string;
@@ -128,7 +127,7 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
-      const response = await fetch(`${baseUrl}/api/customers/create_customer`, {
+      const response = await fetch(`${baseUrl}/api/customer/create_customer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
