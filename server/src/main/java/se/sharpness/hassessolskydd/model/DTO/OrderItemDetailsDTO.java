@@ -7,5 +7,4 @@ public class OrderItemDetailsDTO {
 
     private String attribute;
     private String value;
-
 }

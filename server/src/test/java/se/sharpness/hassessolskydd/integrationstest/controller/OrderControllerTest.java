@@ -10,6 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import se.sharpness.hassessolskydd.api.OrderController;
 import se.sharpness.hassessolskydd.integrationstest.HassesDbTest;
 import se.sharpness.hassessolskydd.model.*;
+import se.sharpness.hassessolskydd.model.DTO.OrderItemDetailsDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -113,18 +114,21 @@ class OrderControllerTest extends HassesDbTest{
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
 
         List<Article> orderItems = new ArrayList<>();
-        List<OrderItemDetails> persiennDetailsList = new ArrayList<>();
 
-        OrderItemDetails persiennDetails1 = new OrderItemDetails();
+
+        List<OrderItemDetailsDTO> persiennDetailsList = new ArrayList<>();
+
+        OrderItemDetailsDTO persiennDetails1 = new OrderItemDetailsDTO();
         persiennDetails1.setValue("Color");
         persiennDetails1.setAttribute("Red");
 
-        OrderItemDetails persiennDetails2 = new OrderItemDetails();
+        OrderItemDetailsDTO persiennDetails2 = new OrderItemDetailsDTO();
         persiennDetails2.setValue("Material");
         persiennDetails2.setAttribute("Wood");
 
         persiennDetailsList.add(persiennDetails1);
         persiennDetailsList.add(persiennDetails2);
+
 
         List<OrderItemDetails> markisDetailsList = new ArrayList<>();
 
@@ -138,6 +142,7 @@ class OrderControllerTest extends HassesDbTest{
 
         markisDetailsList.add(markisDetails1);
         markisDetailsList.add(markisDetails2);
+
 
         Article persienn = new Article();
         persienn.setName("persienn");
@@ -172,7 +177,7 @@ class OrderControllerTest extends HassesDbTest{
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
 
        List<Article> orderItems = new ArrayList<>();
-       List<OrderItemDetails> persiennDetailsList = new ArrayList<>();
+       List<OrderItemDetailsDTO> persiennDetailsList = new ArrayList<>();
 
        OrderItemDetails persiennDetails1 = new OrderItemDetails();
        persiennDetails1.setValue("Color");
@@ -185,13 +190,13 @@ class OrderControllerTest extends HassesDbTest{
        persiennDetailsList.add(persiennDetails1);
        persiennDetailsList.add(persiennDetails2);
 
-       List<OrderItemDetails> markisDetailsList = new ArrayList<>();
+       List<OrderItemDetailsDTO> markisDetailsList = new ArrayList<>();
 
-       OrderItemDetails markisDetails1 = new OrderItemDetails();
+       OrderItemDetailsDTO markisDetails1 = new OrderItemDetailsDTO();
        markisDetails1.setValue("Color");
        markisDetails1.setAttribute("Brown");
 
-       OrderItemDetails markisDetails2 = new OrderItemDetails();
+       OrderItemDetailsDTO markisDetails2 = new OrderItemDetailsDTO();
        markisDetails2.setValue("Material");
        markisDetails2.setAttribute("Metal");
 

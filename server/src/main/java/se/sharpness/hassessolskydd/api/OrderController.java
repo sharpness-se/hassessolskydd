@@ -9,6 +9,7 @@ import se.sharpness.hassessolskydd.dao.InstallationDetailsMapper;
 import se.sharpness.hassessolskydd.dao.OrderMapper;
 import se.sharpness.hassessolskydd.model.*;
 import se.sharpness.hassessolskydd.model.Article;
+import se.sharpness.hassessolskydd.model.DTO.OrderItemDetailsDTO;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -135,46 +136,14 @@ private final InstallationDetailsMapper installationDetailsMapper;
                 }
 
                 Article currentArticle = articleMap.get(orderItemId);
-                currentArticle.getArticleDetails().add(item); // Add the OrderItemDetails directly to the Article
+                OrderItemDetailsDTO dto = new OrderItemDetailsDTO();
+                dto.setAttribute(item.getAttribute());
+                dto.setValue(item.getValue());
+                currentArticle.getArticleDetails().add(dto); // Add the OrderItemDetails directly to the Article
             }
         }
         return orderItems;
     }
-
-
-
-/*
-    public List<Article> defineArticles(int orderId) {
-        List<OrderItemDetails> itemDetails = getOrderItemDetails(orderId);
-
-        if (itemDetails == null) {
-            return null;
-        }
-
-        List<Article> orderItems = new ArrayList<>();
-        Map<Integer, Article> articleMap = new HashMap<>();
-
-        for (OrderItemDetails item : itemDetails) {
-            if (item != null) { // Add a null check for each item
-                int orderItemsId = item.getOrderItemId();
-
-                if (!articleMap.containsKey(orderItemsId)) {
-                    Article newArticle = new Article();
-                    newArticle.setName(item.getName());
-                    newArticle.setAttributes(new ArrayList<>());
-                    newArticle.setValues(new ArrayList<>());
-
-                    orderItems.add(newArticle);
-                    articleMap.put(orderItemsId, newArticle);
-                }
-
-                Article currentArticle = articleMap.get(orderItemsId);
-                currentArticle.getAttributes().add(item.getAttribute());
-                currentArticle.getValues().add(item.getValue());
-            }
-        }
-        return orderItems;
-    }*/
 
     @PostMapping("/order/create")
     @Transactional
@@ -190,21 +159,7 @@ private final InstallationDetailsMapper installationDetailsMapper;
         int newOrderId = orderMapper.insertOrder(order);
         order.setId(newOrderId);
 
-        for (Article article : order.getOrderItems()) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrderId(newOrderId);
-            orderItem.setItemId(orderMapper.findArticleIdByName(article.getName()));
-            int newOrderItemId = orderMapper.insertOrderItem(orderItem);
-            for (int i = 0; i < article.getArticleDetails().size(); ++i) {
-                OrderItemDetails orderItemDetails = new OrderItemDetails();
-                orderItemDetails.setOrderItemId(newOrderItemId);
-                orderItemDetails.setAttribute(article.getArticleDetails().get(i).getAttribute());
-                orderItemDetails.setValue(article.getArticleDetails().get(i).getValue());
-
-                orderMapper.insertOrderItemDetails(orderItemDetails);
-            }
-        }
-        return order;
+        return defineOrder(newOrderId, order, order);
     }
 
     @PostMapping("/order-items")
@@ -236,23 +191,27 @@ private final InstallationDetailsMapper installationDetailsMapper;
             orderMapper.deleteOrderItemsByOrderId(orderId);
 
             // Insert updated order items
-            for (Article article : order.getOrderItems()) {
-                OrderItem orderItem = new OrderItem();
-                orderItem.setOrderId(orderId);
-                orderItem.setItemId(orderMapper.findArticleIdByName(article.getName()));
-                int newOrderItemId = orderMapper.insertOrderItem(orderItem);
-                for (int i = 0; i < article.getArticleDetails().size(); ++i) {
-                    OrderItemDetails orderItemDetails = new OrderItemDetails();
-                    orderItemDetails.setOrderItemId(newOrderItemId);
-                    orderItemDetails.setAttribute(article.getArticleDetails().get(i).getAttribute());
-                    orderItemDetails.setValue(article.getArticleDetails().get(i).getValue());
-                    orderMapper.insertOrderItemDetails(orderItemDetails);
-                }
-            }
-
-            return existingOrder;
+            return defineOrder(orderId, order, existingOrder);
         } else {
             throw new Exception("Could not find order");
         }
+    }
+
+    private Order defineOrder(@PathVariable("orderId") int orderId, @RequestBody Order order, Order existingOrder) {
+        for (Article article : order.getOrderItems()) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrderId(orderId);
+            orderItem.setItemId(orderMapper.findArticleIdByName(article.getName()));
+            int newOrderItemId = orderMapper.insertOrderItem(orderItem);
+            for (int i = 0; i < article.getArticleDetails().size(); ++i) {
+                OrderItemDetails orderItemDetails = new OrderItemDetails();
+                orderItemDetails.setOrderItemId(newOrderItemId);
+                orderItemDetails.setAttribute(article.getArticleDetails().get(i).getAttribute());
+                orderItemDetails.setValue(article.getArticleDetails().get(i).getValue());
+                orderMapper.insertOrderItemDetails(orderItemDetails);
+            }
+        }
+
+        return existingOrder;
     }
 }

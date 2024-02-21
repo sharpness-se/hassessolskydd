@@ -1,6 +1,7 @@
 package se.sharpness.hassessolskydd.model;
 
 import lombok.Data;
+import se.sharpness.hassessolskydd.model.DTO.OrderItemDetailsDTO;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ public class Article {
 
     private String name;
 
-    private List<OrderItemDetails> articleDetails;
+    private List<OrderItemDetailsDTO> articleDetails;
 }
