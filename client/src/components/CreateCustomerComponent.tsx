@@ -189,7 +189,7 @@ function CreateCustomerComponent({
         { duration: 6000 }
       );
       //clear formData after submission success
-      setFormData(generateInitialState());
+      customCancel ? customCancel() : setFormData(generateInitialState());
     } catch (validationError) {
       if (validationError instanceof Yup.ValidationError) {
         // Yup validation errors occurred
