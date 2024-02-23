@@ -14,9 +14,9 @@ import { Customer } from "../components/searchBar/CustomSearch";
 import Navbar from "../components/NavbarComponent";
 import { useNavigate } from "react-router-dom";
 
-type Order = { customerNumber: string; firstContact: string; id: string };
+export type Order = { customerNumber: string; firstContact: string; id: string };
 
-type OrderInfo = { order: Order; customer: Customer };
+export type OrderInfo = { order: Order; customer: Customer };
 
 export default function SearchOrderPage() {
   const [orderList, setOrderList] = useState<(OrderInfo | Customer)[]>([]);
