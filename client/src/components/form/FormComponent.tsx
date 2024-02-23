@@ -9,7 +9,10 @@ interface FormComponentProps {
   backButtonText: string;
   submitButtonText: string;
   customOnClickClear?: () => void;
+  customOnClick?: () => void;
   addToCart?: () => void;
+  disabled?: boolean;
+  hideButtons?: boolean;
 }
 
 const FormComponent: React.FC<FormComponentProps> = ({
@@ -19,18 +22,46 @@ const FormComponent: React.FC<FormComponentProps> = ({
   backButtonText,
   submitButtonText,
   customOnClickClear,
-  addToCart
+  customOnClick,
+  addToCart,
+  disabled,
+  hideButtons,
 }) => {
-  
   return (
     <form onSubmit={onSubmit} autoComplete="off">
       <div className={`${applyGrid ? "grid grid-cols-4 mr-1" : ""}`}>
-        {children}
+        <fieldset disabled={disabled}>{children}</fieldset>
       </div>
-      <div className="flex items-center justify-center">
-        <BackButton text={backButtonText} onClick={customOnClickClear}/>
+      <div
+        className={`flex items-center justify-center ${hideButtons ? "hidden" : ""}`}
+      >
         <SubmitButton label={submitButtonText} addToCart={addToCart} />
       </div>
+      {hideButtons && (
+        <>
+          {!disabled && (
+            <BackButton
+              text={"Avbryta"}
+              onClick={() => {
+                if (customOnClickClear) {
+                  customOnClickClear();
+                }
+              }}
+            ></BackButton>
+          )}
+          <button
+            className="items-center rounded-full bg-blue-600 shadow-md text-white text-xl font-bold px-12 py-3 hover:bg-blue-500"
+            type="button"
+            onClick={() => {
+              if (customOnClick) {
+                customOnClick();
+              }
+            }}
+          >
+            {disabled ? submitButtonText : "Spara"}
+          </button>
+        </>
+      )}
     </form>
   );
 };

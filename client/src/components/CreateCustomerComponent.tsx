@@ -8,8 +8,24 @@ import { baseUrl } from "../settings/baseUrl";
 import { Customer } from "./searchBar/CustomSearch";
 
 
-function CreateCustomerComponent({ customer }: { customer?: Customer }) {
-
+interface CreateCustomerComponentProps {
+  customer?: Customer;
+  disabled?: boolean;
+  hideButtons?: boolean;
+  customHandleOnSubmit?: () => void;
+  submitButtonText?: string;
+  customOnClick?: () => void;
+  customCancel?: () => void;
+}
+function CreateCustomerComponent({
+  customer,
+  disabled,
+  hideButtons,
+  customHandleOnSubmit,
+  customOnClick,
+  submitButtonText,
+  customCancel
+}: CreateCustomerComponentProps) {
   interface FormData {
     firstname: string;
     lastname: string;
@@ -18,6 +34,7 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
     address: string;
     city: string;
     postalCode: string;
+    customerNumber: string;
   }
   interface FormDataValidation {
     firstname: { error: string; touched: boolean };
@@ -27,6 +44,7 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
     address: { error: string; touched: boolean };
     city: { error: string; touched: boolean };
     postalCode: { error: string; touched: boolean };
+    customerNumber: { error: string; touched: boolean };
   }
   const schema = Yup.object().shape({
     firstname: Yup.string()
@@ -74,6 +92,7 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
     address: "",
     city: "",
     postalCode: "",
+    customerNumber: "",
   });
   const generateInitialValidationState = (): FormDataValidation => ({
     firstname: { error: "", touched: false },
@@ -83,6 +102,7 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
     address: { error: "", touched: false },
     city: { error: "", touched: false },
     postalCode: { error: "", touched: false },
+    customerNumber: { error: "", touched: false },
   });
 
   const [formData, setFormData] = useState<FormData>(generateInitialState());
@@ -127,6 +147,7 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
+      
       const response = await fetch(`${baseUrl}/api/customer/create_customer`, {
         method: "POST",
         headers: {
@@ -196,15 +217,21 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
       address: customer?.address || "",
       city: customer?.city || "",
       postalCode: customer?.postalCode || "",
+      customerNumber: customer?.customerNumber || "",
     });
   }, [customer]);
+
   return (
-    <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
+    <>
       <h2 className="text-xl font-bold text-gray-800 mb-3">Personuppgifter</h2>
       <FormComponent
-        submitButtonText={"Skapa Kund"}
+        submitButtonText={submitButtonText ? submitButtonText : "Skapa Kund"}
         backButtonText="Tillbaka"
-        onSubmit={handleSubmit}
+        onSubmit={customHandleOnSubmit ? customHandleOnSubmit : handleSubmit}
+        disabled={disabled}
+        hideButtons={hideButtons}
+        customOnClick={customOnClick}
+        customOnClickClear={customCancel}
       >
         <DoubleFieldInputRow
           labelOne="förnamn"
@@ -277,9 +304,20 @@ function CreateCustomerComponent({ customer }: { customer?: Customer }) {
           maxLengthOne={20}
           maxLengthTwo={6}
         />
+        {customer?.customerNumber && (
+          <SingleFieldInputRow
+            label="Kundnummer"
+            value={formData.customerNumber}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleChange("customerNumber", e.target.value);
+            }}
+            id={customer?.customerNumber || ""}
+          />
+        )}
       </FormComponent>
+
       <Toaster position="bottom-center" reverseOrder={false} />
-    </div>
+    </>
   );
 }
 

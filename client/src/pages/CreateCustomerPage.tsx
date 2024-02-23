@@ -7,7 +7,9 @@ export default function CreateCustomerPageComponent() {
     <>
       <Navbar title="Skapa ny kund" />
       <div className="flex min-h-screen flex-col items-center p-24 ">
-        <CreateCustomerComponent />
+      <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
+          <CreateCustomerComponent />
+          </div>
       </div>
     </>
   );
