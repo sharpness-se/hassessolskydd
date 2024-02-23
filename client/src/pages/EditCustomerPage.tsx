@@ -61,6 +61,7 @@ function EditCustomerPage() {
     fetchCustomerData();
   }
   
+  
   useEffect(() => {
     function prepareUrl(url: string) {
       return encodeURI(url);
@@ -154,6 +155,7 @@ function EditCustomerPage() {
             submitButtonText={"Ändra"}
             customOnClick={handleOnClick}
             customCancel={handleCancel}
+            paramId={id}
           ></CreateCustomerComponent>
         </div>
       </div>

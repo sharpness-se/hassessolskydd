@@ -7,7 +7,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { baseUrl } from "../settings/baseUrl";
 import { Customer } from "./searchBar/CustomSearch";
 
-
 interface CreateCustomerComponentProps {
   customer?: Customer;
   disabled?: boolean;
@@ -16,15 +15,19 @@ interface CreateCustomerComponentProps {
   submitButtonText?: string;
   customOnClick?: () => void;
   customCancel?: () => void;
+
+  paramId?: string;
 }
 function CreateCustomerComponent({
   customer,
   disabled,
   hideButtons,
-  customHandleOnSubmit,
+
   customOnClick,
   submitButtonText,
-  customCancel
+  customCancel,
+
+  paramId,
 }: CreateCustomerComponentProps) {
   interface FormData {
     firstname: string;
@@ -139,7 +142,10 @@ function CreateCustomerComponent({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    id?: string
+  ) => {
     e.preventDefault();
 
     try {
@@ -147,14 +153,24 @@ function CreateCustomerComponent({
       await schema.validate(formData, { abortEarly: false });
 
       // Form is valid, handle submission logic here
-      
-      const response = await fetch(`${baseUrl}/api/customer/create_customer`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      let response;
+      if (disabled === false) {
+        response = await fetch(`${baseUrl}/api/customer/update/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      } else {
+        response = await fetch(`${baseUrl}/api/customer/create_customer`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      }
 
       if (response.status === 409) {
         toast.error("Customer exists!");
@@ -227,7 +243,9 @@ function CreateCustomerComponent({
       <FormComponent
         submitButtonText={submitButtonText ? submitButtonText : "Skapa Kund"}
         backButtonText="Tillbaka"
-        onSubmit={customHandleOnSubmit ? customHandleOnSubmit : handleSubmit}
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+          handleSubmit(e, paramId)
+        }
         disabled={disabled}
         hideButtons={hideButtons}
         customOnClick={customOnClick}

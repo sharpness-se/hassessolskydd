@@ -13,6 +13,7 @@ interface FormComponentProps {
   addToCart?: () => void;
   disabled?: boolean;
   hideButtons?: boolean;
+  handleUpdateCustomer?: () => void;
 }
 
 const FormComponent: React.FC<FormComponentProps> = ({
@@ -26,6 +27,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
   addToCart,
   disabled,
   hideButtons,
+  handleUpdateCustomer,
 }) => {
   return (
     <form onSubmit={onSubmit} autoComplete="off">
@@ -40,26 +42,36 @@ const FormComponent: React.FC<FormComponentProps> = ({
       {hideButtons && (
         <>
           {!disabled && (
-            <BackButton
-              text={"Avbryta"}
-              onClick={() => {
-                if (customOnClickClear) {
-                  customOnClickClear();
-                }
-              }}
-            ></BackButton>
+            <>
+              <BackButton
+                text={"Avbryta"}
+                onClick={() => {
+                  if (customOnClickClear) {
+                    customOnClickClear();
+                  }
+                }}
+              ></BackButton>
+
+              <button
+                className="items-center rounded-full bg-blue-600 shadow-md text-white text-xl font-bold px-12 py-3 hover:bg-blue-500"
+                type="submit"
+              >
+                Spara
+              </button>
+            </>
           )}
-          <button
-            className="items-center rounded-full bg-blue-600 shadow-md text-white text-xl font-bold px-12 py-3 hover:bg-blue-500"
-            type="button"
-            onClick={() => {
-              if (customOnClick) {
-                customOnClick();
-              }
-            }}
-          >
-            {disabled ? submitButtonText : "Spara"}
-          </button>
+          {disabled && (
+            
+            <button
+              className="items-center rounded-full bg-blue-600 shadow-md text-white text-xl font-bold px-12 py-3 hover:bg-blue-500"
+              type="button"
+              onClick={() => {
+                if (customOnClick) customOnClick();
+              }}
+            >
+              {submitButtonText}
+            </button>
+          )}
         </>
       )}
     </form>
