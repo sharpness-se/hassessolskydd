@@ -27,7 +27,6 @@ const FormComponent: React.FC<FormComponentProps> = ({
   addToCart,
   disabled,
   hideButtons,
-  handleUpdateCustomer,
 }) => {
   return (
     <form onSubmit={onSubmit} autoComplete="off">
@@ -37,6 +36,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
       <div
         className={`flex items-center justify-center ${hideButtons ? "hidden" : ""}`}
       >
+        <BackButton text={backButtonText} onClick={customOnClickClear}></BackButton>
         <SubmitButton label={submitButtonText} addToCart={addToCart} />
       </div>
       {hideButtons && (

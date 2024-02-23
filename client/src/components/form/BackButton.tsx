@@ -7,7 +7,7 @@ interface BackButtonProps {
 const BackButton: React.FC<BackButtonProps> = ({ text, onClick }) => {
     const renderButton = (): JSX.Element => {
         if (onClick) {
-            return <button onClick={onClick} className="rounded-full bg-gray-100 hover:bg-gray-50 shadow-md text-xl font-bold px-12 py-3">
+            return <button onClick={onClick} className="rounded-full bg-gray-100 hover:bg-gray-50 shadow-md text-xl font-bold px-12 py-3 mr-5">
             {text}
           </button>
         }
