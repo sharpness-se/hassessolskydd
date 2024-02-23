@@ -8,13 +8,16 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   ColumnSort,
-
 } from "@tanstack/react-table";
 import { Customer } from "../components/searchBar/CustomSearch";
 import Navbar from "../components/NavbarComponent";
 import { useNavigate } from "react-router-dom";
 
-export type Order = { customerNumber: string; firstContact: string; id: string };
+export type Order = {
+  customerNumber: string;
+  firstContact: string;
+  id: string;
+};
 
 export type OrderInfo = { order: Order; customer: Customer };
 
@@ -34,7 +37,7 @@ export default function SearchOrderPage() {
         }
         return `${row.firstname} ${row.lastname}`;
       },
-      { id: "name", header: "Customer" }
+      { id: "name", header: "Customer" },
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -43,7 +46,7 @@ export default function SearchOrderPage() {
         }
         return `${row.customerNumber}`;
       },
-      { id: "customerNumber", header: "Customer Id" }
+      { id: "customerNumber", header: "Customer Id" },
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -55,7 +58,7 @@ export default function SearchOrderPage() {
       {
         id: showOrder ? "firstContact" : "phoneNumber",
         header: showOrder ? "Date" : "Telefon",
-      }
+      },
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -67,7 +70,7 @@ export default function SearchOrderPage() {
       {
         id: showOrder ? "id" : "email",
         header: showOrder ? "Order Id" : "Email",
-      }
+      },
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -76,7 +79,7 @@ export default function SearchOrderPage() {
         }
         return `${row.city}`;
       },
-      { id: "region", header: "Region" }
+      { id: "region", header: "Region" },
     ),
   ];
 
@@ -86,7 +89,7 @@ export default function SearchOrderPage() {
     }
     console.log(showOrder);
     const fetchData: (showOrderData: boolean) => Promise<void> = async (
-      showOrderData
+      showOrderData,
     ) => {
       let encodedURL = "";
       if (showOrderData) {
@@ -174,72 +177,74 @@ export default function SearchOrderPage() {
             Kunder
           </button>
         </div>
-        <div className="table-auto w-full rounded-r-lg rounded-bl-lg p-10 bg-white">
-          <table className="w-full border-spacing-4 p-2">
-            <thead className="bg-blue-500">
-              {table.getHeaderGroups().map((headerGroup) => {
-                return (
-                  <tr key={headerGroup.id} className="text-md text-white">
-                    {headerGroup.headers.map((header) => {
-                      const isSorted = header.column.getIsSorted();
-                      const sortIcon =
-                        isSorted === "asc"
-                          ? " 🔼"
-                          : isSorted === "desc"
-                            ? " 🔽"
-                            : null;
-                      return (
-                        <th
-                          key={header.id}
-                          className="text-left p-5"
-                          onClick={header.column.getToggleSortingHandler()}
-                        >
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+        <div className="bg-white p-5 w-full rounded-r-lg rounded-bl-lg">
+          <div className="w-full h-[500px] max-h-[500px] overflow-scroll overflow-hidden">
+            <table className="w-full border-spacing-4 p-2">
+              <thead className="bg-blue-500 sticky top-0">
+                {table.getHeaderGroups().map((headerGroup) => {
+                  return (
+                    <tr key={headerGroup.id} className="text-md text-white">
+                      {headerGroup.headers.map((header) => {
+                        const isSorted = header.column.getIsSorted();
+                        const sortIcon =
+                          isSorted === "asc"
+                            ? " 🔼"
+                            : isSorted === "desc"
+                              ? " 🔽"
+                              : null;
+                        return (
+                          <th
+                            key={header.id}
+                            className="text-left p-5"
+                            onClick={header.column.getToggleSortingHandler()}
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
 
-                          {sortIcon}
-                        </th>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </thead>
-            <tbody className="">
-              {table.getRowModel().rows.map((row) => {
-                return (
-                  <tr
-                    key={row.id}
-                    className="hover:bg-blue-600 hover:font-sm hover:text-white"
-                    onClick={() => {
-                      if ((row.original as Customer).customerNumber)
-                        navigate(
-                          `/customer/${(row.original as Customer).customerNumber}`
+                            {sortIcon}
+                          </th>
                         );
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <td
-                          key={cell.id}
-                          className="text-[16px] p-5 min-w-[6em]"
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      })}
+                    </tr>
+                  );
+                })}
+              </thead>
+              <tbody className="">
+                {table.getRowModel().rows.map((row) => {
+                  return (
+                    <tr
+                      key={row.id}
+                      className="hover:bg-blue-600 hover:font-sm hover:text-white"
+                      onClick={() => {
+                        if ((row.original as Customer).customerNumber)
+                          navigate(
+                            `/customer/${(row.original as Customer).customerNumber}`,
+                          );
+                      }}
+                    >
+                      {row.getVisibleCells().map((cell, index) => {
+                        return (
+                          <td
+                            key={cell.id}
+                            className="text-[16px] p-5 min-w-[6em]"
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
