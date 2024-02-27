@@ -17,6 +17,10 @@ export type Order = {
   customerNumber: string;
   firstContact: string;
   id: string;
+  measurementDate?: string;
+  instalationDate?: string;
+  indoorOutdoor?: string;
+  orderItems?: []
 };
 
 export type OrderInfo = { order: Order; customer: Customer };
