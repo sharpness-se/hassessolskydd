@@ -22,7 +22,6 @@ function CreateCustomerComponent({
   customer,
   disabled,
   hideButtons,
-
   customOnClick,
   submitButtonText,
   customCancel,

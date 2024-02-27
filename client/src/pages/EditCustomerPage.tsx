@@ -12,6 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Navbar from "../components/NavbarComponent";
 
 function EditCustomerPage() {
   const [customer, setCustomer] = useState<Customer>();
@@ -96,12 +97,12 @@ function EditCustomerPage() {
   }, [id]);
   const columns = [
 
-    orderColumnHelper.accessor(
-      (row) => {
-        return `${row.customerNumber}`;
-      },
-      { id: "customerNumber", header: "Customer Id" }
-    ),
+    // orderColumnHelper.accessor(
+    //   (row) => {
+    //     return `${row.customerNumber}`;
+    //   },
+    //   { id: "customerNumber", header: "Customer Id" }
+    // ),
     orderColumnHelper.accessor(
       (row) => {
         return `${row.firstContact.slice(0, 10)}`;
@@ -120,6 +121,14 @@ function EditCustomerPage() {
         header: "Order Id",
       }
     ),
+    orderColumnHelper.accessor((row) => {
+       if(row.orderItems)
+      { return `${row.orderItems?.length} (st)` }
+       else {
+         return `Ingen`
+      }
+     },
+     {id:"orderItems", header: "Antal Artiklar"})
   ];
   const table = useReactTable({
     data: filteredList,
@@ -145,9 +154,11 @@ function EditCustomerPage() {
   };
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center p-24 ">
+      <Navbar title="Se Kund"/>
+    <div className="flex min-h-screen flex-col w-full max-w-xl2">
+      <div className="flex flex-col items-center pt-24 ">
         <div className="w-full max-w-lg rounded-lg p-10 bg-white shadow-md">
-          <h2 className="text-xl font-bold text-gray-600 mb-3">Se Kund</h2>
+          
           <CreateCustomerComponent
             customer={customer}
             disabled={disabled}
@@ -156,21 +167,21 @@ function EditCustomerPage() {
             customOnClick={handleOnClick}
             customCancel={handleCancel}
             paramId={id}
-          ></CreateCustomerComponent>
+            ></CreateCustomerComponent>
         </div>
       </div>
-      <div className="flex min-h-screen flex-col items-center p-20 xl:px">
-        <div className="flex justify-left w-full">
+      <div className="flex flex-col items-center pt-10">
+        <div className="flex justify-left w-[512px]">
           <input
             className="appearance-none text-gray-700 border shadow-md rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white w-[20em]"
             placeholder={`Sök order...`}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               filterOrders(e.target.value);
             }}
-          />
+            />
         </div>
 
-        <div className="table-auto w-full rounded-r-lg rounded-bl-lg p-10 bg-white">
+        <div className="table-auto w-full rounded-r-lg rounded-bl-lg bg-white max-w-lg">
           <table className="w-full border-spacing-4 p-2">
             <thead className="bg-blue-500">
               {table.getHeaderGroups().map((headerGroup) => {
@@ -179,22 +190,22 @@ function EditCustomerPage() {
                     {headerGroup.headers.map((header) => {
                       const isSorted = header.column.getIsSorted();
                       const sortIcon =
-                        isSorted === "asc"
-                          ? " 🔼"
-                          : isSorted === "desc"
-                            ? " 🔽"
-                            : null;
+                      isSorted === "asc"
+                      ? " 🔼"
+                      : isSorted === "desc"
+                      ? " 🔽"
+                      : null;
                       return (
                         <th
-                          key={header.id}
-                          className="text-left p-5"
-                          onClick={header.column.getToggleSortingHandler()}
+                        key={header.id}
+                        className="text-left p-5"
+                        onClick={header.column.getToggleSortingHandler()}
                         >
                           {header.isPlaceholder
                             ? null
                             : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
+                              header.column.columnDef.header,
+                              header.getContext()
                               )}
 
                           {sortIcon}
@@ -209,25 +220,25 @@ function EditCustomerPage() {
               {table.getRowModel().rows.map((row) => {
                 return (
                   <tr
-                    key={row.id}
-                    className="hover:bg-blue-600 hover:font-sm hover:text-white"
-                    // onClick={() => {
+                  key={row.id}
+                  className="hover:bg-blue-600 hover:font-sm hover:text-white"
+                  // onClick={() => {
                     //   if ((row.original as Customer).customerNumber)
                     //     navigate(
-                    //       `/customer/${(row.original as Customer).customerNumber}`
-                    //     );
-                    // }}
-                  >
+                      //       `/customer/${(row.original as Customer).customerNumber}`
+                      //     );
+                      // }}
+                      >
                     {row.getVisibleCells().map((cell, index) => {
                       return (
                         <td
-                          key={cell.id}
-                          className="text-[16px] p-5 min-w-[6em]"
+                        key={cell.id}
+                        className="text-[16px] p-5 min-w-[6em]"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
-                          )}
+                            )}
                         </td>
                       );
                     })}
@@ -238,7 +249,8 @@ function EditCustomerPage() {
           </table>
         </div>
       </div>
-    </>
+    </div>
+              </>
   );
 }
 
