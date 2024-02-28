@@ -1,7 +1,15 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import FormComponent from "../form/FormComponent";
 import SingleFieldInputRow from "../form/SingleFieldInputRow";
-import { Product } from "../../pages/CreateOrderPage";
+//import { Product } from "../../pages/CreateOrderPage";
+interface ProductAttribute {
+  attribute: string;
+  value: string;
+}
+export interface Product {
+  name: string;
+  articleDetails: ProductAttribute[];
+}
 
 interface PilsegardinProps {
   clearOnClick: () => void;
@@ -28,35 +36,23 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
     e.preventDefault();
     const item = {
       name: product.toLowerCase(),
-      attributes: [
-        "Antal",
-        "Bred",
-        "Höjd",
-        "Modell",
-        "Vävnummer",
-        "Beslag",
-        "Allmodebeslag",
-        "Reglage",
-        "Detaljfärg",
-      ],
-      values: [
-        numberOfProduct,
-        `${width}m`,
-        `${length}m`,
-        model,
-        weave,
-        fitting,
-        ordinaryFitting,
-        remote,
-        color,
+      articleDetails: [
+        { attribute: "Antal", value: numberOfProduct },
+        { attribute: "Bred", value: `${width}m` },
+        { attribute: "Höjd", value: `${length}m` },
+        { attribute: "Modell", value: model },
+        { attribute: "Vävnummer", value: weave },
+        { attribute: "Beslag", value: fitting },
+        { attribute: "Allmodebeslag", value: ordinaryFitting },
+        { attribute: "Reglage", value: remote },
+        { attribute: "Detaljfärg", value: color },
       ],
     };
-
     cartCallback((prevCart) => [...prevCart, item]);
   };
   return (
     <div>
-      <h1 className=" text-center font-bold text-gray-700 uppercase">
+      <h1 className="text-center font-bold text-gray-700 uppercase">
         {product}
       </h1>
       <FormComponent

@@ -10,14 +10,14 @@ import { baseUrl } from "../settings/baseUrl";
 import CustomerCartComponent from "../components/cart/CustomerCartComponent";
 
 import toast, { Toaster } from "react-hot-toast";
-import Pilsegardin from "../components/createOrderProductForms/Pilsegardin";
+import Pilsegardin, { Product } from "../components/createOrderProductForms/Pilsegardin";
 import Navbar from "../components/NavbarComponent";
 
-export interface Product {
-  name: string;
-  attributes: string[];
-  values: string[];
-}
+// export interface Product {
+//   name: string;
+//   attributes: string[];
+//   values: string[];
+// }
 export interface InstallationDetails {
   isNormal?: String;
   facadeDetails?: String;

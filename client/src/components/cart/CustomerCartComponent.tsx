@@ -1,8 +1,9 @@
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import StartMenuButton from "../StartMenuButtonComponent";
-import { Product } from "../../pages/CreateOrderPage";
+//import { Product } from "../../pages/CreateOrderPage";
 import CartItemComponent from "./CartItemComponent";
 import { nanoid } from "nanoid";
+import { Product } from "../createOrderProductForms/Pilsegardin";
 interface CustomerCartProps {
   children?: ReactNode;
   cart: Product[];

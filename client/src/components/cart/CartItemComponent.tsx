@@ -1,7 +1,8 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Accordion from "../AccordionComponent";
-import { Product } from "../../pages/CreateOrderPage";
+//import { Product } from "../../pages/CreateOrderPage";
 import { nanoid } from "nanoid";
+import { Product } from "../createOrderProductForms/Pilsegardin";
 
 interface CartItemProps {
   product?: Product;
@@ -20,13 +21,16 @@ const CartItemComponent: React.FC<CartItemProps> = ({
     const updatedProducts = cart?.filter((_, index) => index !== itemIndex);
     cartCallback(updatedProducts);
   };
+  if (product) {
+    console.log(product)
+  }
   return (
     <div className="bg-white rounded-lg mb-5">
       <Accordion title="Pilsegardin" addDelete deleteCallback={deleteCartItem}>
         <div className="flex justify-end flex-col bg-white rounded-lg">
           <div className="grid text-xs gap-y-5 gap-x-10 px-5">
             {product &&
-              product.attributes.map((item, index) => {
+              product.articleDetails.map((item, index) => {
                 if (index === 0) {
                   return (
                     <div
@@ -34,16 +38,16 @@ const CartItemComponent: React.FC<CartItemProps> = ({
                       key={nanoid()}
                     >
                       <div className="grid grid-cols-1 ">
-                        <span className="">{item}</span>
-                        <span>{product.values[index]}</span>
+                        <span className="">{item.attribute}</span>
+                        <span>{item.value}</span>
                       </div>
                     </div>
                   );
                 }
                 return (
                   <div className="flex flex-col" key={nanoid()}>
-                    <span className="">{item}</span>
-                    <span>{product.values[index]}</span>
+                    <span className="">{item.attribute}</span>
+                    <span>{item.value}</span>
                   </div>
                 );
               })}
