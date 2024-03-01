@@ -20,7 +20,7 @@ export type Order = {
   measurementDate?: string;
   instalationDate?: string;
   indoorOutdoor?: string;
-  orderItems?: []
+  orderItems?: [];
 };
 
 export type OrderInfo = { order: Order; customer: Customer };
@@ -182,7 +182,7 @@ export default function SearchOrderPage() {
           </button>
         </div>
         <div className="bg-white p-5 w-full rounded-r-lg rounded-bl-lg">
-          <div className="w-full h-[500px] max-h-[500px] overflow-scroll overflow-hidden">
+          <div className="w-full h-[500px] max-h-[500px] overflow-y-scroll overflow-hidden">
             <table className="w-full border-spacing-4 p-2">
               <thead className="bg-blue-500 sticky top-0">
                 {table.getHeaderGroups().map((headerGroup) => {
