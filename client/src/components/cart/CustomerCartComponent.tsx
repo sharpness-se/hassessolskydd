@@ -4,17 +4,20 @@ import StartMenuButton from "../StartMenuButtonComponent";
 import CartItemComponent from "./CartItemComponent";
 import { nanoid } from "nanoid";
 import { Product } from "../createOrderProductForms/Pilsegardin";
+import { EditCartItem } from "../../pages/CreateOrderPage";
 interface CustomerCartProps {
   children?: ReactNode;
   cart: Product[];
   cartCallBack: Dispatch<SetStateAction<Product[]>>;
   handleSubmit: () => Promise<void>;
+  editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
 }
 const CustomerCartComponent: React.FC<CustomerCartProps> = ({
   children,
   cart,
   cartCallBack,
   handleSubmit,
+  editCartItem,
 }) => {
   return (
     <div className="bg-white rounded p-5 max-w-3xl w-[715px]">
@@ -37,6 +40,7 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
                     itemIndex={index}
                     cart={cart}
                     cartCallback={cartCallBack}
+                    editCartItem={editCartItem}
                   />
                 </React.Fragment>
               );

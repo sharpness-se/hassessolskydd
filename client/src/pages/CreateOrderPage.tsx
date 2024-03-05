@@ -10,7 +10,9 @@ import { baseUrl } from "../settings/baseUrl";
 import CustomerCartComponent from "../components/cart/CustomerCartComponent";
 
 import toast, { Toaster } from "react-hot-toast";
-import Pilsegardin, { Product } from "../components/createOrderProductForms/Pilsegardin";
+import Pilsegardin, {
+  Product,
+} from "../components/createOrderProductForms/Pilsegardin";
 import Navbar from "../components/NavbarComponent";
 
 // export interface Product {
@@ -35,6 +37,10 @@ export interface FormData {
   indoorOutdoor?: string;
   orderItems?: Product[];
 }
+export interface EditCartItem {
+  cartItemIndex: number;
+  cartItem: Product;
+}
 
 export default function CreateOrderPageComponent() {
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
@@ -47,6 +53,7 @@ export default function CreateOrderPageComponent() {
   //const [controller, setController] = useState<string>('');
   const [lift, setLift] = useState<boolean>(false);
   const [montering, setMontering] = useState<string>("");
+  const [editCartItem, setEditCartItem] = useState<EditCartItem>();
   const [installationDetails, setInstallationDetails] =
     useState<InstallationDetails>({
       isNormal: undefined,
@@ -103,35 +110,50 @@ export default function CreateOrderPageComponent() {
   const handleSubmit = async () => {
     console.log("Updated formData:", formData);
     if (!formData?.customerNumber) {
-      toast.error('Please Select a Customer!');
+      toast.error("Please Select a Customer!");
       return;
     }
     try {
       const response = await fetch(`${baseUrl}/api/order/create`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        toast.success('Order Submitted Successfully!');
+        toast.success("Order Submitted Successfully!");
         const data = await response.json();
         console.log(data);
-        setNotes('');
+        setNotes("");
       }
       if (!response.ok) {
         toast.error(`Something went wrong! Status: ${response.status}`);
       }
     } catch (error) {
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
       console.error(error);
     }
   };
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  useEffect(() => {
+    console.log("Change Detected");
+    if (editCartItem?.cartItem) {
+      console.log({
+        product: capitalizeFirstLetter(editCartItem.cartItem.name),
+      });
+      setProduct(capitalizeFirstLetter(editCartItem.cartItem.name));
+      setHidden(false)
+    }
+  }, [editCartItem]);
   // useEffect(() => {
   //   //handleInstalationDetailsUpdate("montering", montering);
   //   console.log(installationDetails);
   // }, [installationDetails]);
+
   return (
     <>
       <Navbar title="Skapa Order" />
@@ -183,6 +205,8 @@ export default function CreateOrderPageComponent() {
           )}
           {!hidden && product === "Pilsegardin" && (
             <Pilsegardin
+              cartItem={editCartItem}
+              editCartItem={setEditCartItem}
               product={product}
               clearOnClick={() => {
                 setHidden(true);
@@ -381,7 +405,10 @@ export default function CreateOrderPageComponent() {
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
                   maxLength={2000}
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate("installationNotes", e.target.value);
+                    handleInstalationDetailsUpdate(
+                      "installationNotes",
+                      e.target.value
+                    );
                   }}
                 ></textarea>
               </div>
@@ -392,6 +419,8 @@ export default function CreateOrderPageComponent() {
           handleSubmit={handleSubmit}
           cart={customerCart}
           cartCallBack={setCustomerCart}
+          editCartItem={setEditCartItem}
+          //handleEdit={handleEdit}
         ></CustomerCartComponent>
         <Toaster position="bottom-center" reverseOrder={false} />
       </div>

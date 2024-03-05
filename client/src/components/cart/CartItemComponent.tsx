@@ -3,12 +3,14 @@ import Accordion from "../AccordionComponent";
 //import { Product } from "../../pages/CreateOrderPage";
 import { nanoid } from "nanoid";
 import { Product } from "../createOrderProductForms/Pilsegardin";
+import { EditCartItem } from "../../pages/CreateOrderPage";
 
 interface CartItemProps {
   product?: Product;
-  itemIndex?: number;
+  itemIndex: number;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   cart: Product[];
+  editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({
@@ -16,14 +18,19 @@ const CartItemComponent: React.FC<CartItemProps> = ({
   itemIndex,
   cartCallback,
   cart,
+  editCartItem,
 }) => {
   const deleteCartItem = () => {
     const updatedProducts = cart?.filter((_, index) => index !== itemIndex);
     cartCallback(updatedProducts);
   };
-  if (product) {
-    console.log(product)
-  }
+  const updateEditCart = () => {
+    console.log(itemIndex);
+    console.log(cart[itemIndex]);
+    const updateItem = { cartItemIndex: itemIndex, cartItem: cart[itemIndex] };
+    console.log(updateItem)
+    editCartItem(updateItem);
+  };
   return (
     <div className="bg-white rounded-lg mb-5">
       <Accordion title="Pilsegardin" addDelete deleteCallback={deleteCartItem}>
@@ -54,7 +61,10 @@ const CartItemComponent: React.FC<CartItemProps> = ({
           </div>
 
           <div className="pt-5 flex justify-center">
-            <button className="bg-white h-min p-2 mr-2 hover:bg-blue-500 hover:text-white rounded-full px-5 text-s">
+            <button
+              className="bg-white h-min p-2 mr-2 hover:bg-blue-500 hover:text-white rounded-full px-5 text-s"
+              onClick={updateEditCart}
+            >
               Visa eller Ändra
             </button>
           </div>

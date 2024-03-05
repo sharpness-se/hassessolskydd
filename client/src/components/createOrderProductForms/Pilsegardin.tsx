@@ -1,6 +1,14 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import FormComponent from "../form/FormComponent";
 import SingleFieldInputRow from "../form/SingleFieldInputRow";
+import { EditCartItem } from "../../pages/CreateOrderPage";
+import toast from "react-hot-toast";
 //import { Product } from "../../pages/CreateOrderPage";
 interface ProductAttribute {
   attribute: string;
@@ -15,12 +23,16 @@ interface PilsegardinProps {
   clearOnClick: () => void;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   product: string;
+  editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
+  cartItem: EditCartItem | undefined;
 }
 
 const Pilsegardin: React.FC<PilsegardinProps> = ({
   clearOnClick,
   cartCallback,
   product,
+  editCartItem,
+  cartItem,
 }) => {
   const [numberOfProduct, setNumberOfProduct] = useState("");
   const [length, setLength] = useState("");
@@ -31,36 +43,101 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
   const [ordinaryFitting, setOrdinaryFitting] = useState("");
   const [color, setColor] = useState("");
   const [remote, setRemote] = useState("");
-
+  const [disable, setDisable] = useState(false);
+  const item = {
+    name: product.toLowerCase(),
+    articleDetails: [
+      { attribute: "Antal", value: numberOfProduct },
+      { attribute: "Bred", value: `${width}m` },
+      { attribute: "Höjd", value: `${length}m` },
+      { attribute: "Modell", value: model },
+      { attribute: "Vävnummer", value: weave },
+      { attribute: "Beslag", value: fitting },
+      { attribute: "Allmodebeslag", value: ordinaryFitting },
+      { attribute: "Reglage", value: remote },
+      { attribute: "Detaljfärg", value: color },
+    ],
+  };
   const addToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const item = {
-      name: product.toLowerCase(),
-      articleDetails: [
-        { attribute: "Antal", value: numberOfProduct },
-        { attribute: "Bred", value: `${width}m` },
-        { attribute: "Höjd", value: `${length}m` },
-        { attribute: "Modell", value: model },
-        { attribute: "Vävnummer", value: weave },
-        { attribute: "Beslag", value: fitting },
-        { attribute: "Allmodebeslag", value: ordinaryFitting },
-        { attribute: "Reglage", value: remote },
-        { attribute: "Detaljfärg", value: color },
-      ],
-    };
-    cartCallback((prevCart) => [...prevCart, item]);
+    try {
+      cartCallback((prevCart) => [...prevCart, item]);
+      clearOnClick();
+      toast.success("Product added to cart!");
+    } catch (err) {
+      toast.error("Failed to Add Product to cart.");
+      console.log(err);
+    }
   };
+  const getAttribute = useCallback(
+    (attribute: string) => {
+      let cartAttribute = "";
+      if (cartItem) {
+        const filteredItems = cartItem.cartItem.articleDetails.filter(
+          (item: any) => item.attribute === attribute
+        );
+        if (filteredItems.length > 0) {
+          cartAttribute = filteredItems[0].value;
+        }
+      }
+      return cartAttribute;
+    },
+    [cartItem]
+  );
+  const handleUpdateCart = () => {
+    try {
+      console.log("update");
+      cartCallback((prev) => {
+        const updatedCart = [...prev];
+        if (cartItem) updatedCart[cartItem.cartItemIndex] = item;
+        return updatedCart;
+      });
+      clearOnClick();
+      editCartItem(undefined)
+      toast.success("Cart updated successfully!");
+    } catch (err) {
+      toast.error("Failed to update cart!");
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    if (cartItem) {
+      setDisable(true);
+    }
+    setNumberOfProduct(getAttribute("Antal"));
+    setWidth(getAttribute("Bred"));
+    setLength(getAttribute("Höjd"));
+    setModel(getAttribute("Modell"));
+    setWeave(getAttribute("Vävnummer"));
+    setFitting(getAttribute("Beslag"));
+    setOrdinaryFitting(getAttribute("Allmodebeslag"));
+    setColor(getAttribute("Detaljfärg"));
+    setRemote(getAttribute("Reglage"));
+  }, [cartItem, getAttribute]);
   return (
     <div>
       <h1 className="text-center font-bold text-gray-700 uppercase">
         {product}
       </h1>
       <FormComponent
-        backButtonText={"Rensa"}
-        submitButtonText={"Lägg Till"}
-        onSubmit={addToCart}
+        backButtonText={cartItem ? "Avbryta" : "Rensa"}
+        submitButtonText={cartItem ? "Ändra" : "Lägg Till"}
+        onSubmit={(e) => {
+          if (cartItem) {
+            e.preventDefault();
+            handleUpdateCart();
+          } else {
+            addToCart(e);
+          }
+        }}
         applyGrid={true}
-        customOnClickClear={clearOnClick}
+        customOnClickClear={() => {
+          editCartItem(undefined);
+          clearOnClick();
+        }}
+        customOnClick={() => setDisable(false)}
+        disabled={disable}
+        hideButtons={cartItem ? true : false}
       >
         <div className="grid w-full rounded-lg bg-white ">
           <div className="grid grid-cols-subgrid col-span-4">

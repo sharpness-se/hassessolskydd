@@ -33,12 +33,15 @@ const FormComponent: React.FC<FormComponentProps> = ({
       <div className={`${applyGrid ? "grid grid-cols-4 mr-1" : ""}`}>
         <fieldset disabled={disabled}>{children}</fieldset>
       </div>
-      <div
-        className={`flex items-center justify-center ${hideButtons ? "hidden" : ""}`}
-      >
-        <BackButton text={backButtonText} onClick={customOnClickClear}></BackButton>
-        <SubmitButton label={submitButtonText} addToCart={addToCart} />
-      </div>
+      {!hideButtons && (
+        <div className={`flex items-center justify-center`}>
+          <BackButton
+            text={backButtonText}
+            onClick={customOnClickClear}
+          ></BackButton>
+          <SubmitButton label={submitButtonText} addToCart={addToCart} />
+        </div>
+      )}
       {hideButtons && (
         <>
           {!disabled && (
@@ -50,7 +53,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                     customOnClickClear();
                   }
                 }}
-              ></BackButton>          
+              ></BackButton>
               <button
                 className="items-center rounded-full bg-blue-600 shadow-md text-white text-xl font-bold px-12 py-3 hover:bg-blue-500"
                 type="submit"
@@ -61,16 +64,16 @@ const FormComponent: React.FC<FormComponentProps> = ({
           )}
           {disabled && (
             <div className="flex w-full justify-center">
-            <button
-              className="items-center rounded-full bg-blue-600 shadow-md text-white text-xl font-bold px-12 py-3 hover:bg-blue-500"
-              type="button"
-              onClick={() => {
-                if (customOnClick) customOnClick();
-              }}
+              <button
+                className="items-center rounded-full bg-blue-600 shadow-md text-white text-xl font-bold px-12 py-3 hover:bg-blue-500"
+                type="button"
+                onClick={() => {
+                  if (customOnClick) customOnClick();
+                }}
               >
-              {submitButtonText}
-            </button>
-              </div>
+                {submitButtonText}
+              </button>
+            </div>
           )}
         </>
       )}
