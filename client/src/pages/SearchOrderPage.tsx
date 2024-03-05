@@ -20,7 +20,7 @@ export type Order = {
   measurementDate?: string;
   instalationDate?: string;
   indoorOutdoor?: string;
-  orderItems?: []
+  orderItems?: [];
 };
 
 export type OrderInfo = { order: Order; customer: Customer };

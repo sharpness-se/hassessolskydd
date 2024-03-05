@@ -172,7 +172,7 @@ export default function CreateOrderPageComponent() {
             <CustomerDetailsComponent customer={customer} />
           </div>
         </div>
-        <Accordion title={"Produkter"} applyHeight customOnClick primary>
+        <Accordion title="Produkter" applyHeight customOnClick primary>
           {hidden && (
             <div className={"w-full"}>
               <label
@@ -245,7 +245,7 @@ export default function CreateOrderPageComponent() {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
                         "isNormal",
-                        e.target.value
+                        e.target.value,
                       );
                     }}
                   />
@@ -270,7 +270,7 @@ export default function CreateOrderPageComponent() {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
                         "isNormal",
-                        e.target.value
+                        e.target.value,
                       );
                     }}
                   />
@@ -301,7 +301,7 @@ export default function CreateOrderPageComponent() {
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "floorDetails",
-                      e.target.value
+                      e.target.value,
                     );
                   }}
                 ></input>
@@ -313,11 +313,12 @@ export default function CreateOrderPageComponent() {
                 <br />
                 <input
                   type="text"
+                  id="fasad"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "facadeDetails",
-                      e.target.value
+                      e.target.value,
                     );
                   }}
                 />
@@ -333,11 +334,12 @@ export default function CreateOrderPageComponent() {
                 <br />
                 <input
                   type="text"
+                  id="kabel"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "cableLength",
-                      e.target.value
+                      e.target.value,
                     );
                   }}
                 ></input>
@@ -350,11 +352,12 @@ export default function CreateOrderPageComponent() {
                 <br />
                 <input
                   type="text"
+                  id="fjärrkontroll"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "remoteControl",
-                      e.target.value
+                      e.target.value,
                     );
                   }}
                 ></input>
@@ -380,13 +383,14 @@ export default function CreateOrderPageComponent() {
             <div className="flex items-center ps-4 border border-gray-200 rounded-lg mb-5">
               <input
                 type="checkbox"
+                id="lift"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 checked={lift}
                 onChange={(e) => {
                   setLift(e.target.checked);
                   handleInstalationDetailsUpdate(
                     "needLift",
-                    `${e.target.checked ? "yes" : "no"}`
+                    `${e.target.checked ? "yes" : "no"}`,
                   );
                 }}
               />
@@ -401,13 +405,13 @@ export default function CreateOrderPageComponent() {
                   Monteringsanteckningar
                 </label>
                 <textarea
-                  id="anteckningar"
+                  id="monteringsanteckningar"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
                   maxLength={2000}
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "installationNotes",
-                      e.target.value
+                      e.target.value,
                     );
                   }}
                 ></textarea>
