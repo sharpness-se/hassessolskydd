@@ -146,7 +146,7 @@ export default function CreateOrderPageComponent() {
         product: capitalizeFirstLetter(editCartItem.cartItem.name),
       });
       setProduct(capitalizeFirstLetter(editCartItem.cartItem.name));
-      setHidden(false)
+      setHidden(false);
     }
   }, [editCartItem]);
   // useEffect(() => {
@@ -245,7 +245,7 @@ export default function CreateOrderPageComponent() {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
                         "isNormal",
-                        e.target.value,
+                        e.target.value
                       );
                     }}
                   />
@@ -270,7 +270,7 @@ export default function CreateOrderPageComponent() {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
                         "isNormal",
-                        e.target.value,
+                        e.target.value
                       );
                     }}
                   />
@@ -301,7 +301,7 @@ export default function CreateOrderPageComponent() {
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "floorDetails",
-                      e.target.value,
+                      e.target.value
                     );
                   }}
                 ></input>
@@ -318,7 +318,7 @@ export default function CreateOrderPageComponent() {
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "facadeDetails",
-                      e.target.value,
+                      e.target.value
                     );
                   }}
                 />
@@ -339,7 +339,7 @@ export default function CreateOrderPageComponent() {
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "cableLength",
-                      e.target.value,
+                      e.target.value
                     );
                   }}
                 ></input>
@@ -357,7 +357,7 @@ export default function CreateOrderPageComponent() {
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "remoteControl",
-                      e.target.value,
+                      e.target.value
                     );
                   }}
                 ></input>
@@ -390,7 +390,7 @@ export default function CreateOrderPageComponent() {
                   setLift(e.target.checked);
                   handleInstalationDetailsUpdate(
                     "needLift",
-                    `${e.target.checked ? "yes" : "no"}`,
+                    `${e.target.checked ? "yes" : "no"}`
                   );
                 }}
               />
@@ -411,7 +411,7 @@ export default function CreateOrderPageComponent() {
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
                       "installationNotes",
-                      e.target.value,
+                      e.target.value
                     );
                   }}
                 ></textarea>

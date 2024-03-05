@@ -2,7 +2,7 @@
 
 describe('Create Order Tests', () => {
   it('Successfully submits order', () => {
-    cy.visit('http://localhost:3000/skapaorder')
+    cy.visit('http://localhost:8080/skapaorder')
 
     // Select customer
     cy.get("#muiAutocomplete").click();
