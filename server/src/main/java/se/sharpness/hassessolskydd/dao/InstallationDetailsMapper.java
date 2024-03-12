@@ -3,7 +3,9 @@ package se.sharpness.hassessolskydd.dao;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import se.sharpness.hassessolskydd.model.InstallationDetails;
+import se.sharpness.hassessolskydd.model.Order;
 
 import java.util.Optional;
 
@@ -18,29 +20,47 @@ public interface InstallationDetailsMapper { //TODO: Should this be a part of Or
 
     @Insert(
             "INSERT INTO installation_details" +
-            "(order_id, is_normal, facade_details, floor_details, cable_length, remote_control, lift_needed) " +
+            "(order_id, mounting_type, facade_details, floor_details, cable_length, remote_control, lift_needed, notes) " +
             "VALUES" +
-            "(#{orderId}, #{mountingType}, #{facadeDetails}, #{floorDetails}, #{cableLength}, #{remoteControl}, #{needLift})"
+            "(#{orderId}, #{mountingType}, #{facadeDetails}, #{floorDetails}, #{cableLength}, #{remoteControl}, #{needLift}, #{notes})"
     )
     int insertInstallationDetails(InstallationDetails installationDetails);
+
+    @Update(
+            "UPDATE public.installation_details " +
+                    "SET " +
+                    "order_id = #{orderId}, " +
+                    "mounting_type = #{mountingType}, " +
+                    "facade_details = #{facadeDetails}, " +
+                    "floor_details = #{floorDetails}, " +
+                    "cable_length = #{cableLength}, " +
+                    "remote_control = #{remoteControl}, " +
+                    "lift_needed = #{needLift}, " +
+                    "notes = #{notes} " +
+                    "WHERE order_id = #{orderId}"
+    )
+    void updateInstallationDetails(InstallationDetails installationDetails);
 
 
 }
 
 /*
-    private int id;
-    private String mountingDetails;
+    private int orderId;
+    private String mountingType;
     private String floorDetails;
     private String needLift;
     private String facadeDetails;
     private String cableLength;
     private String remoteControl;
+    private String notes;
 
-    order_id integer
-    is_normal boolean NOT NULL,
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    is_normal character varying(255),
     facade_details character varying(255),
     floor_details character varying(255),
-    cable_length integer,
-    remote_control boolean,
-    lift_needed
+    cable_length character varying(255),
+    remote_control character varying(255),
+    lift_needed character varying(255),
+    notes character varying(2000)
  */

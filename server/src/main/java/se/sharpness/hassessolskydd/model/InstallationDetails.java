@@ -13,5 +13,6 @@ public class InstallationDetails {
     private String facadeDetails;
     private String cableLength;
     private String remoteControl;
+    private String notes;
 
 }

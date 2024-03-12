@@ -6,9 +6,9 @@ import se.sharpness.hassessolskydd.model.DTO.OrderItemDetailsDTO;
 import java.util.List;
 
 @Data
-public class Article {
+public class Product {
 
     private String name;
 
-    private List<OrderItemDetailsDTO> articleDetails;
+    private List<OrderItemDetailsDTO> productDetails;
 }

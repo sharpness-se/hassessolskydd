@@ -1,6 +1,7 @@
 package se.sharpness.hassessolskydd.dao;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.GetMapping;
 import se.sharpness.hassessolskydd.model.Order;
 import se.sharpness.hassessolskydd.model.OrderItem;
 import se.sharpness.hassessolskydd.model.OrderItemDetails;
@@ -23,13 +24,13 @@ public interface OrderMapper {
     @Select(
             "SELECT o.id as orderId, " +
             "oi.id as orderItemId, " +
-            "a.name, " +
+            "p.name, " +
             "ia.attribute, " +
             "ia.value " +
             "FROM public.order o " +
-            "JOIN public.order_items oi ON o.id = oi.order_id " +
-            "JOIN public.articles a ON oi.item_id = a.id " +
-            "LEFT JOIN public.item_attributes ia ON oi.id = ia.order_items_id " +
+            "JOIN public.order_item oi ON o.id = oi.order_id " +
+            "JOIN public.product p ON oi.item_id = p.id " +
+            "LEFT JOIN public.item_attributes ia ON oi.id = ia.order_item_id " +
             "WHERE o.id = #{orderId}"
     )
     List<OrderItemDetails> findOrderDetailsByOrderId(int orderId);
@@ -37,15 +38,15 @@ public interface OrderMapper {
     @Select("SELECT * FROM public.order")
     List<Order> findAllOrders();
 
-    @Select("select id from public.articles where name = #{name}")
-    int findArticleIdByName(String name);
+    @Select("select id from public.product where name = #{name}")
+    int findProductIdByName(String name);
 
 
     @Select( //This insert has to be @Select because we need to return the id of the inserted row
             "INSERT INTO \"order\"" +
-            "(customer_number, first_contact, measurement_date, installation_date, notes, installation_details, indoorOutdoor) " +
+            "(customer_number, first_contact, measurement_date, installation_date, notes, indoorOutdoor) " +
             "VALUES" +
-            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{installationDetails.id}, #{indoorOutdoor})" +
+            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{indoorOutdoor})" +
             "RETURNING id"
     )
     int insertOrder(Order order);
@@ -53,14 +54,14 @@ public interface OrderMapper {
 
 
     @Select( //This insert has to be @Select because we need to return the id of the inserted row
-            "INSERT INTO \"order_items\" (order_id, item_id) VALUES (#{orderId}, #{itemId})" +
+            "INSERT INTO \"order_item\" (order_id, item_id) VALUES (#{orderId}, #{itemId})" +
             "RETURNING id"
     )
     int insertOrderItem(OrderItem orderItem);
 
 
     @Insert(
-            "INSERT INTO public.item_attributes (order_items_id, attribute, value) VALUES (#{orderItemId}, #{attribute}, #{value})"
+            "INSERT INTO public.item_attributes (order_item_id, attribute, value) VALUES (#{orderItemId}, #{attribute}, #{value})"
     )
     int insertOrderItemDetails(OrderItemDetails orderItemDetails);
 
@@ -71,12 +72,17 @@ public interface OrderMapper {
             "measurement_date = #{measurementDate}, " +
             "installation_date = #{installationDate}, " +
             "notes = #{notes}, " +
-            "installation_details = #{installationDetails.id}, " +
             "indoorOutdoor = #{indoorOutdoor} " +
             "WHERE id = #{id}"
     )
     void updateOrder(Order existingOrder);
 
-    @Delete("DELETE FROM public.order_items WHERE order_id = #{orderId}")
-    void deleteOrderItemsByOrderId(int orderId);
+    @Select("SELECT id FROM public.order_item WHERE order_id = #{orderId}")
+    List<Integer> findOrderItemIdByOrderId(int orderId);
+
+    @Delete("DELETE FROM public.order_item WHERE order_id = #{orderId}")
+    void deleteOrderItemByOrderId(int orderId);
+
+    @Delete(("DELETE FROM public.item_attributes WHERE order_item_id = #{orderItemId}"))
+    void deleteOrderItemDetailsByOrderItemId(int orderItemId);
 }

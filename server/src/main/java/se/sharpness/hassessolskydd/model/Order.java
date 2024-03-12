@@ -14,8 +14,8 @@ public class Order {
     private LocalDateTime measurementDate;
     private LocalDateTime installationDate;
     private String notes;
-    //Photos
+    private List<String> photos;
     private InstallationDetails installationDetails;
     private IndoorOutdoor indoorOutdoor;
-    private List<Article> orderItems;
+    private List<Product> orderItems;
 }

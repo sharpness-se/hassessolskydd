@@ -8,13 +8,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import se.sharpness.hassessolskydd.api.OrderController;
+import se.sharpness.hassessolskydd.dao.OrderMapper;
 import se.sharpness.hassessolskydd.integrationstest.HassesDbTest;
 import se.sharpness.hassessolskydd.model.*;
 import se.sharpness.hassessolskydd.model.DTO.OrderItemDetailsDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderControllerTest extends HassesDbTest{
 
     private final OrderController orderController;
+
+    private final OrderMapper orderMapper;
 
     @Test
     void findOrderByOrderId() throws Exception {
@@ -67,7 +71,7 @@ class OrderControllerTest extends HassesDbTest{
         assertEquals(-1, orders.get(0).getId());
         assertEquals(-2, orders.get(1).getId());
         assertEquals("CUST001", orders.get(2).getCustomerNumber());
-        assertEquals(3, orderController.defineArticles(orders.get(0).getId()).size());
+        assertEquals(3, orderController.defineProducts(orders.get(0).getId()).size());
 
         List<Customer> customers = new ArrayList<>();
         for (OrderAndCustomer orderAndCustomer : ordersAndCustomers) {
@@ -95,12 +99,12 @@ class OrderControllerTest extends HassesDbTest{
     }
 
     @Test
-    void defineArticles() {
+    void defineProducts() {
         int orderId = -1;
-        List<Article> articles = orderController.defineArticles(orderId);
+        List<Product> products = orderController.defineProducts(orderId);
 
-        assertNotNull(articles, "The returned list should not be null");
-        assertTrue(articles.size() > 0, "The list should have elements");
+        assertNotNull(products, "The returned list should not be null");
+        assertFalse(products.isEmpty(), "The list should have elements");
     }
 
     @Test
@@ -113,7 +117,7 @@ class OrderControllerTest extends HassesDbTest{
         order.setNotes("Some notes about the order");
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
 
-        List<Article> orderItems = new ArrayList<>();
+        List<Product> orderItems = new ArrayList<>();
 
 
         List<OrderItemDetailsDTO> persiennDetailsList = new ArrayList<>();
@@ -144,14 +148,14 @@ class OrderControllerTest extends HassesDbTest{
         markisDetailsList.add(markisDetails2);
 
 
-        Article persienn = new Article();
+        Product persienn = new Product();
         persienn.setName("persienn");
-        persienn.setArticleDetails(persiennDetailsList);
+        persienn.setProductDetails(persiennDetailsList);
 
 
-        Article markis = new Article();
+        Product markis = new Product();
         markis.setName("fönstermarkis");
-        markis.setArticleDetails(markisDetailsList);
+        markis.setProductDetails(markisDetailsList);
 
 
         orderItems.add(persienn);
@@ -176,7 +180,7 @@ class OrderControllerTest extends HassesDbTest{
         order.setNotes("Some notes about the order");
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
 
-       List<Article> orderItems = new ArrayList<>();
+       List<Product> orderItems = new ArrayList<>();
        List<OrderItemDetailsDTO> persiennDetailsList = new ArrayList<>();
 
        OrderItemDetailsDTO persiennDetails1 = new OrderItemDetailsDTO();
@@ -203,14 +207,14 @@ class OrderControllerTest extends HassesDbTest{
        markisDetailsList.add(markisDetails1);
        markisDetailsList.add(markisDetails2);
 
-       Article persienn = new Article();
+       Product persienn = new Product();
        persienn.setName("persienn");
-       persienn.setArticleDetails(persiennDetailsList);
+       persienn.setProductDetails(persiennDetailsList);
 
 
-       Article markis = new Article();
+       Product markis = new Product();
        markis.setName("fönstermarkis");
-       markis.setArticleDetails(markisDetailsList);
+       markis.setProductDetails(markisDetailsList);
 
 
        orderItems.add(persienn);
@@ -244,12 +248,12 @@ class OrderControllerTest extends HassesDbTest{
         OrderItem orderItem = new OrderItem();
         orderItem.setOrderId(-3);
         orderItem.setItemId(-2);
+        int orderItemId = orderMapper.insertOrderItem(orderItem);
 
-        assertDoesNotThrow(() -> orderController.insertOrderItem(orderItem),
-                "Should not throw an exception when inserting an order item");
+
 
         OrderItemDetails orderItemDetails = new OrderItemDetails();
-        orderItemDetails.setOrderItemId(1);
+        orderItemDetails.setOrderItemId(orderItemId);
         orderItemDetails.setAttribute("Color");
         orderItemDetails.setValue("Blue");
 
@@ -262,5 +266,99 @@ class OrderControllerTest extends HassesDbTest{
         assertEquals("fönstermarkis", recievedOrderItemDetails.getName());
         assertEquals("Color", recievedOrderItemDetails.getAttribute());
         assertEquals("Blue", recievedOrderItemDetails.getValue());
+    }
+
+    @Test
+    void updateOrder() throws Exception {
+        Order orderToUpdate = new Order();
+
+        orderToUpdate.setMeasurementDate(LocalDateTime.of(2024, 3, 15, 10, 0));
+        orderToUpdate.setInstallationDate(LocalDateTime.of(2024, 3, 25, 14, 30));
+        orderToUpdate.setNotes("Updated notes about the order");
+        orderToUpdate.setIndoorOutdoor(IndoorOutdoor.OUTDOOR);
+
+        Order existingOrder = orderController.findOrderByOrderId(-1);
+        assertNotNull(existingOrder, "Existing order should not be null");
+
+        List<Product> orderItems = new ArrayList<>();
+
+
+        List<OrderItemDetailsDTO> persiennDetailsList = new ArrayList<>();
+
+        OrderItemDetailsDTO persiennDetails1 = new OrderItemDetailsDTO();
+        persiennDetails1.setValue("Red");
+        persiennDetails1.setAttribute("Color");
+
+        OrderItemDetailsDTO persiennDetails2 = new OrderItemDetailsDTO();
+        persiennDetails2.setValue("Wood");
+        persiennDetails2.setAttribute("Material");
+
+        persiennDetailsList.add(persiennDetails1);
+        persiennDetailsList.add(persiennDetails2);
+
+
+        List<OrderItemDetailsDTO> markisDetailsList = new ArrayList<>();
+
+        OrderItemDetailsDTO markisDetails1 = new OrderItemDetailsDTO();
+        markisDetails1.setValue("Brown");
+        markisDetails1.setAttribute("Color");
+
+        OrderItemDetailsDTO markisDetails2 = new OrderItemDetailsDTO();
+        markisDetails2.setValue("Metal");
+        markisDetails2.setAttribute("Material");
+
+        markisDetailsList.add(markisDetails1);
+        markisDetailsList.add(markisDetails2);
+
+
+        Product persienn = new Product();
+        persienn.setName("persienn");
+        persienn.setProductDetails(persiennDetailsList);
+
+
+        Product markis = new Product();
+        markis.setName("fönstermarkis");
+        markis.setProductDetails(markisDetailsList);
+
+
+        orderItems.add(persienn);
+        orderItems.add(markis);
+
+        orderToUpdate.setOrderItems(orderItems);
+
+        Order updatedOrder = orderController.updateOrder(existingOrder.getId(), orderToUpdate);
+        assertNotNull(updatedOrder, "Updated order should not be null");
+
+        Order retrievedOrder = orderController.findOrderByOrderId(existingOrder.getId());
+        assertNotNull(retrievedOrder, "Retrieved order should not be null");
+
+        assertEquals(orderToUpdate.getMeasurementDate(), retrievedOrder.getMeasurementDate(), "Measurement date should match");
+        assertEquals(orderToUpdate.getInstallationDate(), retrievedOrder.getInstallationDate(), "Installation date should match");
+        assertEquals("Updated notes about the order", retrievedOrder.getNotes(), "Notes should match");
+        assertEquals(IndoorOutdoor.OUTDOOR, retrievedOrder.getIndoorOutdoor(), "IndoorOutdoor should match");
+
+        List<Product> retrievedOrderItems = retrievedOrder.getOrderItems();
+        assertEquals(orderItems.size(), retrievedOrderItems.size(), "Number of order items should match");
+
+        for (int i = 0; i < orderItems.size(); i++) {
+            Product expectedProduct = orderItems.get(i);
+            Product retrievedProduct = retrievedOrderItems.get(i);
+
+            assertEquals(expectedProduct.getName(), retrievedProduct.getName(), "Product name should match");
+            //assertEquals(expectedProduct.getProductDetails(), retrievedProduct.getProductDetails(), "Product details should match");
+
+            List<OrderItemDetailsDTO> expectedDetails = expectedProduct.getProductDetails();
+            List<OrderItemDetailsDTO> retrievedDetails = retrievedProduct.getProductDetails();
+
+            expectedDetails.sort(Comparator.comparing(OrderItemDetailsDTO::getAttribute));
+            retrievedDetails.sort(Comparator.comparing(OrderItemDetailsDTO::getAttribute));
+
+            assertEquals(expectedDetails, retrievedDetails, "Product details should match");
+
+
+            assertEquals(expectedDetails.size(), retrievedDetails.size(), "Number of product details should match");
+
+        }
+
     }
 }
