@@ -41,7 +41,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({
         <div className="flex justify-end flex-col bg-white rounded-lg">
           <div className="grid text-xs gap-y-5 gap-x-10 px-5">
             {product &&
-              product.articleDetails.map((item, index) => {
+              product.productDetails.map((item, index) => {
                 if (index === 0) {
                   return (
                     <div

@@ -17,7 +17,7 @@ interface ProductAttribute {
 }
 export interface Product {
   name: string;
-  articleDetails: ProductAttribute[];
+  productDetails: ProductAttribute[];
 }
 
 interface TerrassmarkisProps {
@@ -52,7 +52,7 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
   const [shakeSensor, setShakeSensor] = useState(false);
   const item = {
     name: product.toLowerCase(),
-    articleDetails: [
+    productDetails: [
       { attribute: "Antal", value: numberOfProduct },
       { attribute: "Utfall", value: `${length}cm` },
       { attribute: "Bredd", value: `${width}cm` },
@@ -90,7 +90,7 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
     (attribute: string) => {
       let cartAttribute = "";
       if (cartItem) {
-        const filteredItems = cartItem.cartItem.articleDetails.filter(
+        const filteredItems = cartItem.cartItem.productDetails.filter(
           (item: any) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {

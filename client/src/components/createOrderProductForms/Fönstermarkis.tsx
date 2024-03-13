@@ -10,14 +10,11 @@ import SingleFieldInputRow from "../form/SingleFieldInputRow";
 import { EditCartItem } from "../../pages/CreateOrderPage";
 import toast from "react-hot-toast";
 import { Checkbox } from "../form/Checkbox";
+import { Product } from "./Plissegardin";
 //import { Product } from "../../pages/CreateOrderPage";
 interface ProductAttribute {
   attribute: string;
   value: string;
-}
-export interface Product {
-  name: string;
-  articleDetails: ProductAttribute[];
 }
 
 interface FönstermarkisProps {
@@ -52,7 +49,7 @@ const Fönstermarkis: React.FC<FönstermarkisProps> = ({
   const [support, setSupport] = useState(false);
   const item = {
     name: product.toLowerCase(),
-    articleDetails: [
+    productDetails: [
       { attribute: "Antal", value: numberOfProduct },
       { attribute: "Måttyp", value: measurementType },
       { attribute: "Utfall", value: `${width}cm` },
@@ -91,7 +88,7 @@ const Fönstermarkis: React.FC<FönstermarkisProps> = ({
     (attribute: string) => {
       let cartAttribute = "";
       if (cartItem) {
-        const filteredItems = cartItem.cartItem.articleDetails.filter(
+        const filteredItems = cartItem.cartItem.productDetails.filter(
           (item: any) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {

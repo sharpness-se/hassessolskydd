@@ -10,15 +10,13 @@ import SingleFieldInputRow from "../form/SingleFieldInputRow";
 import { EditCartItem } from "../../pages/CreateOrderPage";
 import toast from "react-hot-toast";
 import { Checkbox } from "../form/Checkbox";
+import { Product } from "./Plissegardin";
 //import { Product } from "../../pages/CreateOrderPage";
 interface ProductAttribute {
   attribute: string;
   value: string;
 }
-export interface Product {
-  name: string;
-  articleDetails: ProductAttribute[];
-}
+
 
 interface LamellgardinProps {
   clearOnClick: () => void;
@@ -51,7 +49,7 @@ const Lamellgardin: React.FC<LamellgardinProps> = ({
   const [measurementType, setMeasurementType] = useState("");
   const item = {
     name: product.toLowerCase(),
-    articleDetails: [
+    productDetails: [
       { attribute: "Antal", value: numberOfProduct },
       { attribute: "Bredd", value: `${width}mm` },
       { attribute: "Höjd", value: `${length}mm` },
@@ -82,7 +80,7 @@ const Lamellgardin: React.FC<LamellgardinProps> = ({
     (attribute: string) => {
       let cartAttribute = "";
       if (cartItem) {
-        const filteredItems = cartItem.cartItem.articleDetails.filter(
+        const filteredItems = cartItem.cartItem.productDetails.filter(
           (item: any) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {

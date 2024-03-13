@@ -17,7 +17,7 @@ interface ProductAttribute {
 }
 export interface Product {
   name: string;
-  articleDetails: ProductAttribute[];
+  productDetails: ProductAttribute[];
 }
 
 interface PlissegardinProps {
@@ -50,7 +50,7 @@ const Plissegardin: React.FC<PlissegardinProps> = ({
   const [remoteLocation, setRemoteLocation] = useState("");
   const item = {
     name: product.toLowerCase(),
-    articleDetails: [
+    productDetails: [
       { attribute: "Antal", value: numberOfProduct },
       { attribute: "Bredd", value: `${width}mm` },
       { attribute: "Höjd", value: `${length}mm` },
@@ -83,7 +83,7 @@ const Plissegardin: React.FC<PlissegardinProps> = ({
     (attribute: string) => {
       let cartAttribute = "";
       if (cartItem) {
-        const filteredItems = cartItem.cartItem.articleDetails.filter(
+        const filteredItems = cartItem.cartItem.productDetails.filter(
           (item: any) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {

@@ -66,7 +66,7 @@ export default function CreateOrderPageComponent() {
       cableLength: undefined,
       remoteControl: undefined,
       needLift: "no",
-      //installationNotes: undefined,
+      installationNotes: undefined,
     });
   useEffect(() => {
     const prepareUrl = () => {
@@ -102,7 +102,7 @@ export default function CreateOrderPageComponent() {
       customerNumber: currentCustomer,
       orderItems: customerCart,
       notes: notes,
-      //installationDetails: installationDetails,
+      installationDetails: installationDetails,
     });
   }, [customerCart, customer, notes, installationDetails]);
 
@@ -482,7 +482,7 @@ export default function CreateOrderPageComponent() {
                   maxLength={2000}
                   onChange={(e) => {
                     handleInstalationDetailsUpdate(
-                      "installationNotes",
+                      "notes",
                       e.target.value
                     );
                   }}
