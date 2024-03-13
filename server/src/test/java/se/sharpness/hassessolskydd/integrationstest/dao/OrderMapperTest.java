@@ -52,9 +52,9 @@ class OrderMapperTest extends HassesDbTest {
     }
 
     @Test
-    void findArticleIdByName() {
-        int articleId = orderMapper.findArticleIdByName("persienn");
-        assertEquals(-1L, articleId);
+    void findProductIdByName() {
+        int productId = orderMapper.findProductIdByName("persienn");
+        assertEquals(-1L, productId);
     }
 
     @Test
@@ -93,4 +93,28 @@ class OrderMapperTest extends HassesDbTest {
 
         assertDoesNotThrow(() -> orderMapper.insertOrderItemDetails(orderItemDetails));
     }
+
+    @Test
+    void updateOrder() {
+        Optional<Order> optionalOrder = orderMapper.findOrderByOrderId(-4);
+        assertTrue(optionalOrder.isPresent());
+        Order existingOrder = optionalOrder.get();
+
+        existingOrder.setMeasurementDate(LocalDateTime.of(2024, 3, 15, 10, 0));
+        existingOrder.setInstallationDate(LocalDateTime.of(2024, 3, 25, 14, 30));
+        existingOrder.setNotes("Updated notes notes notes");
+        existingOrder.setIndoorOutdoor(IndoorOutdoor.OUTDOOR);
+
+        orderMapper.updateOrder(existingOrder);
+
+        Optional<Order> updatedOptionalOrder = orderMapper.findOrderByOrderId(existingOrder.getId());
+        assertTrue(updatedOptionalOrder.isPresent());
+        Order updatedOrder = updatedOptionalOrder.get();
+
+        assertEquals(existingOrder.getMeasurementDate(), updatedOrder.getMeasurementDate());
+        assertEquals(existingOrder.getInstallationDate(), updatedOrder.getInstallationDate());
+        assertEquals("Updated notes notes notes", updatedOrder.getNotes());
+        assertEquals(IndoorOutdoor.OUTDOOR, updatedOrder.getIndoorOutdoor());
+    }
+
 }

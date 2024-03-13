@@ -30,20 +30,20 @@ VALUES
     (-20, 'Peter', 'Olofsson', 'Drottninggatan 5', '151 16', 'Karlstad', '0723456789', 'peter.olofsson@example.com', 'PeterOlofsson0723456789') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.installation_details" table
-INSERT INTO public.installation_details (id, order_id, is_normal, facade_details, floor_details, cable_length, remote_control, lift_needed)
+INSERT INTO public.installation_details (id, order_id, mounting_type, facade_details, floor_details, cable_length, remote_control, lift_needed, notes)
 VALUES
-    (-1, -1, 'true', 'Brick facade', '1st floor', '30', 'true', 'false'),
-    (-2, -2, 'false', 'Wooden facade', '2nd floor', '40', 'false', 'true') ON CONFLICT DO NOTHING;
+    (-1, -1, 'true', 'Brick facade', '1st floor', '30', 'true', 'false', 'very bricky notes'),
+    (-2, -2, 'false', 'Wooden facade', '2nd floor', '40', 'false', 'true', 'woodily notes') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.order" table
-INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, installation_details, indooroutdoor)
+INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, indooroutdoor)
 VALUES
-    (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', null, 'INDOOR'),
-    (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', null, 'OUTDOOR'),
-    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 3', null, 'OUTDOOR'),
-    (-4, 'pallekuling0812345678', '2024-01-01', '2024-01-18', '2024-02-01', 'Notes for Palles first order', null, 'INDOOR') ON CONFLICT DO NOTHING;
+    (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 'INDOOR'),
+    (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 'OUTDOOR'),
+    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 3', 'OUTDOOR'),
+    (-4, 'pallekuling0812345678', '2024-01-01', '2024-01-18', '2024-02-01', 'Notes for Palles first order', 'INDOOR') ON CONFLICT DO NOTHING;
 
-INSERT INTO public.articles (id, name)
+INSERT INTO public.product (id, name)
 VALUES
     (-1, 'persienn'),
     (-2, 'fönstermarkis'),
@@ -54,14 +54,14 @@ VALUES
     (-7, 'terrassmarkis')
      ON CONFLICT DO NOTHING;
 
-INSERT INTO public.order_items (id, order_id, item_id)
+INSERT INTO public.order_item (id, order_id, item_id)
 VALUES
     (-1, -1, -1),
     (-2, -2, -2),
     (-3, -1, -1),
     (-4, -1, -2) ON CONFLICT DO NOTHING;
 
-INSERT INTO public.item_attributes (id, order_items_id, attribute, value)
+INSERT INTO public.item_attributes (id, order_item_id, attribute, value)
 VALUES
     (-1, -1, 'width', '1200'),
     (-2, -1, 'height', '1500'),
