@@ -3,7 +3,7 @@ import StartMenuButton from "../StartMenuButtonComponent";
 //import { Product } from "../../pages/CreateOrderPage";
 import CartItemComponent from "./CartItemComponent";
 import { nanoid } from "nanoid";
-import { Product } from "../createOrderProductForms/Pilsegardin";
+import { Product } from "../createOrderProductForms/Plissegardin";
 import { EditCartItem } from "../../pages/CreateOrderPage";
 interface CustomerCartProps {
   children?: ReactNode;

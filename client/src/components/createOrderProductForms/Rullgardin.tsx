@@ -19,7 +19,7 @@ export interface Product {
   articleDetails: ProductAttribute[];
 }
 
-interface PilsegardinProps {
+interface RullgardinProps {
   clearOnClick: () => void;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   product: string;
@@ -27,7 +27,7 @@ interface PilsegardinProps {
   cartItem: EditCartItem | undefined;
 }
 
-const Pilsegardin: React.FC<PilsegardinProps> = ({
+const Rullgardin: React.FC<RullgardinProps> = ({
   clearOnClick,
   cartCallback,
   product,
@@ -40,21 +40,29 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
   const [model, setModel] = useState("");
   const [weave, setWeave] = useState("");
   const [fitting, setFitting] = useState("");
-  const [ordinaryFitting, setOrdinaryFitting] = useState("");
+  const [roll, setRoll] = useState("");
   const [color, setColor] = useState("");
   const [remote, setRemote] = useState("");
   const [disable, setDisable] = useState(false);
+  const [measurementType, setMeasurementType] = useState("");
+  const [assembly, setAssembly] = useState("");
+  const [remoteLocation, setRemoteLocation] = useState("");
+  const [bottomFinish, setBottomFinish] = useState("");
   const item = {
     name: product.toLowerCase(),
     articleDetails: [
       { attribute: "Antal", value: numberOfProduct },
-      { attribute: "Bred", value: `${width}m` },
-      { attribute: "Höjd", value: `${length}m` },
+      { attribute: "Bredd", value: `${width}mm` },
+      { attribute: "Höjd", value: `${length}mm` },
+      { attribute: "Måttyp", value: measurementType },
+      { attribute: "Montagetyp", value: assembly },
       { attribute: "Modell", value: model },
       { attribute: "Vävnummer", value: weave },
       { attribute: "Beslag", value: fitting },
-      { attribute: "Allmodebeslag", value: ordinaryFitting },
       { attribute: "Reglage", value: remote },
+      { attribute: "Reglagesida", value: remoteLocation },
+      { attribute: "Under/överrullad", value: roll },
+      { attribute: "Bottenlista", value: bottomFinish },
       { attribute: "Detaljfärg", value: color },
     ],
   };
@@ -93,7 +101,7 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
         return updatedCart;
       });
       clearOnClick();
-      editCartItem(undefined)
+      editCartItem(undefined);
       toast.success("Cart updated successfully!");
     } catch (err) {
       toast.error("Failed to update cart!");
@@ -105,14 +113,18 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
       setDisable(true);
     }
     setNumberOfProduct(getAttribute("Antal"));
-    setWidth(getAttribute("Bred"));
+    setWidth(getAttribute("Bredd"));
     setLength(getAttribute("Höjd"));
-    setModel(getAttribute("Modell"));
+    setModel(getAttribute("Montagetyp"));
+    setMeasurementType(getAttribute("Måttyp"));
     setWeave(getAttribute("Vävnummer"));
     setFitting(getAttribute("Beslag"));
-    setOrdinaryFitting(getAttribute("Allmodebeslag"));
-    setColor(getAttribute("Detaljfärg"));
     setRemote(getAttribute("Reglage"));
+    setRemoteLocation(getAttribute("Reglagesida"));
+    setRoll(getAttribute("Under/överrullad"));
+    setBottomFinish(getAttribute("Bottenlista"));
+    setColor(getAttribute("Detaljfärg"));
+    setAssembly(getAttribute("Montagetyp"));
   }, [cartItem, getAttribute]);
   return (
     <div>
@@ -153,7 +165,7 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
           </div>
           <SingleFieldInputRow
             applyGrid
-            label={"Bred"}
+            label={"Bredd"}
             id={"width"}
             value={width}
             onChange={(e) => {
@@ -167,6 +179,24 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
             value={length}
             onChange={(e) => {
               setLength(e.target.value);
+            }}
+          ></SingleFieldInputRow>
+          <SingleFieldInputRow
+            applyGrid
+            label={"Måttyp"}
+            id={"måttyp"}
+            value={measurementType}
+            onChange={(e) => {
+              setMeasurementType(e.target.value);
+            }}
+          ></SingleFieldInputRow>
+          <SingleFieldInputRow
+            applyGrid
+            label={"Montagetyp"}
+            id={"assembly"}
+            value={assembly}
+            onChange={(e) => {
+              setAssembly(e.target.value);
             }}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
@@ -199,20 +229,38 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
-            label={"Allmodebeslag"}
-            id={"ordinaryFitting"}
-            value={ordinaryFitting}
-            onChange={(e) => {
-              setOrdinaryFitting(e.target.value);
-            }}
-          ></SingleFieldInputRow>
-          <SingleFieldInputRow
-            applyGrid
             label={"Reglage"}
             id={"remote"}
             value={remote}
             onChange={(e) => {
               setRemote(e.target.value);
+            }}
+          ></SingleFieldInputRow>
+          <SingleFieldInputRow
+            applyGrid
+            label={"Reglagesida"}
+            id={"remotelocation"}
+            value={remoteLocation}
+            onChange={(e) => {
+              setRemoteLocation(e.target.value);
+            }}
+          ></SingleFieldInputRow>{" "}
+          <SingleFieldInputRow
+            applyGrid
+            label={"Under/överrullad"}
+            id={"roll"}
+            value={roll}
+            onChange={(e) => {
+              setRoll(e.target.value);
+            }}
+          ></SingleFieldInputRow>
+          <SingleFieldInputRow
+            applyGrid
+            label={"Bottenlista"}
+            id={"bottomFinish"}
+            value={bottomFinish}
+            onChange={(e) => {
+              setBottomFinish(e.target.value);
             }}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
@@ -230,4 +278,4 @@ const Pilsegardin: React.FC<PilsegardinProps> = ({
   );
 };
 
-export default Pilsegardin;
+export default Rullgardin;

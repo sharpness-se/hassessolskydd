@@ -47,7 +47,12 @@ INSERT INTO public.articles (id, name)
 VALUES
     (-1, 'persienn'),
     (-2, 'fönstermarkis'),
-    (-3, 'pilsegardin') ON CONFLICT DO NOTHING;
+    (-3, 'pilsegardin'),
+    (-4, 'plisségardin'),
+    (-5, 'rullgardin'),
+    (-6, 'lamellgardin'),
+    (-7, 'terrassmarkis')
+     ON CONFLICT DO NOTHING;
 
 INSERT INTO public.order_items (id, order_id, item_id)
 VALUES

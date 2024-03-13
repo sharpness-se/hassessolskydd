@@ -12,8 +12,13 @@ import CustomerCartComponent from "../components/cart/CustomerCartComponent";
 import toast, { Toaster } from "react-hot-toast";
 import Pilsegardin, {
   Product,
-} from "../components/createOrderProductForms/Pilsegardin";
+} from "../components/createOrderProductForms/Plissegardin";
 import Navbar from "../components/NavbarComponent";
+import Lamellgardin from "../components/createOrderProductForms/Lamellgardin";
+import Terrassmarkis from "../components/createOrderProductForms/Terrassmarkis";
+import Persienn from "../components/createOrderProductForms/Persienn";
+import Rullgardin from "../components/createOrderProductForms/Rullgardin";
+import Fönstermarkis from "../components/createOrderProductForms/Fönstermarkis";
 
 // export interface Product {
 //   name: string;
@@ -21,7 +26,7 @@ import Navbar from "../components/NavbarComponent";
 //   values: string[];
 // }
 export interface InstallationDetails {
-  isNormal?: String;
+  mountingType?: String;
   facadeDetails?: String;
   floorDetails?: String;
   cableLength?: String;
@@ -50,21 +55,19 @@ export default function CreateOrderPageComponent() {
   const [customerCart, setCustomerCart] = useState<Product[]>([]);
   const [formData, setFormData] = useState<FormData>();
   const [notes, setNotes] = useState<string>("");
-  //const [controller, setController] = useState<string>('');
   const [lift, setLift] = useState<boolean>(false);
   const [montering, setMontering] = useState<string>("");
   const [editCartItem, setEditCartItem] = useState<EditCartItem>();
   const [installationDetails, setInstallationDetails] =
     useState<InstallationDetails>({
-      isNormal: undefined,
+      mountingType: undefined,
       facadeDetails: undefined,
       floorDetails: undefined,
       cableLength: undefined,
       remoteControl: undefined,
       needLift: "no",
-      installationNotes: undefined,
+      //installationNotes: undefined,
     });
-
   useEffect(() => {
     const prepareUrl = () => {
       const url = `${baseUrl}/api/customers`;
@@ -126,6 +129,8 @@ export default function CreateOrderPageComponent() {
         const data = await response.json();
         console.log(data);
         setNotes("");
+        setCustomerCart([])
+        setInstallationDetails({})
       }
       if (!response.ok) {
         toast.error(`Something went wrong! Status: ${response.status}`);
@@ -135,6 +140,7 @@ export default function CreateOrderPageComponent() {
       console.error(error);
     }
   };
+  //const handleUpdate = async () => {};
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -199,12 +205,78 @@ export default function CreateOrderPageComponent() {
                 >
                   Produkt...
                 </option>
-                <option value="Pilsegardin">Pilsegardin</option>
+                <option value="Plisségardin">Pilsségardin</option>
+                <option value="Lamellgardin">Lamellgardin</option>
+                <option value="Terrassmarkis">Terrassmarkis</option>
+                <option value="Rullgardin">Rullgardin</option>
+                <option value="Persienn">Persienn</option>
+                <option value="Fönstermarkis">Fönstermarkis</option>
               </select>
             </div>
           )}
-          {!hidden && product === "Pilsegardin" && (
-            <Pilsegardin
+          {!hidden &&
+            (product === "Pilsegardin" || product === "Plisségardin") && (
+              <Pilsegardin
+                cartItem={editCartItem}
+                editCartItem={setEditCartItem}
+                product={product}
+                clearOnClick={() => {
+                  setHidden(true);
+                  setProduct("");
+                }}
+                cartCallback={setCustomerCart}
+              />
+            )}
+          {!hidden && product === "Lamellgardin" && (
+            <Lamellgardin
+              cartItem={editCartItem}
+              editCartItem={setEditCartItem}
+              product={product}
+              clearOnClick={() => {
+                setHidden(true);
+                setProduct("");
+              }}
+              cartCallback={setCustomerCart}
+            />
+          )}
+          {!hidden && product === "Terrassmarkis" && (
+            <Terrassmarkis
+              cartItem={editCartItem}
+              editCartItem={setEditCartItem}
+              product={product}
+              clearOnClick={() => {
+                setHidden(true);
+                setProduct("");
+              }}
+              cartCallback={setCustomerCart}
+            />
+          )}
+          {!hidden && product === "Rullgardin" && (
+            <Rullgardin
+              cartItem={editCartItem}
+              editCartItem={setEditCartItem}
+              product={product}
+              clearOnClick={() => {
+                setHidden(true);
+                setProduct("");
+              }}
+              cartCallback={setCustomerCart}
+            />
+          )}
+          {!hidden && product === "Persienn" && (
+            <Persienn
+              cartItem={editCartItem}
+              editCartItem={setEditCartItem}
+              product={product}
+              clearOnClick={() => {
+                setHidden(true);
+                setProduct("");
+              }}
+              cartCallback={setCustomerCart}
+            />
+          )}
+          {!hidden && product === "Fönstermarkis" && (
+            <Fönstermarkis
               cartItem={editCartItem}
               editCartItem={setEditCartItem}
               product={product}

@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import Accordion from "../AccordionComponent";
 //import { Product } from "../../pages/CreateOrderPage";
 import { nanoid } from "nanoid";
-import { Product } from "../createOrderProductForms/Pilsegardin";
+import { Product } from "../createOrderProductForms/Plissegardin";
 import { EditCartItem } from "../../pages/CreateOrderPage";
 
 interface CartItemProps {
@@ -28,12 +28,16 @@ const CartItemComponent: React.FC<CartItemProps> = ({
     console.log(itemIndex);
     console.log(cart[itemIndex]);
     const updateItem = { cartItemIndex: itemIndex, cartItem: cart[itemIndex] };
-    console.log(updateItem)
+    console.log(updateItem);
     editCartItem(updateItem);
   };
   return (
     <div className="bg-white rounded-lg mb-5">
-      <Accordion title="Pilsegardin" addDelete deleteCallback={deleteCartItem}>
+      <Accordion
+        title={product?.name || ""}
+        addDelete
+        deleteCallback={deleteCartItem}
+      >
         <div className="flex justify-end flex-col bg-white rounded-lg">
           <div className="grid text-xs gap-y-5 gap-x-10 px-5">
             {product &&
