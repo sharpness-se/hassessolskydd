@@ -195,6 +195,7 @@ private final PhotoMapper photoMapper;
             existingOrder.setInstallationDate(order.getInstallationDate());
             existingOrder.setNotes(order.getNotes());
             existingOrder.setIndoorOutdoor(order.getIndoorOutdoor());
+            existingOrder.setOrderStatus(order.getOrderStatus());
             orderMapper.updateOrder(existingOrder);
 
             InstallationDetails installationDetails = order.getInstallationDetails();

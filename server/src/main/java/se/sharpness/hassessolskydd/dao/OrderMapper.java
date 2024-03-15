@@ -72,7 +72,7 @@ public interface OrderMapper {
             "measurement_date = #{measurementDate}, " +
             "installation_date = #{installationDate}, " +
             "notes = #{notes}, " +
-            "indoorOutdoor = #{indoorOutdoor} " +
+            "indoorOutdoor = #{indoorOutdoor}, " +
             "order_status = #{orderStatus} " +
             "WHERE id = #{id}"
     )
