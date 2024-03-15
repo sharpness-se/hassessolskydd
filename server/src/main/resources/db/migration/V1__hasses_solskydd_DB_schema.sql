@@ -103,7 +103,7 @@ CREATE TABLE public.order (
                                 installation_date timestamp without time zone,
                                 notes character varying(2000),
                                 indoorOutdoor varchar(20),
-                                order_status integer
+                                order_status varchar(20)
 );
 
 CREATE SEQUENCE public.order_id_seq

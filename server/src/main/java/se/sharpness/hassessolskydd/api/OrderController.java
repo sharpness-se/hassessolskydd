@@ -142,7 +142,7 @@ private final PhotoMapper photoMapper;
                 OrderItemDetailsDTO dto = new OrderItemDetailsDTO();
                 dto.setAttribute(item.getAttribute());
                 dto.setValue(item.getValue());
-                currentProduct.getProductDetails().add(dto); // Add the OrderItemDetails directly to the Article
+                currentProduct.getProductDetails().add(dto); // Add the OrderItemDetails directly to the Product
             }
         }
         return orderItems;

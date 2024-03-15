@@ -17,5 +17,7 @@ public class Order {
     private List<String> photos;
     private InstallationDetails installationDetails;
     private IndoorOutdoor indoorOutdoor;
+    private OrderStatus orderStatus;
     private List<Product> orderItems;
+
 }
