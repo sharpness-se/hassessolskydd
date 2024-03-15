@@ -32,7 +32,7 @@ export interface InstallationDetails {
   cableLength?: String;
   remoteControl?: String;
   needLift?: String;
-  installationNotes?: String;
+  notes?: String;
 }
 export interface FormData {
   customerNumber?: string;
@@ -66,7 +66,7 @@ export default function CreateOrderPageComponent() {
       cableLength: undefined,
       remoteControl: undefined,
       needLift: "no",
-      installationNotes: undefined,
+      notes: undefined,
     });
   useEffect(() => {
     const prepareUrl = () => {
@@ -316,7 +316,7 @@ export default function CreateOrderPageComponent() {
                     onChange={(e) => {
                       setMontering(e.target.value);
                       handleInstalationDetailsUpdate(
-                        "isNormal",
+                        "mountingType",
                         e.target.value
                       );
                     }}
