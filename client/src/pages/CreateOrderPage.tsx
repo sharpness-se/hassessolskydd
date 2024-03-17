@@ -106,7 +106,7 @@ export default function CreateOrderPageComponent() {
     });
   }, [customerCart, customer, notes, installationDetails]);
 
-  const handleInstalationDetailsUpdate = (attribute: string, value: string) => {
+  const handleInstallationDetailsUpdate = (attribute: string, value: string) => {
     setInstallationDetails((prev) => ({ ...prev, [attribute]: value }));
   };
 
@@ -156,7 +156,7 @@ export default function CreateOrderPageComponent() {
     }
   }, [editCartItem]);
   // useEffect(() => {
-  //   //handleInstalationDetailsUpdate("montering", montering);
+  //   //handleInstallationDetailsUpdate("montering", montering);
   //   console.log(installationDetails);
   // }, [installationDetails]);
 
@@ -315,7 +315,7 @@ export default function CreateOrderPageComponent() {
                     checked={montering === "normal"}
                     onChange={(e) => {
                       setMontering(e.target.value);
-                      handleInstalationDetailsUpdate(
+                      handleInstallationDetailsUpdate(
                         "mountingType",
                         e.target.value
                       );
@@ -340,7 +340,7 @@ export default function CreateOrderPageComponent() {
                     checked={montering === "advanced"}
                     onChange={(e) => {
                       setMontering(e.target.value);
-                      handleInstalationDetailsUpdate(
+                      handleInstallationDetailsUpdate(
                         "isNormal",
                         e.target.value
                       );
@@ -371,7 +371,7 @@ export default function CreateOrderPageComponent() {
                   type="text"
                   id="våning"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate(
+                    handleInstallationDetailsUpdate(
                       "floorDetails",
                       e.target.value
                     );
@@ -388,7 +388,7 @@ export default function CreateOrderPageComponent() {
                   id="fasad"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate(
+                    handleInstallationDetailsUpdate(
                       "facadeDetails",
                       e.target.value
                     );
@@ -409,7 +409,7 @@ export default function CreateOrderPageComponent() {
                   id="kabel"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate(
+                    handleInstallationDetailsUpdate(
                       "cableLength",
                       e.target.value
                     );
@@ -427,7 +427,7 @@ export default function CreateOrderPageComponent() {
                   id="fjärrkontroll"
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate(
+                    handleInstallationDetailsUpdate(
                       "remoteControl",
                       e.target.value
                     );
@@ -438,7 +438,7 @@ export default function CreateOrderPageComponent() {
                   value={controller}
                   onChange={(e) => {
                     setController(e.target.value);
-                    handleInstalationDetailsUpdate(
+                    handleInstallationDetailsUpdate(
                       'remoteControl',
                       e.target.value,
                     );
@@ -460,7 +460,7 @@ export default function CreateOrderPageComponent() {
                 checked={lift}
                 onChange={(e) => {
                   setLift(e.target.checked);
-                  handleInstalationDetailsUpdate(
+                  handleInstallationDetailsUpdate(
                     "needLift",
                     `${e.target.checked ? "yes" : "no"}`
                   );
@@ -481,7 +481,7 @@ export default function CreateOrderPageComponent() {
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
                   maxLength={2000}
                   onChange={(e) => {
-                    handleInstalationDetailsUpdate(
+                    handleInstallationDetailsUpdate(
                       "notes",
                       e.target.value
                     );
