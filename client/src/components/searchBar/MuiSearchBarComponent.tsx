@@ -27,6 +27,7 @@ interface SearchBarProps {
   setOptions: (newInputValue: Customer[]) => void;
   //selectedReturn: Customer | undefined;
   //setSelectedReturn: React.Dispatch<React.SetStateAction<Customer | undefined>>;
+  disabled?: boolean;
 }
 
 const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
@@ -38,6 +39,7 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
   setOptions,
   //selectedReturn,
   //setSelectedReturn,
+  disabled,
 }) => {
   function Asynchronous() {
     const [open, setOpen] = React.useState(false);
@@ -106,6 +108,7 @@ const MuiSearchBarComponent: React.FC<SearchBarProps> = ({
       <Autocomplete
         sx={{ width: "10em", minWidth: 400 }}
         //disabled={selectedCustomer ? true : false}
+        disabled={disabled}
         id="muiAutocomplete"
         data-test="autocomplete"
         open={open}
