@@ -18,7 +18,21 @@ export interface Product {
   name: string;
   productDetails: ProductAttribute[];
 }
-
+interface RullgardinAttributeProps {
+  numberOfProduct: string;
+  length: string;
+  width: string;
+  model: string;
+  weave: string;
+  fitting: string;
+  roll: string;
+  color: string;
+  remote: string;
+  measurementType: string;
+  assembly: string;
+  remoteLocation: string;
+  bottomFinish: string;
+}
 interface RullgardinProps {
   clearOnClick: () => void;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
@@ -34,20 +48,37 @@ const Rullgardin: React.FC<RullgardinProps> = ({
   editCartItem,
   cartItem,
 }) => {
-  const [numberOfProduct, setNumberOfProduct] = useState("");
-  const [length, setLength] = useState("");
-  const [width, setWidth] = useState("");
-  const [model, setModel] = useState("");
-  const [weave, setWeave] = useState("");
-  const [fitting, setFitting] = useState("");
-  const [roll, setRoll] = useState("");
-  const [color, setColor] = useState("");
-  const [remote, setRemote] = useState("");
   const [disable, setDisable] = useState(false);
-  const [measurementType, setMeasurementType] = useState("");
-  const [assembly, setAssembly] = useState("");
-  const [remoteLocation, setRemoteLocation] = useState("");
-  const [bottomFinish, setBottomFinish] = useState("");
+  const [productDetails, setProductDetails] = useState({
+    numberOfProduct: "",
+    length: "",
+    width: "",
+    model: "",
+    weave: "",
+    fitting: "",
+    roll: "",
+    color: "",
+    remote: "",
+    measurementType: "",
+    assembly: "",
+    remoteLocation: "",
+    bottomFinish: "",
+  });
+  const {
+    numberOfProduct,
+    length,
+    width,
+    model,
+    weave,
+    fitting,
+    roll,
+    color,
+    remote,
+    measurementType,
+    assembly,
+    remoteLocation,
+    bottomFinish,
+  } = productDetails;
   const item = {
     name: product.toLowerCase(),
     productDetails: [
@@ -80,9 +111,9 @@ const Rullgardin: React.FC<RullgardinProps> = ({
   const getAttribute = useCallback(
     (attribute: string) => {
       let cartAttribute = "";
-      if (cartItem) {
+      if (cartItem && cartItem.cartItem) {
         const filteredItems = cartItem.cartItem.productDetails.filter(
-          (item: any) => item.attribute === attribute
+          (item) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {
           cartAttribute = filteredItems[0].value;
@@ -92,6 +123,7 @@ const Rullgardin: React.FC<RullgardinProps> = ({
     },
     [cartItem]
   );
+
   const handleUpdateCart = () => {
     try {
       console.log("update");
@@ -108,23 +140,35 @@ const Rullgardin: React.FC<RullgardinProps> = ({
       console.log(err);
     }
   };
+  const handleInputChange = <T extends keyof RullgardinAttributeProps>(
+    field: T,
+    value: RullgardinAttributeProps[T]
+  ) => {
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      [field]: value,
+    }));
+  };
   useEffect(() => {
     if (cartItem) {
       setDisable(true);
     }
-    setNumberOfProduct(getAttribute("Antal"));
-    setWidth(getAttribute("Bredd"));
-    setLength(getAttribute("Höjd"));
-    setModel(getAttribute("Montagetyp"));
-    setMeasurementType(getAttribute("Måttyp"));
-    setWeave(getAttribute("Vävnummer"));
-    setFitting(getAttribute("Beslag"));
-    setRemote(getAttribute("Reglage"));
-    setRemoteLocation(getAttribute("Reglagesida"));
-    setRoll(getAttribute("Under/överrullad"));
-    setBottomFinish(getAttribute("Bottenlista"));
-    setColor(getAttribute("Detaljfärg"));
-    setAssembly(getAttribute("Montagetyp"));
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      numberOfProduct: getAttribute("Antal"),
+      width: getAttribute("Bredd"),
+      length: getAttribute("Höjd"),
+      measurementType: getAttribute("Måttyp"),
+      assembly: getAttribute("Montagetyp"),
+      model: getAttribute("Modell"),
+      weave: getAttribute("Vävnummer"),
+      fitting: getAttribute("Beslag"),
+      remote: getAttribute("Reglage"),
+      remoteLocation: getAttribute("Reglagesida"),
+      roll: getAttribute("Under/överrullad"),
+      bottomFinish: getAttribute("Bottenlista"),
+      color: getAttribute("Detaljfärg"),
+    }));
   }, [cartItem, getAttribute]);
   return (
     <div>
@@ -151,71 +195,61 @@ const Rullgardin: React.FC<RullgardinProps> = ({
         disabled={disable}
         hideButtons={cartItem ? true : false}
       >
-        <div className="grid w-full rounded-lg bg-white ">
-          <div className="grid grid-cols-subgrid col-span-4">
-            <SingleFieldInputRow
-              applyGrid
-              label={"Antal"}
-              id={"numberOfProduct"}
-              value={numberOfProduct}
-              onChange={(e) => {
-                setNumberOfProduct(e.target.value);
-              }}
+        <div className="grid grid-cols-subgrid col-span-4">
+        <div className="grid grid-cols-subgrid col-span-4">
+          <SingleFieldInputRow
+            applyGrid
+            label={"Antal"}
+            id={"numberOfProduct"}
+            value={numberOfProduct}
+            onChange={(e) =>
+              handleInputChange("numberOfProduct", e.target.value)
+            }
             ></SingleFieldInputRow>
-          </div>
+            </div>
           <SingleFieldInputRow
             applyGrid
             label={"Bredd"}
             id={"width"}
             value={width}
-            onChange={(e) => {
-              setWidth(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("width", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Höjd"}
             id={"height"}
             value={length}
-            onChange={(e) => {
-              setLength(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("length", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Måttyp"}
             id={"måttyp"}
             value={measurementType}
-            onChange={(e) => {
-              setMeasurementType(e.target.value);
-            }}
+            onChange={(e) =>
+              handleInputChange("measurementType", e.target.value)
+            }
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Montagetyp"}
             id={"assembly"}
             value={assembly}
-            onChange={(e) => {
-              setAssembly(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("assembly", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Modell"}
             id={"model"}
             value={model}
-            onChange={(e) => {
-              setModel(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("model", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Vävnummer"}
             id={"weave"}
             value={weave}
-            onChange={(e) => {
-              setWeave(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("weave", e.target.value)}
           ></SingleFieldInputRow>
           {/* "nextLine" */}
           <SingleFieldInputRow
@@ -223,54 +257,44 @@ const Rullgardin: React.FC<RullgardinProps> = ({
             label={"Beslag"}
             id={"beslag"}
             value={fitting}
-            onChange={(e) => {
-              setFitting(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("fitting", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Reglage"}
             id={"remote"}
             value={remote}
-            onChange={(e) => {
-              setRemote(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("remote", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Reglagesida"}
             id={"remotelocation"}
             value={remoteLocation}
-            onChange={(e) => {
-              setRemoteLocation(e.target.value);
-            }}
+            onChange={(e) =>
+              handleInputChange("remoteLocation", e.target.value)
+            }
           ></SingleFieldInputRow>{" "}
           <SingleFieldInputRow
             applyGrid
             label={"Under/överrullad"}
             id={"roll"}
             value={roll}
-            onChange={(e) => {
-              setRoll(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("roll", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Bottenlista"}
             id={"bottomFinish"}
             value={bottomFinish}
-            onChange={(e) => {
-              setBottomFinish(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("bottomFinish", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Detaljfärg"}
             id={"color"}
             value={color}
-            onChange={(e) => {
-              setColor(e.target.value);
-            }}
+            onChange={(e) => handleInputChange("color", e.target.value)}
           ></SingleFieldInputRow>
         </div>
       </FormComponent>

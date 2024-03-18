@@ -19,6 +19,22 @@ export interface Product {
   name: string;
   productDetails: ProductAttribute[];
 }
+interface TerrassmarkisAttributeProps {
+  numberOfProduct: string;
+  length: string;
+  width: string;
+  model: string;
+  weave: string;
+  coating: string;
+  motor: string;
+  color: string;
+  remote: string;
+  facade: string;
+  support: boolean;
+  measurementType: string;
+  automatic: boolean;
+  shakeSensor: boolean;
+}
 
 interface TerrassmarkisProps {
   clearOnClick: () => void;
@@ -35,34 +51,53 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
   editCartItem,
   cartItem,
 }) => {
-  const [numberOfProduct, setNumberOfProduct] = useState("");
-  const [length, setLength] = useState("");
-  const [width, setWidth] = useState("");
-  const [model, setModel] = useState("");
-  const [weave, setWeave] = useState("");
-  const [coating, setCoating] = useState("");
-  const [motor, setMotor] = useState("");
-  const [color, setColor] = useState("");
-  const [remote, setRemote] = useState("");
   const [disable, setDisable] = useState(false);
-  const [facade, setFacade] = useState("");
-  const [support, setSupport] = useState(false);
-  const [measurementType, setMeasurementType] = useState("");
-  const [automatic, setAutomatic] = useState(false);
-  const [shakeSensor, setShakeSensor] = useState(false);
+  const [productDetails, setProductDetails] = useState({
+    numberOfProduct: "",
+    length: "",
+    width: "",
+    model: "",
+    weave: "",
+    coating: "",
+    motor: "",
+    color: "",
+    remote: "",
+    facade: "",
+    support: false,
+    measurementType: "",
+    automatic: false,
+    shakeSensor: false,
+  });
+  const {
+    numberOfProduct,
+    length,
+    width,
+    model,
+    weave,
+    coating,
+    motor,
+    color,
+    remote,
+    facade,
+    support,
+    measurementType,
+    automatic,
+    shakeSensor,
+  } = productDetails;
   const item = {
     name: product.toLowerCase(),
     productDetails: [
       { attribute: "Antal", value: numberOfProduct },
       { attribute: "Utfall", value: `${length}cm` },
       { attribute: "Bredd", value: `${width}cm` },
-      { attribute: "Modell", value: model },
       { attribute: "Måttyp", value: measurementType },
+      { attribute: "Modell", value: model },
       { attribute: "Vävnummer", value: weave },
       { attribute: "Kappa", value: coating },
       { attribute: "Vevväxel/motor", value: motor },
       { attribute: "Fasadtyp", value: facade },
       { attribute: "Fjärrkontroll", value: remote },
+      { attribute: "Detaljfärg", value: color },
       {
         attribute: "SolVindAutomatik",
         value: `${automatic ? "yes" : "no"}`,
@@ -72,7 +107,6 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
         value: `${shakeSensor ? "yes" : "no"}`,
       },
       { attribute: "Stödben", value: `${support ? "yes" : "no"}` },
-      { attribute: "Detaljfärg", value: color },
     ],
   };
   const addToCart = (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,9 +123,9 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
   const getAttribute = useCallback(
     (attribute: string) => {
       let cartAttribute = "";
-      if (cartItem) {
+      if (cartItem && cartItem.cartItem) {
         const filteredItems = cartItem.cartItem.productDetails.filter(
-          (item: any) => item.attribute === attribute
+          (item) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {
           cartAttribute = filteredItems[0].value;
@@ -117,24 +151,36 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
       console.log(err);
     }
   };
+  const handleInputChange = <T extends keyof TerrassmarkisAttributeProps>(
+    field: T,
+    value: TerrassmarkisAttributeProps[T]
+  ) => {
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      [field]: value,
+    }));
+  };
   useEffect(() => {
     if (cartItem) {
       setDisable(true);
     }
-    setNumberOfProduct(getAttribute("Antal"));
-    setWidth(getAttribute("Bredd"));
-    setLength(getAttribute("Utfall"));
-    setMeasurementType(getAttribute("Måttyp"));
-    setModel(getAttribute("Modell"));
-    setWeave(getAttribute("Vävnummer"));
-    setCoating(getAttribute("Kappa"));
-    setMotor(getAttribute("Vevväxel/motor"));
-    setFacade(getAttribute("Fasadtyp"));
-    setRemote(getAttribute("Fjärrkontroll"));
-    setAutomatic(getAttribute("SolVindAutomatik") === "yes" ? true : false);
-    setShakeSensor(getAttribute("Skaksensor") === "yes" ? true : false);
-    setSupport(getAttribute("Stödben") === "yes" ? true : false);
-    setColor(getAttribute("Detaljfärg"));
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      numberOfProduct: getAttribute("Antal"),
+      width: getAttribute("Bredd"),
+      length: getAttribute("Utfall"),
+      measurementType: getAttribute("Måttyp"),
+      model: getAttribute("Modell"),
+      weave: getAttribute("Vävnummer"),
+      coating: getAttribute("Kappa"),
+      motor: getAttribute("Vevväxel/motor"),
+      facade: getAttribute("Fasadtyp"),
+      remote: getAttribute("Fjärrkontroll"),
+      automatic: getAttribute("SolVindAutomatik") === "yes",
+      shakeSensor: getAttribute("Skaksensor") === "yes",
+      support: getAttribute("Stödben") === "yes",
+      color: getAttribute("Detaljfärg"),
+    }));
   }, [cartItem, getAttribute]);
   return (
     <div>
@@ -167,128 +213,103 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
               applyGrid
               label={"Antal"}
               id={"numberOfProduct"}
-              value={numberOfProduct}
-              onChange={(e) => {
-                setNumberOfProduct(e.target.value);
-              }}
+              value={productDetails.numberOfProduct}
+              onChange={(e) =>
+                handleInputChange("numberOfProduct", e.target.value)
+              }
             ></SingleFieldInputRow>
           </div>
           <SingleFieldInputRow
             applyGrid
             label={"Utfall"}
             id={"height"}
-            value={length}
-            onChange={(e) => {
-              setLength(e.target.value);
-            }}
+            value={productDetails.length}
+            onChange={(e) => handleInputChange("length", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Bredd"}
             id={"width"}
-            value={width}
-            onChange={(e) => {
-              setWidth(e.target.value);
-            }}
+            value={productDetails.width}
+            onChange={(e) => handleInputChange("width", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Måttyp"}
             id={"måttyp"}
-            value={measurementType}
-            onChange={(e) => {
-              setMeasurementType(e.target.value);
-            }}
+            value={productDetails.measurementType}
+            onChange={(e) =>
+              handleInputChange("measurementType", e.target.value)
+            }
           ></SingleFieldInputRow>
 
           <SingleFieldInputRow
             applyGrid
             label={"Modell"}
             id={"model"}
-            value={model}
-            onChange={(e) => {
-              setModel(e.target.value);
-            }}
+            value={productDetails.model}
+            onChange={(e) => handleInputChange("model", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Vävnummer"}
             id={"weave"}
-            value={weave}
-            onChange={(e) => {
-              setWeave(e.target.value);
-            }}
+            value={productDetails.weave}
+            onChange={(e) => handleInputChange("weave", e.target.value)}
           ></SingleFieldInputRow>
-          {/* "nextLine" */}
           <SingleFieldInputRow
             applyGrid
             label={"Kapa"}
             id={"coating"}
-            value={coating}
-            onChange={(e) => {
-              setCoating(e.target.value);
-            }}
+            value={productDetails.coating}
+            onChange={(e) => handleInputChange("coating", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Vevväxel/motor"}
             id={"motor"}
-            value={motor}
-            onChange={(e) => {
-              setMotor(e.target.value);
-            }}
+            value={productDetails.motor}
+            onChange={(e) => handleInputChange("motor", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Fasadtyp"}
-            id={"facad"}
-            value={facade}
-            onChange={(e) => {
-              setFacade(e.target.value);
-            }}
+            id={"facade"}
+            value={productDetails.facade}
+            onChange={(e) => handleInputChange("facade", e.target.value)}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
             applyGrid
             label={"Fjärrkontroll"}
             id={"remote"}
-            value={remote}
-            onChange={(e) => {
-              setRemote(e.target.value);
-            }}
+            value={productDetails.remote}
+            onChange={(e) => handleInputChange("remote", e.target.value)}
           ></SingleFieldInputRow>
-          <Checkbox 
-            label={"Sol&Vind Automatik"}
-            id={"automatic"}
-            value={automatic}
-            onChange={(e) => {
-              setAutomatic(e.target.checked);
-            }}
-          ></Checkbox>
-          <Checkbox 
-            label={"Skaksensor"}
-            id={"shake"}
-            value={shakeSensor}
-            onChange={(e) => {
-              setShakeSensor(e.target.checked);
-            }}
-          ></Checkbox>
-          <Checkbox
-            label={"Stödben"}
-            id={"support"}
-            value={support}
-            onChange={(e) => {
-              setSupport(e.target.checked);
-            }}
-          ></Checkbox>
           <SingleFieldInputRow
             applyGrid
             label={"Detaljfärg"}
             id={"color"}
-            value={color}
-            onChange={(e) => {
-              setColor(e.target.value);
-            }}
+            value={productDetails.color}
+            onChange={(e) => handleInputChange("color", e.target.value)}
           ></SingleFieldInputRow>
+          <Checkbox
+            label={"Sol&Vind Automatik"}
+            id={"automatic"}
+            value={productDetails.automatic}
+            onChange={(e) => handleInputChange("automatic", e.target.checked)}
+          ></Checkbox>
+          <Checkbox
+            label={"Skaksensor"}
+            id={"shake"}
+            value={productDetails.shakeSensor}
+            onChange={(e) => handleInputChange("shakeSensor", e.target.checked)}
+          ></Checkbox>
+          <Checkbox
+            label={"Stödben"}
+            id={"support"}
+            value={productDetails.support}
+            onChange={(e) => handleInputChange("support", e.target.checked)}
+          ></Checkbox>
         </div>
       </FormComponent>
     </div>
