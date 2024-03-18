@@ -32,8 +32,8 @@ VALUES
 -- Insert sample data into the "public.installation_details" table
 INSERT INTO public.installation_details (id, order_id, mounting_type, facade_details, floor_details, cable_length, remote_control, lift_needed, notes)
 VALUES
-    (-1, -1, 'takfäste', 'Brick facade', '1st floor', '30m', 'true', 'false', 'very bricky notes'),
-    (-2, -2, 'väggfäste', 'Wooden facade', '2nd floor', '40m', 'false', 'true', 'woodily notes') ON CONFLICT DO NOTHING;
+    (-1, -1, 'normal', 'Brick facade', '1st floor', '30m', 'true', 'false', 'very bricky notes'),
+    (-2, -2, 'avancerad', 'Wooden facade', '2nd floor', '40m', 'false', 'true', 'woodily notes') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.order" table
 INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, indooroutdoor, order_Status)
