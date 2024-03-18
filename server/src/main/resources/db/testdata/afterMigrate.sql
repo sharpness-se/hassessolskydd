@@ -32,16 +32,16 @@ VALUES
 -- Insert sample data into the "public.installation_details" table
 INSERT INTO public.installation_details (id, order_id, mounting_type, facade_details, floor_details, cable_length, remote_control, lift_needed, notes)
 VALUES
-    (-1, -1, 'true', 'Brick facade', '1st floor', '30', 'true', 'false', 'very bricky notes'),
-    (-2, -2, 'false', 'Wooden facade', '2nd floor', '40', 'false', 'true', 'woodily notes') ON CONFLICT DO NOTHING;
+    (-1, -1, 'normal', 'Brick facade', '1st floor', '30m', 'true', 'false', 'very bricky notes'),
+    (-2, -2, 'avancerad', 'Wooden facade', '2nd floor', '40m', 'false', 'true', 'woodily notes') ON CONFLICT DO NOTHING;
 
 -- Insert sample data into the "public.order" table
-INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, indooroutdoor)
+INSERT INTO public.order (id, customer_number, first_contact, measurement_date, installation_date, notes, indooroutdoor, order_Status)
 VALUES
-    (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 'INDOOR'),
-    (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 'OUTDOOR'),
-    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 3', 'OUTDOOR'),
-    (-4, 'pallekuling0812345678', '2024-01-01', '2024-01-18', '2024-02-01', 'Notes for Palles first order', 'INDOOR') ON CONFLICT DO NOTHING;
+    (-1, 'CUST001', '2023-11-01', '2023-11-05', '2023-11-15', 'Notes for order 1', 'INDOOR', NULL),
+    (-2, 'CUST002', '2023-11-02', '2023-11-06', '2023-11-16', 'Notes for order 2', 'OUTDOOR', 'COMPLETED'),
+    (-3, 'CUST001', '2023-05-05', '2023-06-06', '2023-07-07', 'Notes for order 3', 'OUTDOOR', NULL),
+    (-4, 'pallekuling0812345678', '2024-01-01', '2024-01-18', '2024-02-01', 'Notes for Palles first order', 'INDOOR', NULL) ON CONFLICT DO NOTHING;
 
 INSERT INTO public.product (id, name)
 VALUES

@@ -9,7 +9,7 @@ public class InstallationDetails {
     private int orderId;
     private String mountingType;
     private String floorDetails;
-    private String needLift;
+    private String liftNeeded;
     private String facadeDetails;
     private String cableLength;
     private String remoteControl;

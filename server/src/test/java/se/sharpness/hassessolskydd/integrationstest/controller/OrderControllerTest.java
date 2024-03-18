@@ -55,6 +55,7 @@ class OrderControllerTest extends HassesDbTest{
         assertEquals(-2L, orders.get(0).getId());
         assertNotEquals(-1L, orders.get(0).getId());
         assertEquals("OUTDOOR", orders.get(0).getIndoorOutdoor().toString());
+        assertEquals("COMPLETED", orders.get(0).getOrderStatus().toString());
     }
 
     @Test
@@ -116,6 +117,7 @@ class OrderControllerTest extends HassesDbTest{
         order.setInstallationDate(LocalDateTime.now().plusDays(14));
         order.setNotes("Some notes about the order");
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
+        order.setOrderStatus(OrderStatus.INQUIRY);
 
         List<Product> orderItems = new ArrayList<>();
 
@@ -179,6 +181,7 @@ class OrderControllerTest extends HassesDbTest{
         order.setInstallationDate(LocalDateTime.now().plusDays(14));
         order.setNotes("Some notes about the order");
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
+        order.setOrderStatus(OrderStatus.QUOTATION);
 
        List<Product> orderItems = new ArrayList<>();
        List<OrderItemDetailsDTO> persiennDetailsList = new ArrayList<>();
@@ -276,6 +279,7 @@ class OrderControllerTest extends HassesDbTest{
         orderToUpdate.setInstallationDate(LocalDateTime.of(2024, 3, 25, 14, 30));
         orderToUpdate.setNotes("Updated notes about the order");
         orderToUpdate.setIndoorOutdoor(IndoorOutdoor.OUTDOOR);
+        orderToUpdate.setOrderStatus(OrderStatus.COMPLETED);
 
         Order existingOrder = orderController.findOrderByOrderId(-1);
         assertNotNull(existingOrder, "Existing order should not be null");
@@ -336,6 +340,7 @@ class OrderControllerTest extends HassesDbTest{
         assertEquals(orderToUpdate.getInstallationDate(), retrievedOrder.getInstallationDate(), "Installation date should match");
         assertEquals("Updated notes about the order", retrievedOrder.getNotes(), "Notes should match");
         assertEquals(IndoorOutdoor.OUTDOOR, retrievedOrder.getIndoorOutdoor(), "IndoorOutdoor should match");
+        assertEquals(OrderStatus.COMPLETED, retrievedOrder.getOrderStatus(), "Order status should match");
 
         List<Product> retrievedOrderItems = retrievedOrder.getOrderItems();
         assertEquals(orderItems.size(), retrievedOrderItems.size(), "Number of order items should match");
