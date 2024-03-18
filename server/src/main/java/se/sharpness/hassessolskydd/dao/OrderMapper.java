@@ -44,9 +44,9 @@ public interface OrderMapper {
 
     @Select( //This insert has to be @Select because we need to return the id of the inserted row
             "INSERT INTO \"order\"" +
-            "(customer_number, first_contact, measurement_date, installation_date, notes, indoorOutdoor) " +
+            "(customer_number, first_contact, measurement_date, installation_date, notes, indoorOutdoor, order_status) " +
             "VALUES" +
-            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{indoorOutdoor})" +
+            "(#{customerNumber}, #{firstContact}, #{measurementDate}, #{installationDate}, #{notes}, #{indoorOutdoor}, #{orderStatus})" +
             "RETURNING id"
     )
     int insertOrder(Order order);
@@ -72,7 +72,8 @@ public interface OrderMapper {
             "measurement_date = #{measurementDate}, " +
             "installation_date = #{installationDate}, " +
             "notes = #{notes}, " +
-            "indoorOutdoor = #{indoorOutdoor} " +
+            "indoorOutdoor = #{indoorOutdoor}, " +
+            "order_status = #{orderStatus} " +
             "WHERE id = #{id}"
     )
     void updateOrder(Order existingOrder);
