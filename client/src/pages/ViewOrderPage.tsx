@@ -28,7 +28,7 @@ export interface InstallationDetails {
   needLift?: String,
   notes?: String,
   orderId: Number,
-  remoteControl: String,
+  remoteControl?: String,
 }
 
 export interface Product {
@@ -59,7 +59,22 @@ function EditCustomerPage() {
   const [editCartItem, setEditCartItem] = useState<EditCartItem>();
   const [hidden, setHidden] = useState(true);
   const [product, setProduct] = useState("");
+  const [installationDetails, setInstallationDetails] =
+  useState<InstallationDetails>({
+    mountingType: undefined,
+    facadeDetails: undefined,
+    floorDetails: undefined,
+    cableLength: undefined,
+    remoteControl: undefined,
+    needLift: "no",
+    notes: undefined,
+    id: 0,
+    orderId: 0,
+  });
 
+  const handleInstallationDetailsUpdate = (attribute: string, value: string) => {
+    setInstallationDetails((prev) => ({ ...prev, [attribute]: value }));
+  };
 
   const handleSubmit = async () => {
     console.log("Updated formData:", formData);
@@ -113,10 +128,10 @@ function EditCustomerPage() {
           const data = await response.json();
           setOrder(data.order)
           setCustomer(data.customer)
-          console.table(data.order)
           if (data.order) {
             setNotes(data.order.notes);
             setCustomerCart(data.order.orderItems);
+            setInstallationDetails(data.order.installationDetails)
           }
         }
       } catch (err) {
@@ -125,7 +140,7 @@ function EditCustomerPage() {
     };
     fetchData();
   }, []);
-
+  
   return (
     <>
       <Navbar title="Se Order"/>
@@ -269,6 +284,180 @@ function EditCustomerPage() {
               setNotes(e.target.value);
             }}
           ></textarea>
+        </Accordion>
+
+        <Accordion title="Montering" primary>
+          <form className="flex flex-col">
+            <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+              Montering
+            </label>
+            <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex mb-3">
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+                <div className="flex items-center ps-3">
+                  <input
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                    type="radio"
+                    name="montering"
+                    value="normal"
+                    checked={montering === "normal"}
+                    onChange={(e) => {
+                      setMontering(e.target.value);
+                      handleInstallationDetailsUpdate(
+                        "mountingType",
+                        e.target.value
+                      );
+                    }}
+                  />
+                  <label
+                    htmlFor="normal"
+                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                  >
+                    Normal
+                  </label>
+                </div>
+              </li>
+
+              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                <div className="flex items-center ps-3">
+                  <input
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                    type="radio"
+                    name="montering"
+                    value="advanced"
+                    checked={montering === "advanced"}
+                    onChange={(e) => {
+                      setMontering(e.target.value);
+                      handleInstallationDetailsUpdate(
+                        "isNormal",
+                        e.target.value
+                      );
+                    }}
+                  />
+                  <label
+                    htmlFor="avancerad"
+                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                  >
+                    Avancerad
+                  </label>
+                </div>
+              </li>
+            </ul>
+
+            <div className="flex w-full space-x-5">
+              <div className="w-full">
+                <label
+                  htmlFor="våning"
+                  className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1"
+                >
+                  Våning
+                </label>
+                <br />
+                <input
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  type="text"
+                  id="våning"
+                  onChange={(e) => {
+                    handleInstallationDetailsUpdate(
+                      "floorDetails",
+                      e.target.value
+                    );
+                  }}
+                ></input>
+              </div>
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Fasad
+                </label>
+                <br />
+                <input
+                  type="text"
+                  id="fasad"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  onChange={(e) => {
+                    handleInstallationDetailsUpdate(
+                      "facadeDetails",
+                      e.target.value
+                    );
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex w-full space-x-5 mb-3">
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Kabel
+                </label>
+                <br />
+                <input
+                  type="text"
+                  id="kabel"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  onChange={(e) => {
+                    handleInstallationDetailsUpdate(
+                      "cableLength",
+                      e.target.value
+                    );
+                  }}
+                ></input>
+              </div>
+
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Fjärrkontroll
+                </label>
+                <br />
+                <input
+                  type="text"
+                  id="fjärrkontroll"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  onChange={(e) => {
+                    handleInstallationDetailsUpdate(
+                      "remoteControl",
+                      e.target.value
+                    );
+                  }}
+                ></input>
+              </div>
+            </div>
+
+            <div className="flex items-center ps-4 border border-gray-200 rounded-lg mb-5">
+              <input
+                type="checkbox"
+                id="lift"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                checked={lift}
+                onChange={(e) => {
+                  setLift(e.target.checked);
+                  handleInstallationDetailsUpdate(
+                    "needLift",
+                    `${e.target.checked ? "yes" : "no"}`
+                  );
+                }}
+              />
+              <label className="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                Behövs lift?
+              </label>
+            </div>
+            <div className="flex w-full space-x-5 mb-3">
+              <div className="w-full">
+                <label className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-1">
+                  Monteringsanteckningar
+                </label>
+                <textarea
+                  id="monteringsanteckningar"
+                  className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
+                  maxLength={2000}
+                  onChange={(e) => {
+                    handleInstallationDetailsUpdate(
+                      "notes",
+                      e.target.value
+                    );
+                  }}
+                ></textarea>
+              </div>
+            </div>
+          </form>
         </Accordion>
 
         <CustomerCartComponent
