@@ -10,43 +10,62 @@ import SingleFieldInputRow from "../form/SingleFieldInputRow";
 import { EditCartItem } from "../../pages/CreateOrderPage";
 import toast from "react-hot-toast";
 import { Checkbox } from "../form/Checkbox";
-interface ProductAttribute {
-  attribute: string;
-  value: string;
-}
-export interface Product {
-  name: string;
-  productDetails: ProductAttribute[];
-}
+import { Product } from "./Plissegardin";
 
-interface PersiennProps {
+interface PersiennFunctionProps {
   clearOnClick: () => void;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   product: string;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
   cartItem: EditCartItem | undefined;
 }
-
-const Persienn: React.FC<PersiennProps> = ({
+interface PersiennAttributeProps {
+  numberOfProduct: string;
+  length: string;
+  width: string;
+  lamellColor: string;
+  roofMount: string;
+  linenColor: string;
+  magnets: boolean;
+  extendedPole: string;
+  remote: string;
+  measurementType: string;
+  assembly: string;
+}
+const Persienn: React.FC<PersiennFunctionProps> = ({
   clearOnClick,
   cartCallback,
   product,
   editCartItem,
   cartItem,
 }) => {
-  const [numberOfProduct, setNumberOfProduct] = useState("");
-  const [length, setLength] = useState("");
-  const [width, setWidth] = useState("");
-  const [lamellColor, setLamellColor] = useState("");
-  const [roofMount, setRoofMount] = useState("");
-  const [linenColor, setLinenColor] = useState("");
-  const [magnets, setMagnets] = useState(false);
-  const [extendedPole, setExtendedPole] = useState("");
-  const [remote, setRemote] = useState("");
   const [disable, setDisable] = useState(false);
-  const [measurementType, setMeasurementType] = useState("");
-  const [assembly, setAssembly] = useState("");
-
+  const [productDetails, setProductDetails] = useState<PersiennAttributeProps>({
+    numberOfProduct: "",
+    length: "",
+    width: "",
+    lamellColor: "",
+    roofMount: "",
+    linenColor: "",
+    magnets: false,
+    extendedPole: "",
+    remote: "",
+    measurementType: "",
+    assembly: "",
+  });
+  const {
+    numberOfProduct,
+    length,
+    width,
+    lamellColor,
+    roofMount,
+    linenColor,
+    magnets,
+    extendedPole,
+    remote,
+    measurementType,
+    assembly,
+  } = productDetails;
   const item = {
     name: product.toLowerCase(),
     productDetails: [
@@ -61,7 +80,7 @@ const Persienn: React.FC<PersiennProps> = ({
       { attribute: "Reglage-Lina/Ögla", value: remote },
       { attribute: "Magneter", value: `${magnets ? "yes" : "no"}` },
       { attribute: "Förlängd Persiennstång", value: `${extendedPole}cm` },
-    ],
+    ].reverse(),
   };
   const addToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,7 +98,7 @@ const Persienn: React.FC<PersiennProps> = ({
       let cartAttribute = "";
       if (cartItem) {
         const filteredItems = cartItem.cartItem.productDetails.filter(
-          (item: any) => item.attribute === attribute
+          (item) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {
           cartAttribute = filteredItems[0].value;
@@ -105,21 +124,35 @@ const Persienn: React.FC<PersiennProps> = ({
       console.log(err);
     }
   };
+  const handleInputChange = <T extends keyof PersiennAttributeProps>(
+    field: T,
+    value: PersiennAttributeProps[T]
+  ) => {
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      [field]: value,
+    }));
+  };
+
   useEffect(() => {
     if (cartItem) {
       setDisable(true);
     }
-    setNumberOfProduct(getAttribute("Antal"));
-    setWidth(getAttribute("Bredd"));
-    setLength(getAttribute("Höjd"));
-    setMeasurementType(getAttribute("Måttyp"));
-    setAssembly(getAttribute("Montagetyp"));
-    setRoofMount(getAttribute("FH-Tak/väggmont"));
-    setLamellColor(getAttribute("Lamellfärg"));
-    setLinenColor(getAttribute("Linfärg"));
-    setRemote(getAttribute("Reglage-Lina/Ögla"));
-    setMagnets(getAttribute("Magneter")==="yes"?true:false);
-    setExtendedPole(getAttribute("Förlängd Persiennstång"));
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      numberOfProduct: getAttribute("Antal"),
+      width: getAttribute("Bredd"),
+      length: getAttribute("Höjd"),
+      assembly: getAttribute("Montagetyp"),
+      measurementType: getAttribute("Måttyp"),
+      weave: getAttribute("Vävnummer"),
+      lamellColor: getAttribute("Lamellfärg"),
+      roofMount: getAttribute("FH-Tak/väggmont"),
+      linenColor: getAttribute("Linfärg"),
+      remote: getAttribute("Reglage-Lina/Ögla"),
+      magnets: getAttribute("Magneter") === "yes",
+      extendedPole: getAttribute("Förlängd Persiennstång"),
+    }));
   }, [cartItem, getAttribute]);
   return (
     <div>
@@ -154,7 +187,7 @@ const Persienn: React.FC<PersiennProps> = ({
               id={"numberOfProduct"}
               value={numberOfProduct}
               onChange={(e) => {
-                setNumberOfProduct(e.target.value);
+                handleInputChange("numberOfProduct", e.target.value);
               }}
             ></SingleFieldInputRow>
           </div>
@@ -164,7 +197,7 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"width"}
             value={width}
             onChange={(e) => {
-              setWidth(e.target.value);
+              handleInputChange("width", e.target.value);
             }}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
@@ -173,7 +206,7 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"height"}
             value={length}
             onChange={(e) => {
-              setLength(e.target.value);
+              handleInputChange("length", e.target.value);
             }}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
@@ -182,7 +215,7 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"måttyp"}
             value={measurementType}
             onChange={(e) => {
-              setMeasurementType(e.target.value);
+              handleInputChange("measurementType", e.target.value);
             }}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
@@ -191,7 +224,7 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"assembly"}
             value={assembly}
             onChange={(e) => {
-              setAssembly(e.target.value);
+              handleInputChange("assembly", e.target.value);
             }}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
@@ -200,7 +233,7 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"roofmount"}
             value={roofMount}
             onChange={(e) => {
-              setRoofMount(e.target.value);
+              handleInputChange("roofMount", e.target.value);
             }}
           ></SingleFieldInputRow>
           <SingleFieldInputRow
@@ -209,27 +242,25 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"lamellcolor"}
             value={lamellColor}
             onChange={(e) => {
-              setLamellColor(e.target.value);
+              handleInputChange("lamellColor", e.target.value);
             }}
           ></SingleFieldInputRow>
-          {/* "nextLine" */}
           <SingleFieldInputRow
             applyGrid
             label={"Linfärg"}
             id={"linencolor"}
             value={linenColor}
             onChange={(e) => {
-              setLinenColor(e.target.value);
+              handleInputChange("linenColor", e.target.value);
             }}
           ></SingleFieldInputRow>
-
           <SingleFieldInputRow
             applyGrid
             label={"Reglage-Lina/Ögla"}
             id={"remote"}
             value={remote}
             onChange={(e) => {
-              setRemote(e.target.value);
+              handleInputChange("remote", e.target.value);
             }}
           ></SingleFieldInputRow>
           <Checkbox
@@ -237,7 +268,7 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"magnets"}
             value={magnets}
             onChange={(e) => {
-              setMagnets(e.target.checked);
+              handleInputChange("magnets", e.target.checked);
             }}
           ></Checkbox>
           <SingleFieldInputRow
@@ -246,7 +277,7 @@ const Persienn: React.FC<PersiennProps> = ({
             id={"extendedPole"}
             value={extendedPole}
             onChange={(e) => {
-              setExtendedPole(e.target.value);
+              handleInputChange("extendedPole", e.target.value);
             }}
           ></SingleFieldInputRow>
         </div>
