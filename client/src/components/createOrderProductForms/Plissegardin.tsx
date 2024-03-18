@@ -10,44 +10,74 @@ import SingleFieldInputRow from "../form/SingleFieldInputRow";
 import { EditCartItem } from "../../pages/CreateOrderPage";
 import toast from "react-hot-toast";
 import { Checkbox } from "../form/Checkbox";
-//import { Product } from "../../pages/CreateOrderPage";
-interface ProductAttribute {
+export interface ProductAttribute {
   attribute: string;
   value: string;
+}
+interface PlissegardinAttributeProps {
+  numberOfProduct: string;
+  length: string;
+  width: string;
+  model: string;
+  weave: string;
+  fitting: string;
+  ordinaryFitting: boolean;
+  color: string;
+  remote: string;
+  measurementType: string;
+  assembly: string;
+  remoteLocation: string;
 }
 export interface Product {
   name: string;
   productDetails: ProductAttribute[];
 }
 
-interface PlissegardinProps {
+interface PlissegardinFunctionProps {
   clearOnClick: () => void;
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   product: string;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
   cartItem: EditCartItem | undefined;
 }
-
-const Plissegardin: React.FC<PlissegardinProps> = ({
+const Plissegardin: React.FC<PlissegardinFunctionProps> = ({
   clearOnClick,
   cartCallback,
   product,
   editCartItem,
   cartItem,
 }) => {
-  const [numberOfProduct, setNumberOfProduct] = useState("");
-  const [length, setLength] = useState("");
-  const [width, setWidth] = useState("");
-  const [model, setModel] = useState("");
-  const [weave, setWeave] = useState("");
-  const [fitting, setFitting] = useState("");
-  const [ordinaryFitting, setOrdinaryFitting] = useState(false);
-  const [color, setColor] = useState("");
-  const [remote, setRemote] = useState("");
+
   const [disable, setDisable] = useState(false);
-  const [measurementType, setMeasurementType] = useState("");
-  const [assembly, setAssembly] = useState("");
-  const [remoteLocation, setRemoteLocation] = useState("");
+  const [productDetails, setProductDetails] = useState({
+    numberOfProduct: "",
+    length: "",
+    width: "",
+    model: "",
+    weave: "",
+    fitting: "",
+    ordinaryFitting: false,
+    color: "",
+    remote: "",
+    measurementType: "",
+    assembly: "",
+    remoteLocation: "",
+  });
+  const {
+    numberOfProduct,
+    length,
+    width,
+    model,
+    weave,
+    fitting,
+    ordinaryFitting,
+    color,
+    remote,
+    measurementType,
+    assembly,
+    remoteLocation,
+  } = productDetails;
+
   const item = {
     name: product.toLowerCase(),
     productDetails: [
@@ -66,10 +96,11 @@ const Plissegardin: React.FC<PlissegardinProps> = ({
       { attribute: "Reglage", value: remote },
       { attribute: "Reglagesida", value: remoteLocation },
       { attribute: "Detaljfärg", value: color },
-    ],
+    ].reverse(),
   };
   const addToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
       cartCallback((prevCart) => [...prevCart, item]);
       clearOnClick();
@@ -79,12 +110,13 @@ const Plissegardin: React.FC<PlissegardinProps> = ({
       console.log(err);
     }
   };
+
   const getAttribute = useCallback(
     (attribute: string) => {
       let cartAttribute = "";
-      if (cartItem) {
+      if (cartItem && cartItem.cartItem) {
         const filteredItems = cartItem.cartItem.productDetails.filter(
-          (item: any) => item.attribute === attribute
+          (item) => item.attribute === attribute
         );
         if (filteredItems.length > 0) {
           cartAttribute = filteredItems[0].value;
@@ -94,6 +126,7 @@ const Plissegardin: React.FC<PlissegardinProps> = ({
     },
     [cartItem]
   );
+
   const handleUpdateCart = () => {
     try {
       console.log("update");
@@ -110,22 +143,38 @@ const Plissegardin: React.FC<PlissegardinProps> = ({
       console.log(err);
     }
   };
+
+  const handleInputChange = <T extends keyof PlissegardinAttributeProps>(
+    field: T,
+    value: PlissegardinAttributeProps[T]
+  ) => {
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      [field]: value,
+    }));
+  };
+
   useEffect(() => {
     if (cartItem) {
       setDisable(true);
     }
-    setNumberOfProduct(getAttribute("Antal"));
-    setWidth(getAttribute("Bredd"));
-    setLength(getAttribute("Höjd"));
-    setAssembly(getAttribute("Montagetyp"));
-    setMeasurementType(getAttribute("Måttyp"));
-    setWeave(getAttribute("Vävnummer"));
-    setFitting(getAttribute("Beslag"));
-    setOrdinaryFitting(getAttribute("Allmodebeslag") === "yes" ? true : false);
-    setRemote(getAttribute("Reglage"));
-    setRemoteLocation(getAttribute("Reglagesida"));
-    setColor(getAttribute("Detaljfärg"));
+    setProductDetails((prevProductDetails) => ({
+      ...prevProductDetails,
+      numberOfProduct: getAttribute("Antal"),
+      width: getAttribute("Bredd"),
+      length: getAttribute("Höjd"),
+      assembly: getAttribute("Montagetyp"),
+      model: getAttribute("Modell"),
+      measurementType: getAttribute("Måttyp"),
+      weave: getAttribute("Vävnummer"),
+      fitting: getAttribute("Beslag"),
+      ordinaryFitting: getAttribute("Allmodebeslag") === "yes",
+      remote: getAttribute("Reglage"),
+      remoteLocation: getAttribute("Reglagesida"),
+      color: getAttribute("Detaljfärg"),
+    }));
   }, [cartItem, getAttribute]);
+
   return (
     <div>
       <h1 className="text-center font-bold text-gray-700 uppercase">
@@ -157,121 +206,95 @@ const Plissegardin: React.FC<PlissegardinProps> = ({
               applyGrid
               label={"Antal"}
               id={"numberOfProduct"}
-              value={numberOfProduct}
-              onChange={(e) => {
-                setNumberOfProduct(e.target.value);
-              }}
-            ></SingleFieldInputRow>
+              value={productDetails.numberOfProduct}
+              onChange={(e) =>
+                handleInputChange("numberOfProduct", e.target.value)
+              }
+            />
           </div>
           <SingleFieldInputRow
             applyGrid
             label={"Bredd"}
             id={"width"}
-            value={width}
-            onChange={(e) => {
-              setWidth(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.width}
+            onChange={(e) => handleInputChange("width", e.target.value)}
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Höjd"}
             id={"height"}
-            value={length}
-            onChange={(e) => {
-              setLength(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.length}
+            onChange={(e) => handleInputChange("length", e.target.value)}
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Måttyp"}
             id={"måttyp"}
-            value={measurementType}
-            onChange={(e) => {
-              setMeasurementType(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.measurementType}
+            onChange={(e) =>
+              handleInputChange("measurementType", e.target.value)
+            }
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Montagetyp"}
             id={"assembly"}
-            value={assembly}
-            onChange={(e) => {
-              setAssembly(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.assembly}
+            onChange={(e) => handleInputChange("assembly", e.target.value)}
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Modell"}
             id={"model"}
-            value={model}
-            onChange={(e) => {
-              setModel(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.model}
+            onChange={(e) => handleInputChange("model", e.target.value)}
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Vävnummer"}
             id={"weave"}
-            value={weave}
-            onChange={(e) => {
-              setWeave(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.weave}
+            onChange={(e) => handleInputChange("weave", e.target.value)}
+          />
           {/* "nextLine" */}
           <SingleFieldInputRow
             applyGrid
             label={"Beslag"}
             id={"beslag"}
-            value={fitting}
-            onChange={(e) => {
-              setFitting(e.target.value);
-            }}
-          ></SingleFieldInputRow>
-          {/* <SingleFieldInputRow
-            applyGrid
-            label={"Allmodebeslag"}
-            id={"ordinaryFitting"}
-            value={ordinaryFitting}
-            onChange={(e) => {
-              setOrdinaryFitting(e.target.value);
-            }}
-          ></SingleFieldInputRow> */}
+            value={productDetails.fitting}
+            onChange={(e) => handleInputChange("fitting", e.target.value)}
+          />
           <Checkbox
-            //applyGrid
             label={"Allmodebeslag"}
             id={"ordinaryFitting"}
-            value={ordinaryFitting}
-            onChange={(e) => {
-              setOrdinaryFitting(e.target.checked);
-            }}
-          ></Checkbox>
+            value={productDetails.ordinaryFitting}
+            onChange={(e) =>
+              handleInputChange("ordinaryFitting", e.target.checked)
+            }
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Reglage"}
             id={"remote"}
-            value={remote}
-            onChange={(e) => {
-              setRemote(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.remote}
+            onChange={(e) => handleInputChange("remote", e.target.value)}
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Reglagesida"}
             id={"remotelocation"}
-            value={remoteLocation}
-            onChange={(e) => {
-              setRemoteLocation(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.remoteLocation}
+            onChange={(e) =>
+              handleInputChange("remoteLocation", e.target.value)
+            }
+          />
           <SingleFieldInputRow
             applyGrid
             label={"Detaljfärg"}
             id={"color"}
-            value={color}
-            onChange={(e) => {
-              setColor(e.target.value);
-            }}
-          ></SingleFieldInputRow>
+            value={productDetails.color}
+            onChange={(e) => handleInputChange("color", e.target.value)}
+          />
         </div>
       </FormComponent>
     </div>

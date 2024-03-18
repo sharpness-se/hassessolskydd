@@ -226,7 +226,11 @@ export default function SearchOrderPage() {
                       onClick={() => {
                         if ((row.original as Customer).customerNumber)
                           navigate(
-                            `/customer/${(row.original as Customer).customerNumber}`,
+                            `/customer/${(row.original as Customer).customerNumber}`
+                          );
+                        else if ((row.original as OrderInfo).order.id)
+                          navigate(
+                            `/order/${(row.original as OrderInfo).order.id}`
                           );
                       }}
                     >
