@@ -22,7 +22,7 @@ public interface InstallationDetailsMapper { //TODO: Should this be a part of Or
             "INSERT INTO installation_details" +
             "(order_id, mounting_type, facade_details, floor_details, cable_length, remote_control, lift_needed, notes) " +
             "VALUES" +
-            "(#{orderId}, #{mountingType}, #{facadeDetails}, #{floorDetails}, #{cableLength}, #{remoteControl}, #{needLift}, #{notes})"
+            "(#{orderId}, #{mountingType}, #{facadeDetails}, #{floorDetails}, #{cableLength}, #{remoteControl}, #{liftNeeded}, #{notes})"
     )
     int insertInstallationDetails(InstallationDetails installationDetails);
 
@@ -35,7 +35,7 @@ public interface InstallationDetailsMapper { //TODO: Should this be a part of Or
                     "floor_details = #{floorDetails}, " +
                     "cable_length = #{cableLength}, " +
                     "remote_control = #{remoteControl}, " +
-                    "lift_needed = #{needLift}, " +
+                    "lift_needed = #{liftNeeded}, " +
                     "notes = #{notes} " +
                     "WHERE order_id = #{orderId}"
     )
