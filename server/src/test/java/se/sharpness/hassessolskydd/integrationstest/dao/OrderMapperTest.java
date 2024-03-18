@@ -8,10 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import se.sharpness.hassessolskydd.dao.OrderMapper;
 import se.sharpness.hassessolskydd.integrationstest.HassesDbTest;
-import se.sharpness.hassessolskydd.model.IndoorOutdoor;
-import se.sharpness.hassessolskydd.model.Order;
-import se.sharpness.hassessolskydd.model.OrderItem;
-import se.sharpness.hassessolskydd.model.OrderItemDetails;
+import se.sharpness.hassessolskydd.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,6 +63,7 @@ class OrderMapperTest extends HassesDbTest {
         order.setInstallationDate(LocalDateTime.now().plusDays(14));
         order.setNotes("Some notes about the order");
         order.setIndoorOutdoor(IndoorOutdoor.INDOOR);
+        order.setOrderStatus(OrderStatus.INQUIRY);
 
 
         int orderId = orderMapper.insertOrder(order);
@@ -104,6 +102,7 @@ class OrderMapperTest extends HassesDbTest {
         existingOrder.setInstallationDate(LocalDateTime.of(2024, 3, 25, 14, 30));
         existingOrder.setNotes("Updated notes notes notes");
         existingOrder.setIndoorOutdoor(IndoorOutdoor.OUTDOOR);
+        existingOrder.setOrderStatus(OrderStatus.COMPLETED);
 
         orderMapper.updateOrder(existingOrder);
 
@@ -115,6 +114,7 @@ class OrderMapperTest extends HassesDbTest {
         assertEquals(existingOrder.getInstallationDate(), updatedOrder.getInstallationDate());
         assertEquals("Updated notes notes notes", updatedOrder.getNotes());
         assertEquals(IndoorOutdoor.OUTDOOR, updatedOrder.getIndoorOutdoor());
+        assertEquals(OrderStatus.COMPLETED, updatedOrder.getOrderStatus());
     }
 
 }
