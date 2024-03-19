@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 import Navbar from "../components/NavbarComponent";
 import toast, { Toaster } from "react-hot-toast";
-import { FormData } from "./CreateOrderPage";
 import { baseUrl } from "../settings/baseUrl";
 import MuiSearchBarComponent, {
   Customer,
@@ -20,6 +19,15 @@ import Rullgardin from "../components/createOrderProductForms/Rullgardin";
 import Fönstermarkis from "../components/createOrderProductForms/Fönstermarkis";
 import StartMenuButton from "../components/StartMenuButtonComponent";
 
+export interface FormData {
+  customerNumber?: string;
+  measurementDate?: Date;
+  notes?: string;
+  installationDetails?: InstallationDetails;
+  indoorOutdoor?: string;
+  orderItems?: Product[];
+  orderStatus?: string;
+}
 export interface InstallationDetails {
   cableLength?: string;
   facadeDetails?: string;
@@ -73,6 +81,7 @@ function EditCustomerPage() {
       // id: 0,
       // orderId: 0,
     });
+  const [orderStatus, setOrderStatus] = useState("");
 
   const handleInstallationDetailsUpdate = (
     attribute: string,
@@ -236,6 +245,29 @@ function EditCustomerPage() {
           <div className="flex-2">
             <CustomerDetailsComponent customer={customer} />
           </div>
+        </div>
+
+        <div className="bg-white rounded p-5 w-[44.5rem] mb-5 ">
+          <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold mb-3">
+            Typ av ärende
+          </h2>
+          <select
+            id="orderStatus"
+            disabled={disabled}
+            className="w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white"
+            value={order?.orderStatus}
+            onChange={(e) => {
+              setOrderStatus(e.target.value);
+              handleInstallationDetailsUpdate("orderStatus", e.target.value);
+            }}
+          >
+            <option value="inquiry">Förfrågan</option>
+            <option value="quotation">Offert</option>
+            <option value="order">Order</option>
+            <option value="completed">Avslutad</option>
+            <option value="complaint">Reklamation</option>
+            <option value="trouble">Strul</option>
+          </select>
         </div>
 
         <Accordion title="Produkter" applyHeight customOnClick primary>
