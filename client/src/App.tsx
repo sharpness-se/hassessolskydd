@@ -13,7 +13,7 @@ function App() {
     <Routes>
       <Route path="/" element={<StartPageComponent />} />
       <Route path="/skapakund" element={<CreateCustomerPageComponent />} />
-      <Route path="/skapaorder" element={<CreateOrderPageComponent />} />
+      <Route path="/skapaorder" element={<ViewOrderPage />} />
       <Route path="/seordrar" element={<SearchOrderPage />} />
       <Route path="/customer/:id" element={<EditCustomerPage />} />
       <Route path="/order/:id" element={<ViewOrderPage />} />
