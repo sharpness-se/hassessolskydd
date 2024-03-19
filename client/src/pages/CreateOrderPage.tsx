@@ -31,7 +31,7 @@ export interface InstallationDetails {
   floorDetails?: String;
   cableLength?: String;
   remoteControl?: String;
-  needLift?: String;
+  liftNeeded?: String;
   notes?: String;
 }
 export interface FormData {
@@ -65,7 +65,7 @@ export default function CreateOrderPageComponent() {
       floorDetails: undefined,
       cableLength: undefined,
       remoteControl: undefined,
-      needLift: "no",
+      liftNeeded: "no",
       notes: undefined,
     });
   useEffect(() => {
@@ -341,7 +341,7 @@ export default function CreateOrderPageComponent() {
                     onChange={(e) => {
                       setMontering(e.target.value);
                       handleInstallationDetailsUpdate(
-                        "isNormal",
+                        "mountingType",
                         e.target.value
                       );
                     }}
@@ -461,7 +461,7 @@ export default function CreateOrderPageComponent() {
                 onChange={(e) => {
                   setLift(e.target.checked);
                   handleInstallationDetailsUpdate(
-                    "needLift",
+                    "liftNeeded",
                     `${e.target.checked ? "yes" : "no"}`
                   );
                 }}
@@ -492,7 +492,6 @@ export default function CreateOrderPageComponent() {
           </form>
         </Accordion>
         <CustomerCartComponent
-          handleSubmit={handleSubmit}
           cart={customerCart}
           cartCallBack={setCustomerCart}
           editCartItem={setEditCartItem}

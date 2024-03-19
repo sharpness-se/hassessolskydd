@@ -11,6 +11,7 @@ interface CartItemProps {
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   cart: Product[];
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
+  disabled?: Boolean;
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({
@@ -19,16 +20,17 @@ const CartItemComponent: React.FC<CartItemProps> = ({
   cartCallback,
   cart,
   editCartItem,
+  disabled,
 }) => {
   const deleteCartItem = () => {
     const updatedProducts = cart?.filter((_, index) => index !== itemIndex);
     cartCallback(updatedProducts);
   };
   const updateEditCart = () => {
-    console.log(itemIndex);
-    console.log(cart[itemIndex]);
+    // console.log(itemIndex);
+    // console.log(cart[itemIndex]);
     const updateItem = { cartItemIndex: itemIndex, cartItem: cart[itemIndex] };
-    console.log(updateItem);
+    // console.log(updateItem);
     editCartItem(updateItem);
   };
   return (

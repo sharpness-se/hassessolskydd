@@ -9,15 +9,15 @@ interface CustomerCartProps {
   children?: ReactNode;
   cart: Product[];
   cartCallBack: Dispatch<SetStateAction<Product[]>>;
-  handleSubmit: () => Promise<void>;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
+  disabled?: Boolean;
 }
 const CustomerCartComponent: React.FC<CustomerCartProps> = ({
   children,
   cart,
   cartCallBack,
-  handleSubmit,
   editCartItem,
+  disabled,
 }) => {
   return (
     <div className="bg-white rounded p-5 max-w-3xl w-[715px]">
@@ -41,6 +41,7 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
                     cart={cart}
                     cartCallback={cartCallBack}
                     editCartItem={editCartItem}
+                    disabled={disabled}
                   />
                 </React.Fragment>
               );
@@ -48,7 +49,7 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
           <div>{children}</div>
         </div>
         <div className="flex w-full justify-center">
-          <StartMenuButton text={"Submit Order"} handleSubmit={handleSubmit} />
+         
         </div>
       </div>
     </div>
