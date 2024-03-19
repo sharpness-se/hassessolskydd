@@ -9,6 +9,7 @@ interface AccordionProps {
   customOnClick?: boolean;
   deleteCallback?: () => void;
   primary?: boolean;
+  disabled?: boolean;
 }
 
 const Accordion: React.FC<AccordionProps> = ({
@@ -16,7 +17,8 @@ const Accordion: React.FC<AccordionProps> = ({
   addDelete,
   children,
   deleteCallback,
-  primary
+  primary,
+  disabled
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -36,7 +38,7 @@ const Accordion: React.FC<AccordionProps> = ({
         <div>
           {addDelete && (
             <button
-              onClick={deleteCallback}
+              disabled
               className="bg-white h-min px-2 py-1 hover:bg-red-600 hover:text-white rounded text-xs font-bold mr-5 align-middle"
             >
               TA BORT
