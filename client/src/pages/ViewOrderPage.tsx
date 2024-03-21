@@ -119,7 +119,7 @@ function EditCustomerPage() {
         setDisabled(false);
       }
     } else {
-      console.log("Updated formData:", formData);
+      console.table(formData);
       if (!formData?.customerNumber) {
         toast.error("Please Select a Customer!");
         return;
@@ -203,11 +203,13 @@ function EditCustomerPage() {
             setNotes(data.order.notes);
             setCustomerCart(data.order.orderItems);
             setInstallationDetails(data.order.installationDetails);
+            setOrderStatus(data.order.orderStatus);
             setLift(
               data.order.installationDetails.liftNeeded === "yes"
                 ? true
                 : false,
             );
+            console.table(data.order);
           }
         }
       } catch (err) {
@@ -224,8 +226,9 @@ function EditCustomerPage() {
       orderItems: customerCart,
       notes: notes,
       installationDetails: installationDetails,
+      orderStatus: orderStatus,
     });
-  }, [customerCart, customer, notes, installationDetails]);
+  }, [customerCart, customer, notes, installationDetails, orderStatus]);
 
   return (
     <>
@@ -255,18 +258,18 @@ function EditCustomerPage() {
             id="orderStatus"
             disabled={disabled}
             className="w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white"
-            value={order?.orderStatus}
+            value={id ? order?.orderStatus : ""}
             onChange={(e) => {
               setOrderStatus(e.target.value);
-              handleInstallationDetailsUpdate("orderStatus", e.target.value);
+              console.log(orderStatus);
             }}
           >
-            <option value="inquiry">Förfrågan</option>
-            <option value="quotation">Offert</option>
-            <option value="order">Order</option>
-            <option value="completed">Avslutad</option>
-            <option value="complaint">Reklamation</option>
-            <option value="trouble">Strul</option>
+            <option value="INQUIRY">Förfrågan</option>
+            <option value="QUOTATION">Offert</option>
+            <option value="ORDER">Order</option>
+            <option value="COMPLETED">Avslutad</option>
+            <option value="COMPLAINT">Reklamation</option>
+            <option value="TROUBLE">Strul</option>
           </select>
         </div>
 
