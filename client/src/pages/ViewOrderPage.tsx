@@ -119,7 +119,6 @@ function EditCustomerPage() {
         setDisabled(false);
       }
     } else {
-      console.table(formData);
       if (!formData?.customerNumber) {
         toast.error("Please Select a Customer!");
         return;
@@ -209,7 +208,6 @@ function EditCustomerPage() {
                 ? true
                 : false,
             );
-            console.table(data.order);
           }
         }
       } catch (err) {
@@ -258,10 +256,9 @@ function EditCustomerPage() {
             id="orderStatus"
             disabled={disabled}
             className="w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white"
-            value={id ? order?.orderStatus : ""}
+            value={orderStatus}
             onChange={(e) => {
               setOrderStatus(e.target.value);
-              console.log(orderStatus);
             }}
           >
             <option value="INQUIRY">Förfrågan</option>
