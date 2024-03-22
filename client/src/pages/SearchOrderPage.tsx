@@ -91,7 +91,6 @@ export default function SearchOrderPage() {
     function prepareUrl(url: string) {
       return encodeURI(url);
     }
-    console.log(showOrder);
     const fetchData: (showOrderData: boolean) => Promise<void> = async (
       showOrderData,
     ) => {
@@ -116,7 +115,6 @@ export default function SearchOrderPage() {
           const data = await response.json();
           setOrderList(data);
           setFilteredList(data);
-          console.table(data);
         }
       } catch (err) {
         console.error(err);
@@ -226,11 +224,11 @@ export default function SearchOrderPage() {
                       onClick={() => {
                         if ((row.original as Customer).customerNumber)
                           navigate(
-                            `/customer/${(row.original as Customer).customerNumber}`
+                            `/customer/${(row.original as Customer).customerNumber}`,
                           );
                         else if ((row.original as OrderInfo).order.id)
                           navigate(
-                            `/order/${(row.original as OrderInfo).order.id}`
+                            `/order/${(row.original as OrderInfo).order.id}`,
                           );
                       }}
                     >
