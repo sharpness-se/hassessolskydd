@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@mui/material": "^5.15.6",
     "@tanstack/react-table": "^8.11.7",
     "@testing-library/jest-dom": "^5.17.0",
