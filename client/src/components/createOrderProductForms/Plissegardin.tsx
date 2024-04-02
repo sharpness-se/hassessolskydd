@@ -27,7 +27,6 @@ interface PlissegardinAttributeProps {
   measurementType: string;
   assembly: string;
   remoteLocation: string;
-  disabled?: boolean;
 }
 export interface Product {
   name: string;

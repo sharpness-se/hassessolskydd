@@ -42,6 +42,8 @@ interface TerrassmarkisProps {
   product: string;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
   cartItem: EditCartItem | undefined;
+  disable: boolean;
+
 }
 
 const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
@@ -50,8 +52,9 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
   product,
   editCartItem,
   cartItem,
+  disable
 }) => {
-  const [disable, setDisable] = useState(false);
+  const [disableActions, setDisableActions] = useState(disable?disable: false);
   const [productDetails, setProductDetails] = useState({
     numberOfProduct: "",
     length: "",
@@ -162,7 +165,7 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
   };
   useEffect(() => {
     if (cartItem) {
-      setDisable(true);
+      setDisableActions(true);
     }
     setProductDetails((prevProductDetails) => ({
       ...prevProductDetails,
@@ -203,8 +206,8 @@ const Terrassmarkis: React.FC<TerrassmarkisProps> = ({
           editCartItem(undefined);
           clearOnClick();
         }}
-        customOnClick={() => setDisable(false)}
-        disabled={disable}
+        customOnClick={() => setDisableActions(false)}
+        disabled={disableActions}
         hideButtons={cartItem ? true : false}
       >
         <div className="grid w-full rounded-lg bg-white ">

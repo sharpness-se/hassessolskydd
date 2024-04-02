@@ -342,6 +342,7 @@ function EditCustomerPage() {
             )}
           {!hidden && product === "Lamellgardin" && (
             <Lamellgardin
+              disable={disabled}
               cartItem={editCartItem}
               editCartItem={setEditCartItem}
               product={product}
@@ -354,6 +355,7 @@ function EditCustomerPage() {
           )}
           {!hidden && product === "Terrassmarkis" && (
             <Terrassmarkis
+              disable={disabled}
               cartItem={editCartItem}
               editCartItem={setEditCartItem}
               product={product}
@@ -366,6 +368,7 @@ function EditCustomerPage() {
           )}
           {!hidden && product === "Rullgardin" && (
             <Rullgardin
+              disable={disabled}
               cartItem={editCartItem}
               editCartItem={setEditCartItem}
               product={product}
@@ -378,6 +381,7 @@ function EditCustomerPage() {
           )}
           {!hidden && product === "Persienn" && (
             <Persienn
+              disable={disabled}
               cartItem={editCartItem}
               editCartItem={setEditCartItem}
               product={product}
@@ -390,6 +394,7 @@ function EditCustomerPage() {
           )}
           {!hidden && product === "Fönstermarkis" && (
             <Fönstermarkis
+              disable={disabled}
               cartItem={editCartItem}
               editCartItem={setEditCartItem}
               product={product}

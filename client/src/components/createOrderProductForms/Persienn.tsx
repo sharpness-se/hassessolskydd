@@ -18,6 +18,8 @@ interface PersiennFunctionProps {
   product: string;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
   cartItem: EditCartItem | undefined;
+  disable: boolean;
+
 }
 interface PersiennAttributeProps {
   numberOfProduct: string;
@@ -38,8 +40,10 @@ const Persienn: React.FC<PersiennFunctionProps> = ({
   product,
   editCartItem,
   cartItem,
+  disable,
 }) => {
-  const [disable, setDisable] = useState(false);
+  const [disableActions, setDisableActions] = useState(disable?disable: false);
+
   const [productDetails, setProductDetails] = useState<PersiennAttributeProps>({
     numberOfProduct: "",
     length: "",
@@ -136,7 +140,7 @@ const Persienn: React.FC<PersiennFunctionProps> = ({
 
   useEffect(() => {
     if (cartItem) {
-      setDisable(true);
+      setDisableActions(true);
     }
     setProductDetails((prevProductDetails) => ({
       ...prevProductDetails,
@@ -175,8 +179,8 @@ const Persienn: React.FC<PersiennFunctionProps> = ({
           editCartItem(undefined);
           clearOnClick();
         }}
-        customOnClick={() => setDisable(false)}
-        disabled={disable}
+        customOnClick={() => setDisableActions(false)}
+        disabled={disableActions}
         hideButtons={cartItem ? true : false}
       >
         <div className="grid w-full rounded-lg bg-white ">

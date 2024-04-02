@@ -37,6 +37,7 @@ interface FönstermarkisProps {
   product: string;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
   cartItem: EditCartItem | undefined;
+  disable: boolean;
 }
 
 const Fönstermarkis: React.FC<FönstermarkisProps> = ({
@@ -45,22 +46,9 @@ const Fönstermarkis: React.FC<FönstermarkisProps> = ({
   product,
   editCartItem,
   cartItem,
+  disable
 }) => {
-  // const [numberOfProduct, setNumberOfProduct] = useState("");
-  // const [length, setLength] = useState("");
-  // const [width, setWidth] = useState("");
-  // const [model, setModel] = useState("");
-  // const [weave, setWeave] = useState("");
-  // const [motor, setMotor] = useState("");
-  // const [shakeSensor, setShakeSensor] = useState(false);
-  // const [color, setColor] = useState("");
-  // const [remote, setRemote] = useState("");
-  // const [measurementType, setMeasurementType] = useState("");
-  // const [coating, setCoating] = useState("");
-  // const [facade, setFacade] = useState("");
-  // const [solar, setSolar] = useState(false);
-  // const [support, setSupport] = useState(false);
-  const [disable, setDisable] = useState(false);
+  const [disableActions, setDisableActions] = useState(disable?disable: false);
 
   const [productDetails, setProductDetails] = useState({
     numberOfProduct: "",
@@ -174,7 +162,7 @@ const Fönstermarkis: React.FC<FönstermarkisProps> = ({
   };
   useEffect(() => {
     if (cartItem) {
-      setDisable(true);
+      setDisableActions(true);
     }
     setProductDetails((prevProductDetails) => ({
       ...prevProductDetails,
@@ -215,8 +203,8 @@ const Fönstermarkis: React.FC<FönstermarkisProps> = ({
           editCartItem(undefined);
           clearOnClick();
         }}
-        customOnClick={() => setDisable(false)}
-        disabled={disable}
+        customOnClick={() => setDisableActions(false)}
+        disabled={disableActions}
         hideButtons={cartItem ? true : false}
       >
         <div className="grid w-full rounded-lg bg-white ">
