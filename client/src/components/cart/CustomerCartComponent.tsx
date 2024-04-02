@@ -1,6 +1,4 @@
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
-import StartMenuButton from "../StartMenuButtonComponent";
-//import { Product } from "../../pages/CreateOrderPage";
 import CartItemComponent from "./CartItemComponent";
 import { nanoid } from "nanoid";
 import { Product } from "../createOrderProductForms/Plissegardin";
@@ -10,7 +8,9 @@ interface CustomerCartProps {
   cart: Product[];
   cartCallBack: Dispatch<SetStateAction<Product[]>>;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
-  disabled?: Boolean;
+  setHiddenCallBack: Dispatch<SetStateAction<boolean>>;
+  openProduct: Dispatch<SetStateAction<boolean>>;
+  disabled: boolean;
 }
 const CustomerCartComponent: React.FC<CustomerCartProps> = ({
   children,
@@ -18,6 +18,8 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
   cartCallBack,
   editCartItem,
   disabled,
+  setHiddenCallBack,
+  openProduct
 }) => {
   return (
     <div className="bg-white rounded p-5 max-w-3xl w-[715px]">
@@ -42,15 +44,15 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
                     cartCallback={cartCallBack}
                     editCartItem={editCartItem}
                     disabled={disabled}
+                    setHiddenCallBack={setHiddenCallBack}
+                    openProduct={openProduct}
                   />
                 </React.Fragment>
               );
             })}
           <div>{children}</div>
         </div>
-        <div className="flex w-full justify-center">
-         
-        </div>
+        
       </div>
     </div>
   );

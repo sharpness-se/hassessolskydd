@@ -27,6 +27,7 @@ interface PlissegardinAttributeProps {
   measurementType: string;
   assembly: string;
   remoteLocation: string;
+  disabled?: boolean;
 }
 export interface Product {
   name: string;
@@ -39,6 +40,7 @@ interface PlissegardinFunctionProps {
   product: string;
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
   cartItem: EditCartItem | undefined;
+  disable: boolean;
 }
 const Plissegardin: React.FC<PlissegardinFunctionProps> = ({
   clearOnClick,
@@ -46,9 +48,10 @@ const Plissegardin: React.FC<PlissegardinFunctionProps> = ({
   product,
   editCartItem,
   cartItem,
+  disable
 }) => {
 
-  const [disable, setDisable] = useState(false);
+  const [disableActions, setDisableActions] = useState(disable?disable: false);
   const [productDetails, setProductDetails] = useState({
     numberOfProduct: "",
     length: "",
@@ -156,7 +159,7 @@ const Plissegardin: React.FC<PlissegardinFunctionProps> = ({
 
   useEffect(() => {
     if (cartItem) {
-      setDisable(true);
+      setDisableActions(true);
     }
     setProductDetails((prevProductDetails) => ({
       ...prevProductDetails,
@@ -196,8 +199,8 @@ const Plissegardin: React.FC<PlissegardinFunctionProps> = ({
           editCartItem(undefined);
           clearOnClick();
         }}
-        customOnClick={() => setDisable(false)}
-        disabled={disable}
+        customOnClick={() => setDisableActions(false)}
+        disabled={disableActions}
         hideButtons={cartItem ? true : false}
       >
         <div className="grid w-full rounded-lg bg-white ">

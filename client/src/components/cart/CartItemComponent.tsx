@@ -11,7 +11,9 @@ interface CartItemProps {
   cartCallback: Dispatch<SetStateAction<Product[]>>;
   cart: Product[];
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
-  disabled?: Boolean;
+  setHiddenCallBack: Dispatch<SetStateAction<boolean>>;
+  openProduct: Dispatch<SetStateAction<boolean>>;
+  disabled: boolean;
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({
@@ -21,14 +23,18 @@ const CartItemComponent: React.FC<CartItemProps> = ({
   cart,
   editCartItem,
   disabled,
+  setHiddenCallBack,
+  openProduct
 }) => {
   const deleteCartItem = () => {
     const updatedProducts = cart?.filter((_, index) => index !== itemIndex);
     cartCallback(updatedProducts);
   };
   const updateEditCart = () => {
-    // console.log(itemIndex);
-    // console.log(cart[itemIndex]);
+    setHiddenCallBack(false);
+    openProduct(false);
+    console.log(itemIndex);
+    console.log(cart[itemIndex]);
     const updateItem = { cartItemIndex: itemIndex, cartItem: cart[itemIndex] };
     // console.log(updateItem);
     editCartItem(updateItem);
@@ -39,6 +45,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({
         title={product?.name || ""}
         addDelete
         deleteCallback={deleteCartItem}
+        disabled={disabled}
       >
         <div className="flex justify-end flex-col bg-white rounded-lg">
           <div className="grid text-xs gap-y-5 gap-x-10 px-5">
@@ -70,6 +77,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({
             <button
               className="bg-white h-min p-2 mr-2 hover:bg-blue-500 hover:text-white rounded-full px-5 text-s"
               onClick={updateEditCart}
+              disabled={disabled}
             >
               Visa eller Ändra
             </button>

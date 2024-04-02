@@ -20,11 +20,6 @@ import Persienn from "../components/createOrderProductForms/Persienn";
 import Rullgardin from "../components/createOrderProductForms/Rullgardin";
 import Fönstermarkis from "../components/createOrderProductForms/Fönstermarkis";
 
-// export interface Product {
-//   name: string;
-//   attributes: string[];
-//   values: string[];
-// }
 export interface InstallationDetails {
   mountingType?: String;
   facadeDetails?: String;
@@ -42,6 +37,7 @@ export interface FormData {
   indoorOutdoor?: string;
   orderItems?: Product[];
 }
+
 export interface EditCartItem {
   cartItemIndex: number;
   cartItem: Product;
@@ -58,6 +54,7 @@ export default function CreateOrderPageComponent() {
   const [lift, setLift] = useState<boolean>(false);
   const [montering, setMontering] = useState<string>("");
   const [editCartItem, setEditCartItem] = useState<EditCartItem>();
+  const [openProduct, setOpenProduct] = useState(false);
   const [installationDetails, setInstallationDetails] =
     useState<InstallationDetails>({
       mountingType: undefined,
@@ -106,7 +103,10 @@ export default function CreateOrderPageComponent() {
     });
   }, [customerCart, customer, notes, installationDetails]);
 
-  const handleInstallationDetailsUpdate = (attribute: string, value: string) => {
+  const handleInstallationDetailsUpdate = (
+    attribute: string,
+    value: string
+  ) => {
     setInstallationDetails((prev) => ({ ...prev, [attribute]: value }));
   };
 
@@ -129,8 +129,8 @@ export default function CreateOrderPageComponent() {
         const data = await response.json();
         console.log(data);
         setNotes("");
-        setCustomerCart([])
-        setInstallationDetails({})
+        setCustomerCart([]);
+        setInstallationDetails({});
       }
       if (!response.ok) {
         toast.error(`Something went wrong! Status: ${response.status}`);
@@ -178,7 +178,13 @@ export default function CreateOrderPageComponent() {
             <CustomerDetailsComponent customer={customer} />
           </div>
         </div>
-        <Accordion title="Produkter" applyHeight customOnClick primary>
+        <Accordion
+          title="Produkter"
+          applyHeight
+          customOnClick
+          primary
+          open={openProduct}
+        >
           {hidden && (
             <div className={"w-full"}>
               <label
@@ -217,6 +223,7 @@ export default function CreateOrderPageComponent() {
           {!hidden &&
             (product === "Pilsegardin" || product === "Plisségardin") && (
               <Pilsegardin
+                disable={true}
                 cartItem={editCartItem}
                 editCartItem={setEditCartItem}
                 product={product}
@@ -229,6 +236,7 @@ export default function CreateOrderPageComponent() {
             )}
           {!hidden && product === "Lamellgardin" && (
             <Lamellgardin
+              
               cartItem={editCartItem}
               editCartItem={setEditCartItem}
               product={product}
@@ -481,10 +489,7 @@ export default function CreateOrderPageComponent() {
                   className="appearance-none w-full text-gray-700 border rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white min-h-[160px]"
                   maxLength={2000}
                   onChange={(e) => {
-                    handleInstallationDetailsUpdate(
-                      "notes",
-                      e.target.value
-                    );
+                    handleInstallationDetailsUpdate("notes", e.target.value);
                   }}
                 ></textarea>
               </div>
@@ -492,10 +497,12 @@ export default function CreateOrderPageComponent() {
           </form>
         </Accordion>
         <CustomerCartComponent
+          openProduct={setOpenProduct}
           cart={customerCart}
           cartCallBack={setCustomerCart}
           editCartItem={setEditCartItem}
-          //handleEdit={handleEdit}
+          setHiddenCallBack={setHidden}
+          disabled={false}
         ></CustomerCartComponent>
         <Toaster position="bottom-center" reverseOrder={false} />
       </div>

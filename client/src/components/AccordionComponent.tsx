@@ -10,6 +10,7 @@ interface AccordionProps {
   deleteCallback?: () => void;
   primary?: boolean;
   disabled?: boolean;
+  open?: boolean
 }
 
 const Accordion: React.FC<AccordionProps> = ({
@@ -18,9 +19,10 @@ const Accordion: React.FC<AccordionProps> = ({
   children,
   deleteCallback,
   primary,
-  disabled
+  disabled,
+  open
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(open ||false);
 
   return (
     <div
@@ -29,8 +31,8 @@ const Accordion: React.FC<AccordionProps> = ({
       }`}
     >
       <div
-        onClick={() => setIsExpanded((prevIsExpanded) => !prevIsExpanded)}
-        className="flex justify-between items-center cursor-pointer"
+        onClick={()=> primary&&setIsExpanded((prevIsExpanded) => !prevIsExpanded)}
+        className={`flex justify-between items-center ${primary&& "cursor-pointer"}`} 
       >
         <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold">
           {title}
@@ -38,13 +40,14 @@ const Accordion: React.FC<AccordionProps> = ({
         <div>
           {addDelete && (
             <button
-              disabled
+              onClick={deleteCallback}
+              disabled={disabled}
               className="bg-white h-min px-2 py-1 hover:bg-red-600 hover:text-white rounded text-xs font-bold mr-5 align-middle"
             >
               TA BORT
             </button>
           )}
-          <button className="">
+          <button onClick={() => !primary&&setIsExpanded((prevIsExpanded) => !prevIsExpanded)} className="cursor-pointer">
             {isExpanded ? (
               <FaChevronUp className="align-middle" />
             ) : (

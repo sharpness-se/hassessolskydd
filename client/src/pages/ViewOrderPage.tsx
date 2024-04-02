@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Navbar from "../components/NavbarComponent";
@@ -56,19 +56,20 @@ export interface EditCartItem {
 
 function EditCustomerPage() {
   const { id } = useParams();
-  const [order, setOrder] = useState<FormData>();
+  //const [order, setOrder] = useState<FormData>();
   const [disabled, setDisabled] = useState(id ? true : false);
   const [isEdit, setIsEdit] = useState(false);
   const [customer, setCustomer] = useState<Customer | undefined>(undefined);
   const [options, setOptions] = React.useState<Customer[]>([]);
   const [notes, setNotes] = useState("");
-  const [montering, setMontering] = useState<string>("");
+  // const [montering, setMontering] = useState<string>("");
   const [lift, setLift] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>();
   const [customerCart, setCustomerCart] = useState<Product[]>([]);
   const [editCartItem, setEditCartItem] = useState<EditCartItem>();
   const [hidden, setHidden] = useState(true);
   const [product, setProduct] = useState("");
+  const [openProduct, setOpenProduct] = useState(false);
   const [installationDetails, setInstallationDetails] =
     useState<InstallationDetails>({
       mountingType: "",
@@ -81,11 +82,11 @@ function EditCustomerPage() {
       // id: 0,
       // orderId: 0,
     });
-  const [orderStatus, setOrderStatus] = useState("");
+  const [orderStatus, setOrderStatus] = useState("INQUIRY");
 
   const handleInstallationDetailsUpdate = (
     attribute: string,
-    value: string,
+    value: string
   ) => {
     setInstallationDetails((prev) => ({ ...prev, [attribute]: value }));
   };
@@ -134,10 +135,10 @@ function EditCustomerPage() {
         if (response.ok) {
           toast.success("Order Submitted Successfully!");
           const data = await response.json();
-          // console.log(data);
+          console.log(data);
           setNotes("");
           setCustomerCart([]);
-          // setInstallationDetails({})
+          setInstallationDetails({});
         }
         if (!response.ok) {
           toast.error(`Something went wrong! Status: ${response.status}`);
@@ -148,6 +149,19 @@ function EditCustomerPage() {
       }
     }
   };
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  useEffect(() => {
+    console.log("Change Detected");
+    if (editCartItem?.cartItem) {
+      console.log({
+        product: capitalizeFirstLetter(editCartItem.cartItem.name),
+      });
+      setProduct(capitalizeFirstLetter(editCartItem.cartItem.name));
+      setHidden(false);
+    }
+  }, [editCartItem]);
 
   useEffect(() => {
     const prepareUrl = () => {
@@ -196,17 +210,16 @@ function EditCustomerPage() {
           console.log("No order found");
         } else {
           const data = await response.json();
-          setOrder(data.order);
+          //setOrder(data.order);
           setCustomer(data.customer);
           if (data.order) {
             setNotes(data.order.notes);
             setCustomerCart(data.order.orderItems);
+            console.log(data.order.orderItems);
             setInstallationDetails(data.order.installationDetails);
             setOrderStatus(data.order.orderStatus);
             setLift(
-              data.order.installationDetails.liftNeeded === "yes"
-                ? true
-                : false,
+              data.order.installationDetails.liftNeeded === "yes" ? true : false
             );
           }
         }
@@ -270,7 +283,13 @@ function EditCustomerPage() {
           </select>
         </div>
 
-        <Accordion title="Produkter" applyHeight customOnClick primary>
+        <Accordion
+          title="Produkter"
+          applyHeight
+          customOnClick
+          primary
+          open={openProduct}
+        >
           {hidden && (
             <div className={"w-full"}>
               <label
@@ -310,6 +329,7 @@ function EditCustomerPage() {
           {!hidden &&
             (product === "Pilsegardin" || product === "Plisségardin") && (
               <Pilsegardin
+                disable={disabled}
                 cartItem={editCartItem}
                 editCartItem={setEditCartItem}
                 product={product}
@@ -411,10 +431,9 @@ function EditCustomerPage() {
                       value="normal"
                       checked={installationDetails.mountingType === "normal"}
                       onChange={(e) => {
-                        setMontering(e.target.value);
                         handleInstallationDetailsUpdate(
                           "mountingType",
-                          e.target.value,
+                          e.target.value
                         );
                       }}
                     />
@@ -436,10 +455,10 @@ function EditCustomerPage() {
                       value="advanced"
                       checked={installationDetails.mountingType === "advanced"}
                       onChange={(e) => {
-                        setMontering(e.target.value);
+                        //setMontering(e.target.value);
                         handleInstallationDetailsUpdate(
                           "mountingType",
-                          e.target.value,
+                          e.target.value
                         );
                       }}
                     />
@@ -470,7 +489,7 @@ function EditCustomerPage() {
                     onChange={(e) => {
                       handleInstallationDetailsUpdate(
                         "floorDetails",
-                        e.target.value,
+                        e.target.value
                       );
                     }}
                   ></input>
@@ -488,7 +507,7 @@ function EditCustomerPage() {
                     onChange={(e) => {
                       handleInstallationDetailsUpdate(
                         "facadeDetails",
-                        e.target.value,
+                        e.target.value
                       );
                     }}
                   />
@@ -509,7 +528,7 @@ function EditCustomerPage() {
                     onChange={(e) => {
                       handleInstallationDetailsUpdate(
                         "cableLength",
-                        e.target.value,
+                        e.target.value
                       );
                     }}
                   ></input>
@@ -528,7 +547,7 @@ function EditCustomerPage() {
                     onChange={(e) => {
                       handleInstallationDetailsUpdate(
                         "remoteControl",
-                        e.target.value,
+                        e.target.value
                       );
                     }}
                   ></input>
@@ -545,7 +564,7 @@ function EditCustomerPage() {
                     setLift(e.target.checked);
                     handleInstallationDetailsUpdate(
                       "liftNeeded",
-                      `${e.target.checked ? "yes" : "no"}`,
+                      `${e.target.checked ? "yes" : "no"}`
                     );
                   }}
                 />
@@ -577,7 +596,9 @@ function EditCustomerPage() {
           cart={customerCart}
           cartCallBack={setCustomerCart}
           editCartItem={setEditCartItem}
-          disabled
+          setHiddenCallBack={setHidden}
+          openProduct={setOpenProduct}
+          disabled={disabled}
         ></CustomerCartComponent>
 
         <StartMenuButton
