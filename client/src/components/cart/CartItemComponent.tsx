@@ -75,7 +75,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({
 
           <div className="pt-5 flex justify-center">
             <button
-              className="bg-white h-min p-2 mr-2 hover:bg-blue-500 hover:text-white rounded-full px-5 text-s"
+              className={` h-min p-2 mr-2 ${!disabled?"bg-white hover:bg-blue-500 hover:text-white":"bg-gray-200"} rounded-full px-5 text-s crusor-pointer`}
               onClick={updateEditCart}
               disabled={disabled}
             >

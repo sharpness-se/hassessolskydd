@@ -42,7 +42,7 @@ const Accordion: React.FC<AccordionProps> = ({
             <button
               onClick={deleteCallback}
               disabled={disabled}
-              className="bg-white h-min px-2 py-1 hover:bg-red-600 hover:text-white rounded text-xs font-bold mr-5 align-middle"
+              className={`h-min px-2 py-1 ${!disabled?"bg-white hover:bg-red-600 hover:text-white cursor-pointer": "bg-gray-200"} rounded text-xs font-bold mr-5 align-middle`}
             >
               TA BORT
             </button>
