@@ -19,7 +19,6 @@ interface PersiennFunctionProps {
   editCartItem: Dispatch<SetStateAction<EditCartItem | undefined>>;
   cartItem: EditCartItem | undefined;
   disable: boolean;
-
 }
 interface PersiennAttributeProps {
   numberOfProduct: string;
@@ -142,6 +141,7 @@ const Persienn: React.FC<PersiennFunctionProps> = ({
     if (cartItem) {
       setDisableActions(true);
     }
+    
     setProductDetails((prevProductDetails) => ({
       ...prevProductDetails,
       numberOfProduct: getAttribute("Antal"),

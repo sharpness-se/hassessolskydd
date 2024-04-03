@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import Accordion from "../AccordionComponent";
 //import { Product } from "../../pages/CreateOrderPage";
 import { nanoid } from "nanoid";
@@ -14,6 +14,8 @@ interface CartItemProps {
   setHiddenCallBack: Dispatch<SetStateAction<boolean>>;
   openProduct: Dispatch<SetStateAction<boolean>>;
   disabled: boolean;
+  setCartIndex?: Dispatch<SetStateAction<number|undefined>>;
+  cartIndex?: number;
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({
@@ -24,7 +26,9 @@ const CartItemComponent: React.FC<CartItemProps> = ({
   editCartItem,
   disabled,
   setHiddenCallBack,
-  openProduct
+  openProduct,
+  cartIndex,
+  setCartIndex
 }) => {
   const deleteCartItem = () => {
     const updatedProducts = cart?.filter((_, index) => index !== itemIndex);
@@ -32,13 +36,11 @@ const CartItemComponent: React.FC<CartItemProps> = ({
   };
   const updateEditCart = () => {
     setHiddenCallBack(false);
-    openProduct(false);
-    console.log(itemIndex);
-    console.log(cart[itemIndex]);
     const updateItem = { cartItemIndex: itemIndex, cartItem: cart[itemIndex] };
-    // console.log(updateItem);
     editCartItem(updateItem);
   };
+ 
+ 
   return (
     <div className="bg-white rounded-lg mb-5">
       <Accordion
@@ -46,6 +48,8 @@ const CartItemComponent: React.FC<CartItemProps> = ({
         addDelete
         deleteCallback={deleteCartItem}
         disabled={disabled}
+        openIndex={cartIndex}
+        itemIndex={itemIndex}
       >
         <div className="flex justify-end flex-col bg-white rounded-lg">
           <div className="grid text-xs gap-y-5 gap-x-10 px-5">
@@ -75,8 +79,18 @@ const CartItemComponent: React.FC<CartItemProps> = ({
 
           <div className="pt-5 flex justify-center">
             <button
-              className={` h-min p-2 mr-2 ${!disabled?"bg-white hover:bg-blue-500 hover:text-white":"bg-gray-200"} rounded-full px-5 text-s crusor-pointer`}
-              onClick={updateEditCart}
+              className={` h-min p-2 mr-2 ${!disabled ? "bg-white hover:bg-blue-500 hover:text-white" : "bg-gray-200"} rounded-full px-5 text-s crusor-pointer`}
+              onClick={() => {
+                updateEditCart();
+                openProduct(true);
+                if (itemIndex && setCartIndex) {
+                    setCartIndex(itemIndex)
+                }
+                if (!itemIndex && setCartIndex) {
+                  setCartIndex(0)
+                }
+              
+              }}
               disabled={disabled}
             >
               Visa eller Ändra

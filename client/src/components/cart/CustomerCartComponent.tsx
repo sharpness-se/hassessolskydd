@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactNode, SetStateAction } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import CartItemComponent from "./CartItemComponent";
 import { nanoid } from "nanoid";
 import { Product } from "../createOrderProductForms/Plissegardin";
@@ -21,6 +21,7 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
   setHiddenCallBack,
   openProduct
 }) => {
+  const [cartIndex, SetCartIndex] = useState<number| undefined>()
   return (
     <div className="bg-white rounded p-5 max-w-3xl w-[715px]">
       <h2 className="uppercase tracking-wide text-gray-700 text-s font-bold mb-1 pb-2">
@@ -46,6 +47,8 @@ const CustomerCartComponent: React.FC<CustomerCartProps> = ({
                     disabled={disabled}
                     setHiddenCallBack={setHiddenCallBack}
                     openProduct={openProduct}
+                    cartIndex={cartIndex}
+                    setCartIndex={SetCartIndex}
                   />
                 </React.Fragment>
               );
