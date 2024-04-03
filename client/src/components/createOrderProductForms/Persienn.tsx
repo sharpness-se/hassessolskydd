@@ -83,7 +83,7 @@ const Persienn: React.FC<PersiennFunctionProps> = ({
       { attribute: "Reglage-Lina/Ögla", value: remote },
       { attribute: "Magneter", value: `${magnets ? "yes" : "no"}` },
       { attribute: "Förlängd Persiennstång", value: `${extendedPole}cm` },
-    ].reverse(),
+    ],
   };
   const addToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

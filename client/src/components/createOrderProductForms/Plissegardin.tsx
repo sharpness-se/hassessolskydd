@@ -98,7 +98,7 @@ const Plissegardin: React.FC<PlissegardinFunctionProps> = ({
       { attribute: "Reglage", value: remote },
       { attribute: "Reglagesida", value: remoteLocation },
       { attribute: "Detaljfärg", value: color },
-    ].reverse(),
+    ],
   };
   const addToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
