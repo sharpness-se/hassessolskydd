@@ -31,10 +31,10 @@ jobs:
 
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      
+
       - name: Set Postman Environment Variables
         run: |
-          postman env set DOMAIN ${{ secrets.DOMAIN }}
+          postman env set DOMAIN "my_domain"
           postman env set AUDIENCE ${{ secrets.AUDIENCE }}
           postman env set CLIENT_ID ${{ secrets.CLIENT_ID }}
           postman env set CLIENT_SECRET ${{ secrets.CLIENT_SECRET }}
@@ -42,4 +42,3 @@ jobs:
       - name: Run API tests
         run: |
           postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef"
-        
