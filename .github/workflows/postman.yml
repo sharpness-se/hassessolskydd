@@ -35,9 +35,9 @@ jobs:
 
       - name: Run API tests
         env:
-          DOMAIN: ${{ secrets.DOMAIN }}
-          AUDIENCE: ${{ secrets.AUDIENCE }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          DOMAIN: ${{ secrets.POSTMAN_DOMAIN }}
+          AUDIENCE: ${{ secrets.POSTMAN_AUDIENCE }}
+          CLIENT_ID: ${{ secrets.POSTMAN_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.POSTMAN_CLIENT_SECRET }}
         run: |
           postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef"
