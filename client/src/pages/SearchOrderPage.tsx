@@ -41,7 +41,7 @@ export default function SearchOrderPage() {
         }
         return `${row.firstname} ${row.lastname}`;
       },
-      { id: "name", header: "Customer" },
+      { id: "name", header: "Customer" }
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -50,7 +50,7 @@ export default function SearchOrderPage() {
         }
         return `${row.customerNumber}`;
       },
-      { id: "customerNumber", header: "Customer Id" },
+      { id: "customerNumber", header: "Customer Id" }
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -62,7 +62,7 @@ export default function SearchOrderPage() {
       {
         id: showOrder ? "firstContact" : "phoneNumber",
         header: showOrder ? "Date" : "Telefon",
-      },
+      }
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -74,7 +74,7 @@ export default function SearchOrderPage() {
       {
         id: showOrder ? "id" : "email",
         header: showOrder ? "Order Id" : "Email",
-      },
+      }
     ),
     orderColumnHelper.accessor(
       (row) => {
@@ -83,7 +83,7 @@ export default function SearchOrderPage() {
         }
         return `${row.city}`;
       },
-      { id: "region", header: "Region" },
+      { id: "region", header: "Region" }
     ),
   ];
 
@@ -92,7 +92,7 @@ export default function SearchOrderPage() {
       return encodeURI(url);
     }
     const fetchData: (showOrderData: boolean) => Promise<void> = async (
-      showOrderData,
+      showOrderData
     ) => {
       let encodedURL = "";
       if (showOrderData) {
@@ -118,6 +118,7 @@ export default function SearchOrderPage() {
         }
       } catch (err) {
         console.error(err);
+        console.log(err);
       }
     };
     fetchData(showOrder);
@@ -204,7 +205,7 @@ export default function SearchOrderPage() {
                               ? null
                               : flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext(),
+                                  header.getContext()
                                 )}
 
                             {sortIcon}
@@ -224,11 +225,11 @@ export default function SearchOrderPage() {
                       onClick={() => {
                         if ((row.original as Customer).customerNumber)
                           navigate(
-                            `/customer/${(row.original as Customer).customerNumber}`,
+                            `/customer/${(row.original as Customer).customerNumber}`
                           );
                         else if ((row.original as OrderInfo).order.id)
                           navigate(
-                            `/order/${(row.original as OrderInfo).order.id}`,
+                            `/order/${(row.original as OrderInfo).order.id}`
                           );
                       }}
                     >
@@ -240,7 +241,7 @@ export default function SearchOrderPage() {
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
-                              cell.getContext(),
+                              cell.getContext()
                             )}
                           </td>
                         );
