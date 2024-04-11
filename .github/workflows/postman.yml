@@ -12,8 +12,8 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
       - name: Run database container
         run: |
@@ -25,9 +25,6 @@ jobs:
       - name: Build and Run Spring Boot application
         run: ./gradlew bootRun &
 
-      - name: Sleep for 1 minute
-        run: sleep 1m
-
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
@@ -37,6 +34,6 @@ jobs:
 
       - name: Run API tests
         run: |
-          postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef" -e "$POSTMAN_ENVIRONMENT_FILE"
+          postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef" -e "$POSTMAN_ENV"
         env:
-          POSTMAN_ENVIRONMENT_FILE: ${{ secrets.POSTMAN_ENVIRONMENT_FILE }}
+          POSTMAN_ENVIRONMENT_FILE: ${{ secrets.POSTMAN_ENV }}
