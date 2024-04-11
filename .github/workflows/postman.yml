@@ -7,6 +7,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      domain: ${{secrets.DOMAIN}}
+      client_id: ${{secrets.CLIENT_ID}}
+      client_secret: ${{secrets.CLIENT_SECRET}}
+      audience: ${{secrets.AUDIENCE}}
     steps:
       - uses: actions/checkout@v2
       - name: Setup Java JDK
@@ -35,8 +40,4 @@ jobs:
       - name: Run API tests
         run: |
           postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef"
-        env:
-          domain: ${{secrets.DOMAIN}}
-          client_id: ${{secrets.CLIENT_ID}}
-          client_secret: ${{secrets.CLIENT_SECRET}}
-          audience: ${{secrets.AUDIENCE}}
+        
