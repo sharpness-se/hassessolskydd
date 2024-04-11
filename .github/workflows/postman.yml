@@ -7,11 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      domain: ${{secrets.DOMAIN}}
-      client_id: ${{secrets.CLIENT_ID}}
-      client_secret: ${{secrets.CLIENT_SECRET}}
-      audience: ${{secrets.AUDIENCE}}
     steps:
       - uses: actions/checkout@v2
       - name: Setup Java JDK
