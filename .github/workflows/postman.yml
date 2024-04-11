@@ -34,6 +34,9 @@ jobs:
 
       - name: Run API tests
         run: |
-          postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef" -e "$POSTMAN_ENV"
+          postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef"
         env:
-          POSTMAN_ENVIRONMENT_FILE: ${{ secrets.POSTMAN_ENV }}
+          domain: ${{secrets.DOMAIN}}
+          client_id: ${{secrets.CLIENT_ID}}
+          client_secret: ${{secrets.CLIENT_SECRET}}
+          audience: ${{secrets.AUDIENCE}}
