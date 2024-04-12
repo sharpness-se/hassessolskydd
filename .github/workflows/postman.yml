@@ -26,7 +26,7 @@ jobs:
         run: ./gradlew bootRun &
 
       - name: Sleep
-        run: wait 1m
+        run: sleep 30
 
       - name: Install Postman CLI
         run: |
