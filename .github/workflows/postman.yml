@@ -25,6 +25,9 @@ jobs:
       - name: Build and Run Spring Boot application
         run: ./gradlew bootRun &
 
+      - name: Sleep
+        run: wait 1m
+
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
@@ -32,7 +35,6 @@ jobs:
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
 
-
       - name: Run API tests
         run: |
-          postman collection run "31430812-f6f019f5-44b2-436f-a1a1-6ad7e3fc37d1" -e "31430812-6d7b495e-64b8-4cb9-87a0-99f0ce29ffbf"
+          postman collection run "31422414-2ea4ecb6-d70d-46e5-9d7f-08e354e1e5ef" -e "31430812-6d7b495e-64b8-4cb9-87a0-99f0ce29ffbf"
